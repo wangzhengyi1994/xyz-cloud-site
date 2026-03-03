@@ -534,9 +534,9 @@
       position: relative;
     }
     .platform-canvas canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
 
     /* ===== XYZ Cloud Story ===== */
@@ -1311,204 +1311,209 @@
   </section>
 
   <script>
-  (function() {
+  // Platform particle morphing - deferred to ensure layout is ready
+  window.addEventListener('DOMContentLoaded', function() {
     var container = document.getElementById('platformCanvas');
     if (!container) return;
 
-    var width = container.offsetWidth;
-    var height = container.offsetHeight;
+    // Wait a frame for flex layout to resolve
+    requestAnimationFrame(function() {
+      var width = container.offsetWidth || 600;
+      var height = container.offsetHeight || 760;
 
-    var scene = new THREE.Scene();
-    var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
-    camera.position.z = 4.5;
+      var scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+      camera.position.z = 5;
 
-    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-    renderer.setClearColor(0x000000, 0);
-    container.appendChild(renderer.domElement);
+      var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+      renderer.setClearColor(0x000000, 0);
+      container.appendChild(renderer.domElement);
 
-    var PARTICLE_COUNT = 4000;
-    var isMob = window.innerWidth <= 800;
-    if (isMob) PARTICLE_COUNT = 2000;
+      var N = (window.innerWidth <= 800) ? 2500 : 5000;
 
-    // Shape generators - points on surface
-    function genSphere(n, r) {
-      var a = new Float32Array(n * 3);
-      for (var i = 0; i < n; i++) {
-        var phi = Math.acos(2 * Math.random() - 1);
-        var theta = Math.random() * Math.PI * 2;
-        a[i*3]   = r * Math.sin(phi) * Math.cos(theta);
-        a[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
-        a[i*3+2] = r * Math.cos(phi);
-      }
-      return a;
-    }
-
-    function genCube(n, s) {
-      var a = new Float32Array(n * 3);
-      var h = s / 2;
-      for (var i = 0; i < n; i++) {
-        var face = Math.floor(Math.random() * 6);
-        var u = Math.random() * s - h, v = Math.random() * s - h;
-        var j = i * 3;
-        switch(face) {
-          case 0: a[j]=h;  a[j+1]=u; a[j+2]=v; break;
-          case 1: a[j]=-h; a[j+1]=u; a[j+2]=v; break;
-          case 2: a[j]=u;  a[j+1]=h; a[j+2]=v; break;
-          case 3: a[j]=u;  a[j+1]=-h;a[j+2]=v; break;
-          case 4: a[j]=u;  a[j+1]=v; a[j+2]=h; break;
-          case 5: a[j]=u;  a[j+1]=v; a[j+2]=-h;break;
+      // === Shape generators ===
+      function genSphere(n, r) {
+        var a = new Float32Array(n * 3);
+        for (var i = 0; i < n; i++) {
+          var phi = Math.acos(2 * Math.random() - 1);
+          var th = Math.random() * Math.PI * 2;
+          a[i*3]   = r * Math.sin(phi) * Math.cos(th);
+          a[i*3+1] = r * Math.sin(phi) * Math.sin(th);
+          a[i*3+2] = r * Math.cos(phi);
         }
+        return a;
       }
-      return a;
-    }
 
-    function genPyramid(n, r, ht) {
-      var a = new Float32Array(n * 3);
-      for (var i = 0; i < n; i++) {
-        var j = i * 3;
-        if (Math.random() < 0.25) {
-          // base circle
-          var ang = Math.random() * Math.PI * 2;
-          var rr = r * Math.sqrt(Math.random());
-          a[j] = rr * Math.cos(ang);
-          a[j+1] = -ht/2;
-          a[j+2] = rr * Math.sin(ang);
-        } else {
-          // cone surface
-          var t = Math.random();
-          var ang = Math.random() * Math.PI * 2;
-          var rad = r * t;
-          a[j]   = rad * Math.cos(ang);
-          a[j+1] = ht/2 - t * ht;
-          a[j+2] = rad * Math.sin(ang);
+      function genCube(n, s) {
+        var a = new Float32Array(n * 3);
+        var half = s / 2;
+        for (var i = 0; i < n; i++) {
+          var face = Math.floor(Math.random() * 6);
+          var u = Math.random() * s - half;
+          var v = Math.random() * s - half;
+          var j = i * 3;
+          if (face === 0)      { a[j]= half; a[j+1]=u; a[j+2]=v; }
+          else if (face === 1) { a[j]=-half; a[j+1]=u; a[j+2]=v; }
+          else if (face === 2) { a[j]=u; a[j+1]= half; a[j+2]=v; }
+          else if (face === 3) { a[j]=u; a[j+1]=-half; a[j+2]=v; }
+          else if (face === 4) { a[j]=u; a[j+1]=v; a[j+2]= half; }
+          else                 { a[j]=u; a[j+1]=v; a[j+2]=-half; }
         }
+        return a;
       }
-      return a;
-    }
 
-    function genDiamond(n, r, ht) {
-      var a = new Float32Array(n * 3);
-      for (var i = 0; i < n; i++) {
-        var t = Math.random() * 2 - 1;
-        var ang = Math.random() * Math.PI * 2;
-        var rad = r * (1 - Math.abs(t));
-        var j = i * 3;
-        a[j]   = rad * Math.cos(ang);
-        a[j+1] = t * ht / 2;
-        a[j+2] = rad * Math.sin(ang);
+      function genPyramid(n, r, h) {
+        var a = new Float32Array(n * 3);
+        for (var i = 0; i < n; i++) {
+          var j = i * 3;
+          var rnd = Math.random();
+          if (rnd < 0.3) {
+            var ang2 = Math.random() * Math.PI * 2;
+            var rr = r * Math.sqrt(Math.random());
+            a[j] = rr * Math.cos(ang2); a[j+1] = -h/2; a[j+2] = rr * Math.sin(ang2);
+          } else {
+            var t = Math.random();
+            var ang2 = Math.random() * Math.PI * 2;
+            var rd = r * t;
+            a[j] = rd * Math.cos(ang2); a[j+1] = h/2 - t * h; a[j+2] = rd * Math.sin(ang2);
+          }
+        }
+        return a;
       }
-      return a;
-    }
 
-    function genTorus(n, R, r) {
-      var a = new Float32Array(n * 3);
-      for (var i = 0; i < n; i++) {
-        var u = Math.random() * Math.PI * 2;
-        var v = Math.random() * Math.PI * 2;
-        var j = i * 3;
-        a[j]   = (R + r * Math.cos(v)) * Math.cos(u);
-        a[j+1] = r * Math.sin(v);
-        a[j+2] = (R + r * Math.cos(v)) * Math.sin(u);
+      function genDiamond(n, r, h) {
+        var a = new Float32Array(n * 3);
+        for (var i = 0; i < n; i++) {
+          var t = Math.random() * 2 - 1;
+          var ang2 = Math.random() * Math.PI * 2;
+          var rd = r * (1 - Math.abs(t));
+          var j = i * 3;
+          a[j] = rd * Math.cos(ang2); a[j+1] = t * h / 2; a[j+2] = rd * Math.sin(ang2);
+        }
+        return a;
       }
-      return a;
-    }
 
-    // Pre-generate all shapes
-    var shapes = [
-      genSphere(PARTICLE_COUNT, 1.5),
-      genCube(PARTICLE_COUNT, 2.4),
-      genPyramid(PARTICLE_COUNT, 1.5, 3),
-      genDiamond(PARTICLE_COUNT, 1.3, 3),
-      genTorus(PARTICLE_COUNT, 1.2, 0.45)
-    ];
-
-    // Per-particle noise for organic look
-    var noise = new Float32Array(PARTICLE_COUNT * 3);
-    for (var i = 0; i < PARTICLE_COUNT * 3; i++) {
-      noise[i] = (Math.random() - 0.5) * 0.08;
-    }
-
-    // Create particle system
-    var geometry = new THREE.BufferGeometry();
-    var positions = new Float32Array(PARTICLE_COUNT * 3);
-    for (var i = 0; i < PARTICLE_COUNT * 3; i++) positions[i] = shapes[0][i] + noise[i];
-    geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
-
-    // Varying opacity per particle via vertex colors
-    var colors = new Float32Array(PARTICLE_COUNT * 3);
-    for (var i = 0; i < PARTICLE_COUNT; i++) {
-      var c = 0.5 + Math.random() * 0.5;
-      colors[i*3] = c; colors[i*3+1] = c; colors[i*3+2] = c;
-    }
-    geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    var material = new THREE.PointsMaterial({
-      size: 0.018,
-      transparent: true,
-      opacity: 0.9,
-      vertexColors: THREE.VertexColors,
-      sizeAttenuation: true,
-      depthWrite: false
-    });
-
-    var particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    // Morphing state
-    var fromPos = new Float32Array(PARTICLE_COUNT * 3);
-    var toPos = shapes[0];
-    var morph = { v: 1 };
-    var curShape = 0;
-    for (var i = 0; i < PARTICLE_COUNT * 3; i++) fromPos[i] = positions[i];
-
-    function morphTo(idx) {
-      if (idx === curShape) return;
-      var pos = geometry.attributes.position.array;
-      for (var i = 0; i < PARTICLE_COUNT * 3; i++) fromPos[i] = pos[i];
-      toPos = shapes[idx];
-      curShape = idx;
-      morph.v = 0;
-      TweenMax.to(morph, 1.5, { v: 1, ease: Power2.easeInOut });
-    }
-    window.platformMorphTo = morphTo;
-
-    // Visibility observer
-    var isVis = true;
-    var obs = new IntersectionObserver(function(e) { isVis = e[0].isIntersecting; }, { threshold: 0 });
-    obs.observe(container);
-
-    // Animation
-    function animate() {
-      requestAnimationFrame(animate);
-      if (!isVis) return;
-
-      var pos = geometry.attributes.position.array;
-      var t = morph.v;
-      for (var i = 0; i < PARTICLE_COUNT * 3; i++) {
-        pos[i] = fromPos[i] + (toPos[i] + noise[i] - fromPos[i]) * t;
+      function genTorus(n, R, r) {
+        var a = new Float32Array(n * 3);
+        for (var i = 0; i < n; i++) {
+          var u = Math.random() * Math.PI * 2;
+          var v = Math.random() * Math.PI * 2;
+          var j = i * 3;
+          a[j]   = (R + r * Math.cos(v)) * Math.cos(u);
+          a[j+1] = r * Math.sin(v);
+          a[j+2] = (R + r * Math.cos(v)) * Math.sin(u);
+        }
+        return a;
       }
-      geometry.attributes.position.needsUpdate = true;
 
-      particles.rotation.y += 0.003;
-      particles.rotation.x += 0.0008;
-      renderer.render(scene, camera);
-    }
-    animate();
+      var shapes = [
+        genSphere(N, 1.8),
+        genCube(N, 2.8),
+        genPyramid(N, 1.8, 3.2),
+        genDiamond(N, 1.5, 3.5),
+        genTorus(N, 1.4, 0.5)
+      ];
 
-    // Resize
-    var rTimer;
-    window.addEventListener('resize', function() {
-      clearTimeout(rTimer);
-      rTimer = setTimeout(function() {
-        var w = container.offsetWidth, h = container.offsetHeight;
+      // Create particles
+      var geometry = new THREE.BufferGeometry();
+      var pos = new Float32Array(N * 3);
+      var targetPos = new Float32Array(N * 3);
+      var startPos = new Float32Array(N * 3);
+
+      // Initialize to first shape
+      for (var i = 0; i < N * 3; i++) {
+        pos[i] = shapes[0][i];
+        targetPos[i] = shapes[0][i];
+        startPos[i] = shapes[0][i];
+      }
+      geometry.addAttribute('position', new THREE.BufferAttribute(pos, 3));
+
+      var material = new THREE.PointsMaterial({
+        color: 0xffffff,
+        size: 0.02,
+        transparent: true,
+        opacity: 0.85,
+        sizeAttenuation: true,
+        depthWrite: false
+      });
+
+      var points = new THREE.Points(geometry, material);
+      scene.add(points);
+
+      // Morph state
+      var curIdx = 0;
+      var progress = 1; // 1 = arrived at target
+      var morphSpeed = 0; // will be set on transition
+      var isMorphing = false;
+
+      function morphTo(idx) {
+        if (idx === curIdx && !isMorphing) return;
+        curIdx = idx;
+        // Snapshot current positions as start
+        var arr = geometry.attributes.position.array;
+        for (var i = 0; i < N * 3; i++) {
+          startPos[i] = arr[i];
+          targetPos[i] = shapes[idx][i];
+        }
+        progress = 0;
+        isMorphing = true;
+      }
+      window.platformMorphTo = morphTo;
+
+      // Easing function (ease in-out cubic)
+      function easeInOutCubic(t) {
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+      }
+
+      // Animation loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Update morph
+        if (isMorphing) {
+          progress += 0.012; // ~1.2s transition at 60fps
+          if (progress >= 1) {
+            progress = 1;
+            isMorphing = false;
+          }
+          var t = easeInOutCubic(progress);
+          var arr = geometry.attributes.position.array;
+          for (var i = 0; i < N * 3; i++) {
+            arr[i] = startPos[i] + (targetPos[i] - startPos[i]) * t;
+          }
+          geometry.attributes.position.needsUpdate = true;
+        }
+
+        // Slow auto-rotation
+        points.rotation.y += 0.002;
+        points.rotation.x += 0.0005;
+
+        renderer.render(scene, camera);
+      }
+      animate();
+
+      // Hook up tab clicks directly
+      var tabs = document.querySelectorAll('.platform-tab');
+      tabs.forEach(function(tab, index) {
+        tab.addEventListener('click', function() {
+          tabs.forEach(function(t) { t.classList.remove('active'); });
+          tab.classList.add('active');
+          morphTo(index);
+        });
+      });
+
+      // Resize
+      window.addEventListener('resize', function() {
+        var w = container.offsetWidth || 600;
+        var h = container.offsetHeight || 760;
         camera.aspect = w / h;
         camera.updateProjectionMatrix();
         renderer.setSize(w, h);
-      }, 150);
+      });
     });
-  })();
+  });
   </script>
 
   <!-- The XYZ Cloud Story -->
@@ -1761,14 +1766,7 @@
       });
     });
 
-    // Platform tab interaction + particle morph
-    document.querySelectorAll('.platform-tab').forEach((tab, index) => {
-      tab.addEventListener('click', () => {
-        document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        if (window.platformMorphTo) window.platformMorphTo(index);
-      });
-    });
+    // Platform tab click handled in particle script above
 
     // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(a => {
