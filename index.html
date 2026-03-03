@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>XYZ Cloud - AI-Native Cloud</title>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       /* === Colors: Blue === */
@@ -72,7 +72,7 @@
       --color-border-secondary: var(--color-gray-3);
 
       /* === Typography === */
-      --font-family: 'OPPO Sans 4.0', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-family: 'Inter', 'OPPO Sans 4.0', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       --font-family-code: 'JetBrains Mono', 'Courier Prime', monospace;
       --font-weight-normal: 300;
       --font-weight-strong: 500;
@@ -294,7 +294,7 @@
     .hero {
       position: relative;
       height: 960px;
-      background: var(--dark);
+      background: #140AAC;
       overflow: hidden;
       display: flex;
       flex-direction: column;
@@ -1042,7 +1042,7 @@
     var createCarPos = true;
     var uSpeed = 0.001;
 
-    var setcolor = 0x090e1a;
+    var setcolor = 0x140AAC;
     scene.background = new THREE.Color(setcolor);
     scene.fog = new THREE.Fog(setcolor, 10, 16);
 
@@ -1055,7 +1055,7 @@
       // [Perf] Reuse single geometry + shared materials (fewer draw calls)
       var geometry = new THREE.CubeGeometry(1, 0, 0, 2, 2, 2);
       var material = new THREE.MeshLambertMaterial({
-        color: 0x050a18,
+        color: 0x000000,
         side: THREE.DoubleSide
       });
       var wmaterial = new THREE.MeshLambertMaterial({
@@ -1094,7 +1094,7 @@
       }
 
       // [Perf] Reuse single geometry + material for all particles
-      var gmaterial = new THREE.MeshBasicMaterial({ color: 0x4362FF, side: THREE.DoubleSide });
+      var gmaterial = new THREE.MeshBasicMaterial({ color: 0x2C63F0, side: THREE.DoubleSide });
       var gparticular = new THREE.CircleGeometry(0.01, 3);
       var aparticular = 5;
       var particleCount = isMobile ? 150 : 300;
@@ -1107,7 +1107,7 @@
 
       // Ground plane
       var pmaterial = new THREE.MeshPhongMaterial({
-        color: 0x050a18,
+        color: 0x000000,
         side: THREE.DoubleSide,
         opacity: 0.9,
         transparent: true
@@ -1165,12 +1165,12 @@
     city.add(town);
 
     // Grid
-    var gridHelper = new THREE.GridHelper(60, 120, 0x4362FF, 0x0a0e2a);
+    var gridHelper = new THREE.GridHelper(60, 120, 0xFF0000, 0x000000);
     city.add(gridHelper);
 
     // Moving light lines
     // [Perf] Reuse geometry + material for all lines
-    var lineMat = new THREE.MeshBasicMaterial({ color: 0x4362FF, side: THREE.DoubleSide });
+    var lineMat = new THREE.MeshBasicMaterial({ color: 0x2C63F0, side: THREE.DoubleSide });
     var lineMatWhite = new THREE.MeshBasicMaterial({ color: 0xFFFFFF, side: THREE.DoubleSide });
     var createCars = function(cScale, cPos, cColor) {
       if (cScale === undefined) cScale = 2;
