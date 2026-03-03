@@ -1761,14 +1761,30 @@
     var wrap = document.getElementById('dotMatrixWrap');
     if (!wrap) return;
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', 'dot-matrix.svg', true);
-    xhr.onload = function() {
-      if (xhr.status !== 200) return;
+    function loadSVG(callback) {
+      // Try fetch first, fall back to XHR
+      if (window.fetch) {
+        fetch('dot-matrix.svg').then(function(r) { return r.text(); }).then(callback).catch(function() {
+          // Fallback: XHR
+          var xhr = new XMLHttpRequest();
+          xhr.open('GET', 'dot-matrix.svg', true);
+          xhr.onload = function() { if (xhr.responseText) callback(xhr.responseText); };
+          xhr.send();
+        });
+      } else {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'dot-matrix.svg', true);
+        xhr.onload = function() { if (xhr.responseText) callback(xhr.responseText); };
+        xhr.send();
+      }
+    }
+
+    loadSVG(function(svgText) {
+      if (!svgText) return;
 
       // Parse SVG rects
       var parser = new DOMParser();
-      var doc = parser.parseFromString(xhr.responseText, 'image/svg+xml');
+      var doc = parser.parseFromString(svgText, 'image/svg+xml');
       var rects = doc.querySelectorAll('rect');
       var dots = [];
       for (var i = 0; i < rects.length; i++) {
@@ -1980,8 +1996,7 @@
         computeScreenDots();
         draw();
       });
-    };
-    xhr.send();
+    });
   })();
   </script>
 
@@ -2040,7 +2055,21 @@
       // Scandinavia
       [[5,58],[10,57],[12,60],[10,64],[12,66],[15,68],[18,70],[20,70],[25,70],[28,71],[30,70],[32,68],[30,65],[25,62],[22,60],[18,58],[15,58],[12,57],[10,58],[5,58]],
       // New Zealand
-      [[165,-35],[168,-37],[172,-40],[175,-42],[178,-44],[177,-46],[175,-45],[172,-42],[170,-40],[168,-38],[165,-35]]
+      [[165,-35],[168,-37],[172,-40],[175,-42],[178,-44],[177,-46],[175,-45],[172,-42],[170,-40],[168,-38],[165,-35]],
+      // Taiwan
+      [[120,22],[121,22.5],[121.5,24],[121.5,25.3],[121,25.5],[120.5,24.5],[120,22]],
+      // Hainan
+      [[108.6,18.2],[109.5,18.2],[110.5,19.2],[110.5,20],[110,20],[109,19.5],[108.6,18.2]],
+      // Philippines
+      [[117,7],[119,10],[121,14],[122,18.5],[122,14],[124,12],[126,8],[125,6],[122,5],[119,7],[117,7]],
+      // Sri Lanka
+      [[79.5,6],[80,7.5],[81,9],[82,8],[81.5,6.5],[80,5.8],[79.5,6]],
+      // Papua New Guinea
+      [[141,-2],[145,-5],[148,-6],[150,-6],[152,-5],[155,-6],[155,-8],[150,-10],[147,-10],[143,-8],[141,-5],[141,-2]],
+      // Malaysia/Borneo
+      [[109,1],[112,1],[115,2],[117,4],[118,6],[117,7],[115,5],[112,3],[109,2],[109,1]],
+      // Madagascar
+      [[43,-12],[45,-14],[47,-16],[49,-18],[50,-22],[48,-25],[45,-25],[44,-22],[43,-18],[43,-15],[43,-12]]
     ];
 
     function isLand(lat, lng) {
@@ -2071,7 +2100,7 @@
     // --- Generate ocean and land dot arrays ---
     var oceanPositions = [];
     var landPositions = [];
-    var step = 3;
+    var step = 2;
     for (var lat = -85; lat <= 85; lat += step) {
       var latRad = lat * Math.PI / 180;
       var cosLat = Math.cos(latRad);
@@ -2090,7 +2119,7 @@
     var oceanGeo = new THREE.BufferGeometry();
     oceanGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(oceanPositions), 3));
     var oceanMat = new THREE.PointsMaterial({
-      color: 0x48566a, size: 0.016, transparent: true, opacity: 0.7, sizeAttenuation: true
+      color: 0x48566a, size: 0.012, transparent: true, opacity: 0.5, sizeAttenuation: true
     });
     globeGroup.add(new THREE.Points(oceanGeo, oceanMat));
 
@@ -2098,7 +2127,7 @@
     var landGeo = new THREE.BufferGeometry();
     landGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(landPositions), 3));
     var landMat = new THREE.PointsMaterial({
-      color: 0xffffff, size: 0.028, transparent: true, opacity: 0.95, sizeAttenuation: true
+      color: 0xffffff, size: 0.022, transparent: true, opacity: 0.95, sizeAttenuation: true
     });
     globeGroup.add(new THREE.Points(landGeo, landMat));
 
