@@ -914,6 +914,45 @@
       text-decoration: none;
     }
 
+    /* ===== Footer Spectrum Effect ===== */
+    .footer {
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-spectrum {
+      position: absolute;
+      /* extend beyond footer bounds so blurred edges aren't clipped */
+      top: -40px; bottom: -40px; left: -40px; right: -40px;
+      z-index: 0;
+      pointer-events: none;
+      display: flex;
+      filter: blur(32px);
+    }
+    .footer > .container {
+      position: relative;
+      z-index: 1;
+    }
+    .spectrum-col {
+      flex: 1;
+      height: 100%;
+      will-change: transform, opacity;
+      animation: spectrumFloat 6s ease-in-out infinite alternate;
+    }
+    .spectrum-col:nth-child(1)  { animation-duration: 5.8s; animation-delay: 0s; }
+    .spectrum-col:nth-child(2)  { animation-duration: 6.4s; animation-delay: -0.8s; }
+    .spectrum-col:nth-child(3)  { animation-duration: 5.5s; animation-delay: -1.6s; }
+    .spectrum-col:nth-child(4)  { animation-duration: 6.8s; animation-delay: -2.4s; }
+    .spectrum-col:nth-child(5)  { animation-duration: 7.2s; animation-delay: -3.0s; }
+    .spectrum-col:nth-child(6)  { animation-duration: 6.6s; animation-delay: -2.2s; }
+    .spectrum-col:nth-child(7)  { animation-duration: 5.6s; animation-delay: -1.4s; }
+    .spectrum-col:nth-child(8)  { animation-duration: 6.2s; animation-delay: -0.6s; }
+    .spectrum-col:nth-child(9)  { animation-duration: 5.9s; animation-delay: -0.2s; }
+    @keyframes spectrumFloat {
+      0%   { transform: translateY(8%) scaleY(1.05); opacity: 0.7; }
+      50%  { opacity: 1; }
+      100% { transform: translateY(-8%) scaleY(0.95); opacity: 0.7; }
+    }
+
     /* ===== Animations ===== */
     @keyframes fadeInUp {
       from { opacity: 0; transform: translateY(30px); }
@@ -1453,6 +1492,17 @@
 
   <!-- Footer -->
   <footer class="footer">
+    <div class="footer-spectrum">
+      <div class="spectrum-col" style="background:linear-gradient(to top,#0a0d66,#4362ff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#0f188c,#6b89ff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#1d2cb3,#94adff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#2e44d9,#bdceff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#4362ff,#e6edff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#2e44d9,#bdceff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#1d2cb3,#94adff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#0f188c,#6b89ff)"></div>
+      <div class="spectrum-col" style="background:linear-gradient(to top,#0a0d66,#4362ff)"></div>
+    </div>
     <div class="container">
       <div class="footer-inner">
         <div class="footer-top">
@@ -2114,5 +2164,6 @@
     });
   })();
   </script>
+
 </body>
 </html>
