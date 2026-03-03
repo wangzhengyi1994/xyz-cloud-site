@@ -497,13 +497,13 @@
       height: 100%;
     }
     .dot-matrix-wrap svg rect {
-      transition: transform 0.25s ease;
+      transform: scale(0.15);
       transform-box: fill-box;
       transform-origin: center;
-      cursor: crosshair;
+      transition: transform 0.4s ease;
     }
-    .dot-matrix-wrap svg rect:hover {
-      transform: scale(3.33);
+    .dot-matrix-wrap:hover svg rect {
+      transform: scale(0.71);
     }
 
     /* ===== End-to-End Platform ===== */
