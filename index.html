@@ -469,7 +469,7 @@
       flex: 1;
       min-height: 480px;
       background: #0b0f1a;
-      border-radius: 8px;
+      border-radius: 0;
       overflow: hidden;
       position: relative;
       cursor: crosshair;
@@ -1770,8 +1770,8 @@
       canvas.style.height = H + 'px';
       ctx.setTransform(1,0,0,1,0,0);
       ctx.scale(dpr, dpr);
-      cx = W * 0.42;
-      cy = H * 0.55;
+      cx = W * 0.5;
+      cy = H * 0.5;
     }
     resize();
 
@@ -1789,7 +1789,7 @@
       return [v[0]*c - v[1]*s, v[0]*s + v[1]*c, v[2]];
     }
     function project(v) {
-      var fov = 500;
+      var fov = 800;
       var d = fov / (fov + v[2]);
       return { x: cx + v[0] * d, y: cy + v[1] * d, d: d };
     }
@@ -1805,14 +1805,42 @@
       [0,4],[1,5],[2,6],[3,7]
     ];
 
-    // Multiple cubes at different scales
-    var cubes = [
-      { s: 50,  op: 1.0 },
-      { s: 80,  op: 0.7 },
-      { s: 115, op: 0.45 },
-      { s: 155, op: 0.25 },
-      { s: 200, op: 0.12 }
+    // --- 3 Modes linked to accordion tabs ---
+    // Mode 0: High-Performance AI Infrastructure — nested cubes (depth layers)
+    // Mode 1: Full-Stack Acceleration — exploded cube (vertices spread outward)
+    // Mode 2: Pay for Effective Compute — single tight cube, pulsing grid
+
+    var cubeMode = 0;
+    var modeTransition = 0; // 0..1 transition progress
+    var modeFrom = 0, modeTo = 0;
+
+    // Target configs per mode [{ s, op, explode, rotSpeed }]
+    var modeConfigs = [
+      // Mode 0: nested cubes
+      [{ s:40, op:1.0 },{ s:65, op:0.7 },{ s:95, op:0.45 },{ s:130, op:0.25 },{ s:170, op:0.12 }],
+      // Mode 1: exploded/stacked — cubes spread along Z axis
+      [{ s:55, op:1.0, zOff:-80 },{ s:55, op:0.8, zOff:-40 },{ s:55, op:0.6, zOff:0 },{ s:55, op:0.4, zOff:40 },{ s:55, op:0.2, zOff:80 }],
+      // Mode 2: single cube with orbiting wireframe rings
+      [{ s:70, op:1.0 },{ s:75, op:0.5 },{ s:80, op:0.3 }]
     ];
+
+    // Current animated cube state
+    var cubes = [];
+    for (var ci = 0; ci < 5; ci++) {
+      cubes.push({ s: modeConfigs[0][ci].s, op: modeConfigs[0][ci].op, zOff: 0 });
+    }
+
+    // Hook into accordion clicks
+    var accItems = document.querySelectorAll('.core-value .accordion-item');
+    accItems.forEach(function(item, idx) {
+      item.addEventListener('click', function() {
+        if (idx === cubeMode) return;
+        modeFrom = cubeMode;
+        modeTo = idx;
+        cubeMode = idx;
+        modeTransition = 0;
+      });
+    });
 
     // Decorative stars
     var stars = [];
@@ -1826,7 +1854,7 @@
     }
 
     // Mouse state
-    var mx = 0.5, my = 0.5; // normalized 0..1
+    var mx = 0.5, my = 0.5;
     var mouseInside = false;
     var mousePixelX = 0, mousePixelY = 0;
 
@@ -1849,6 +1877,9 @@
 
     // Chromatic aberration offsets
     var CA = 1.5;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function easeInOut(t) { return t < 0.5 ? 2*t*t : -1+(4-2*t)*t; }
 
     function drawLine(x1, y1, x2, y2, color, alpha, width) {
       ctx.beginPath();
@@ -1896,6 +1927,23 @@
       ctx.fillStyle = '#0b0f1a';
       ctx.fillRect(0, 0, W, H);
 
+      // Animate mode transition
+      if (modeTransition < 1) {
+        modeTransition = Math.min(1, modeTransition + 0.025);
+      }
+      var mt = easeInOut(modeTransition);
+
+      // Update cube states toward target mode
+      var targetCfg = modeConfigs[cubeMode];
+      var activeCubeCount = targetCfg.length;
+
+      for (var ui = 0; ui < 5; ui++) {
+        var target = ui < targetCfg.length ? targetCfg[ui] : { s: 0, op: 0, zOff: 0 };
+        cubes[ui].s = lerp(cubes[ui].s, target.s || 0, 0.06);
+        cubes[ui].op = lerp(cubes[ui].op, target.op || 0, 0.06);
+        cubes[ui].zOff = lerp(cubes[ui].zOff, target.zOff || 0, 0.06);
+      }
+
       // Smooth rotation toward mouse
       tX = 0.5 + (my - 0.5) * 0.6;
       tY = 0.8 + (mx - 0.5) * 1.0;
@@ -1903,19 +1951,23 @@
       rY += (tY - rY) * 0.04;
 
       var autoRot = time * 0.15;
+      // Mode 1 rotates faster
+      var rotSpeedMult = cubeMode === 1 ? 1.5 : 1.0;
 
       // Draw cubes (back to front: largest first)
-      for (var ci = cubes.length - 1; ci >= 0; ci--) {
+      for (var ci = 4; ci >= 0; ci--) {
         var cube = cubes[ci];
+        if (cube.op < 0.01) continue;
         var sc = cube.s;
         var op = cube.op;
+        var zOffset = cube.zOff;
 
         // Transform vertices
         var projected = [];
         for (var vi = 0; vi < verts.length; vi++) {
-          var v = [verts[vi][0] * sc, verts[vi][1] * sc, verts[vi][2] * sc];
+          var v = [verts[vi][0] * sc, verts[vi][1] * sc, verts[vi][2] * sc + zOffset];
           v = rotX(v, rX);
-          v = rotY(v, rY + autoRot);
+          v = rotY(v, rY + autoRot * rotSpeedMult);
           v = rotZ(v, rZ);
           projected.push(project(v));
         }
@@ -1938,7 +1990,7 @@
       }
 
       // --- Central Glowing Orb ---
-      var orbX = cx - 30, orbY = cy + 30;
+      var orbX = cx, orbY = cy;
       // Outer glow
       var grad = ctx.createRadialGradient(orbX, orbY, 0, orbX, orbY, 40);
       grad.addColorStop(0, 'rgba(255,255,255,0.9)');
