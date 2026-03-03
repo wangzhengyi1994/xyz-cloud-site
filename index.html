@@ -485,6 +485,26 @@
       border-radius: 12px;
       transform: rotate(15deg);
     }
+    /* Dot matrix SVG container */
+    .dot-matrix-wrap {
+      flex: 1;
+      min-height: 480px;
+      overflow: hidden;
+      position: relative;
+    }
+    .dot-matrix-wrap svg {
+      width: 100%;
+      height: 100%;
+    }
+    .dot-matrix-wrap svg rect {
+      transition: transform 0.25s ease;
+      transform-box: fill-box;
+      transform-origin: center;
+      cursor: crosshair;
+    }
+    .dot-matrix-wrap svg rect:hover {
+      transform: scale(3.33);
+    }
 
     /* ===== End-to-End Platform ===== */
     .platform-tabs {
@@ -707,29 +727,12 @@
     .stats-img {
       flex: 1;
       height: 640px;
-      background: radial-gradient(circle at center, #1a2040 0%, #0d1220 100%);
       border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
       position: relative;
       overflow: hidden;
-    }
-    .stats-img::before {
-      content: '';
-      position: absolute;
-      width: 400px;
-      height: 400px;
-      border-radius: 50%;
-      border: 1px solid var(--white-2);
-    }
-    .stats-img::after {
-      content: '';
-      position: absolute;
-      width: 250px;
-      height: 250px;
-      border-radius: 50%;
-      border: 1px solid rgba(67,98,255,0.3);
     }
 
     /* ===== Services CTA ===== */
@@ -1325,7 +1328,7 @@
               <li data-en="XYZ Cloud: Powered by DataCanvas." data-cn="XYZ Cloud：由 DataCanvas 驱动。">XYZ Cloud: Powered by DataCanvas.</li>
             </ul>
           </div>
-          <div class="img-placeholder"></div>
+          <div class="dot-matrix-wrap" id="dotMatrixWrap"></div>
         </div>
       </div>
     </div>
@@ -1433,9 +1436,7 @@
               <div class="stat-value">10000P</div>
             </div>
           </div>
-          <div class="stats-img">
-            <div style="width:120px;height:120px;border-radius:50%;background:rgba(67,98,255,0.2);position:absolute;"></div>
-          </div>
+          <div class="stats-img" id="globeCanvas"></div>
         </div>
       </div>
     </div>
@@ -1697,6 +1698,157 @@
 
     window.addEventListener('resize', function() {
       var nw = container.offsetWidth || 600, nh = container.offsetHeight || 760;
+      camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
+    });
+  })();
+  </script>
+
+  <!-- Load dot-matrix SVG into Story section -->
+  <script>
+  (function() {
+    var wrap = document.getElementById('dotMatrixWrap');
+    if (!wrap) return;
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', 'dot-matrix.svg', true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        wrap.innerHTML = xhr.responseText;
+        // Ensure hover scaling works - reduce default rect size for better effect
+        var svg = wrap.querySelector('svg');
+        if (svg) {
+          svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+        }
+      }
+    };
+    xhr.send();
+  })();
+  </script>
+
+  <!-- 3D Globe for Stats section -->
+  <script>
+  (function() {
+    var container = document.getElementById('globeCanvas');
+    if (!container) return;
+
+    var w = container.offsetWidth || 640;
+    var h = container.offsetHeight || 640;
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, w / h, 0.1, 1000);
+    camera.position.z = 3.2;
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(w, h);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setClearColor(0x0d1220, 1);
+    container.appendChild(renderer.domElement);
+
+    var globeGroup = new THREE.Group();
+    var radius = 1;
+
+    // --- Globe surface dots (lat/lng grid) ---
+    var dotPositions = [];
+    for (var lat = -85; lat <= 85; lat += 4) {
+      var latRad = lat * Math.PI / 180;
+      var r = Math.cos(latRad) * radius;
+      var y = Math.sin(latRad) * radius;
+      var circ = 2 * Math.PI * r;
+      var count = Math.max(4, Math.floor(circ / 0.05));
+      for (var i = 0; i < count; i++) {
+        var lng = (i / count) * Math.PI * 2;
+        dotPositions.push(r * Math.cos(lng), y, r * Math.sin(lng));
+      }
+    }
+    var dotGeo = new THREE.BufferGeometry();
+    dotGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(dotPositions), 3));
+    var dotMat = new THREE.PointsMaterial({ color: 0x3355cc, size: 0.008, transparent: true, opacity: 0.5, sizeAttenuation: true });
+    globeGroup.add(new THREE.Points(dotGeo, dotMat));
+
+    // --- Atmosphere glow (large transparent sphere) ---
+    var glowMat = new THREE.MeshBasicMaterial({ color: 0x1a2a6c, transparent: true, opacity: 0.15, side: THREE.BackSide });
+    var glowSphere = new THREE.Mesh(new THREE.SphereGeometry(1.25, 32, 32), glowMat);
+    globeGroup.add(glowSphere);
+
+    // --- Dark globe body ---
+    var bodyMat = new THREE.MeshBasicMaterial({ color: 0x0a1033, transparent: true, opacity: 0.9 });
+    var body = new THREE.Mesh(new THREE.SphereGeometry(0.99, 48, 48), bodyMat);
+    globeGroup.add(body);
+
+    // --- City scatter points ---
+    function ll2v(lat, lng, r) {
+      var la = lat * Math.PI / 180, lo = lng * Math.PI / 180;
+      return new THREE.Vector3(r * Math.cos(la) * Math.cos(lo), r * Math.sin(la), -r * Math.cos(la) * Math.sin(lo));
+    }
+    var cities = [
+      {lat:39.9,lng:116.4},{lat:35.7,lng:139.7},{lat:51.5,lng:-0.1},
+      {lat:37.8,lng:-122.4},{lat:1.3,lng:103.8},{lat:-33.9,lng:151.2},
+      {lat:48.9,lng:2.3},{lat:22.3,lng:114.2},{lat:25.2,lng:55.3}
+    ];
+    var cityMat = new THREE.MeshBasicMaterial({ color: 0x4488ff, transparent: true, opacity: 0.9, side: THREE.DoubleSide });
+    var ringMat = new THREE.MeshBasicMaterial({ color: 0x4488ff, transparent: true, opacity: 0.35, side: THREE.DoubleSide });
+    var cityGeo = new THREE.CircleGeometry(0.025, 12);
+    var ringGeo = new THREE.RingGeometry(0.035, 0.055, 24);
+
+    cities.forEach(function(c) {
+      var p = ll2v(c.lat, c.lng, 1.005);
+      var dot = new THREE.Mesh(cityGeo, cityMat);
+      dot.position.copy(p); dot.lookAt(0, 0, 0);
+      globeGroup.add(dot);
+      var ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.copy(p.clone().multiplyScalar(1.002)); ring.lookAt(0, 0, 0);
+      globeGroup.add(ring);
+    });
+
+    // --- Flight lines (arcs between cities) ---
+    var lineMat = new THREE.LineBasicMaterial({ color: 0x4ce0d2, transparent: true, opacity: 0.5 });
+    var conns = [[0,1],[0,4],[2,5],[3,6],[1,7],[4,8],[7,8],[2,3]];
+    conns.forEach(function(cn) {
+      var p1 = ll2v(cities[cn[0]].lat, cities[cn[0]].lng, radius);
+      var p2 = ll2v(cities[cn[1]].lat, cities[cn[1]].lng, radius);
+      var mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+      var alt = p1.distanceTo(p2) * 0.4 + radius;
+      mid.normalize().multiplyScalar(alt);
+      var curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
+      var pts = curve.getPoints(40);
+      var geo = new THREE.Geometry();
+      pts.forEach(function(pt) { geo.vertices.push(pt); });
+      globeGroup.add(new THREE.Line(geo, lineMat));
+    });
+
+    // --- Orbit ring ---
+    var orbitGeo = new THREE.Geometry();
+    for (var i = 0; i <= 128; i++) {
+      var a = (i / 128) * Math.PI * 2;
+      orbitGeo.vertices.push(new THREE.Vector3(1.35 * Math.cos(a), 0, 1.35 * Math.sin(a)));
+    }
+    var orbitLine = new THREE.Line(orbitGeo, new THREE.LineBasicMaterial({ color: 0x4ce0d2, transparent: true, opacity: 0.25 }));
+    orbitLine.rotation.x = Math.PI * 0.35;
+    orbitLine.rotation.z = Math.PI * 0.1;
+    globeGroup.add(orbitLine);
+
+    // Second orbit ring
+    var orbit2Geo = new THREE.Geometry();
+    for (var i = 0; i <= 128; i++) {
+      var a = (i / 128) * Math.PI * 2;
+      orbit2Geo.vertices.push(new THREE.Vector3(1.45 * Math.cos(a), 0, 1.45 * Math.sin(a)));
+    }
+    var orbit2 = new THREE.Line(orbit2Geo, new THREE.LineBasicMaterial({ color: 0x4ce0d2, transparent: true, opacity: 0.12 }));
+    orbit2.rotation.x = Math.PI * -0.2;
+    orbit2.rotation.z = Math.PI * -0.15;
+    globeGroup.add(orbit2);
+
+    scene.add(globeGroup);
+    globeGroup.rotation.x = 0.15;
+
+    // Animate
+    (function animate() {
+      requestAnimationFrame(animate);
+      globeGroup.rotation.y += 0.003;
+      renderer.render(scene, camera);
+    })();
+
+    window.addEventListener('resize', function() {
+      var nw = container.offsetWidth || 640, nh = container.offsetHeight || 640;
       camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
     });
   })();
