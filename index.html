@@ -423,6 +423,36 @@
       margin-bottom: 80px;
     }
 
+    /* ===== Cross markers at border intersections ===== */
+    .section-inner {
+      position: relative;
+    }
+    .section-inner::before,
+    .section-inner::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      width: 11px;
+      height: 11px;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .section-inner::before { left: -6px; }
+    .section-inner::after { right: -6px; }
+
+    .section-light .section-inner::before,
+    .section-light .section-inner::after {
+      background:
+        linear-gradient(var(--dark), var(--dark)) center/1px 100% no-repeat,
+        linear-gradient(var(--dark), var(--dark)) center/100% 1px no-repeat;
+    }
+    .section-dark .section-inner::before,
+    .section-dark .section-inner::after {
+      background:
+        linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)) center/1px 100% no-repeat,
+        linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)) center/100% 1px no-repeat;
+    }
+
     /* ===== Core Value Proposition ===== */
     .core-value .left {
       width: 580px;
