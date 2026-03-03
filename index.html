@@ -2715,40 +2715,6 @@
 }
 </style>
 
-<!-- ── Header (position: absolute within container) ── -->
-<div class="cs-header">
-  <div class="cs-color-switcher">
-    <div class="cs-color-btn cs-theme-original" data-theme="original"></div>
-    <div class="cs-color-btn cs-theme-blue-pink" data-theme="blue-pink"></div>
-    <div class="cs-color-btn cs-theme-blue-orange" data-theme="blue-orange"></div>
-    <div class="cs-color-btn cs-theme-sunset" data-theme="sunset"></div>
-    <div class="cs-color-btn cs-theme-purple" data-theme="purple"></div>
-    <div class="cs-color-btn cs-theme-monochrome" data-theme="monochrome"></div>
-    <div class="cs-color-btn cs-theme-pink-purple" data-theme="pink-purple"></div>
-    <div class="cs-color-btn cs-theme-blue-black active" data-theme="blue-black"></div>
-    <div class="cs-color-btn cs-theme-beige-black" data-theme="beige-black"></div>
-  </div>
-  <div class="cs-blur-toggle">
-    <span class="cs-blur-btn">Blur Off</span>
-  </div>
-  <div class="cs-randomize-toggle">
-    <span class="cs-randomize-btn">Randomize</span>
-  </div>
-  <nav>
-    <div class="cs-nav-item cs-nav-top-left">Cosmic Spectrum</div>
-    <div class="cs-nav-item cs-nav-top-right">
-      <span><a href="mailto:hi@filip.fyi" class="cs-email-link">hi@filip.fyi</a> — 2024.25</span>
-      <div class="cs-sound-toggle">
-        <svg class="cs-sound-wave" viewBox="0 0 20 12">
-          <path class="cs-wave-line" d="M2 6 Q4 2 6 6 Q8 10 10 6 Q12 2 14 6 Q16 10 18 6" />
-        </svg>
-      </div>
-    </div>
-    <div class="cs-nav-item cs-nav-bottom-left">Stellar Radiation</div>
-    <div class="cs-nav-item cs-nav-bottom-center cs-split-text">Scroll to explore</div>
-    <div class="cs-nav-item cs-nav-bottom-right">Color Wavelengths</div>
-  </nav>
-</div>
 
 <!-- ── Background gradients ── -->
 <div class="cs-bg-gradients">
@@ -3134,23 +3100,7 @@
     }
   }
 
-  /* ── Event listeners (scoped) ── */
-  qsa(".cs-color-btn").forEach(function (btn) {
-    btn.addEventListener("click", function () {
-      qsa(".cs-color-btn").forEach(function (b) { b.classList.remove("active"); });
-      this.classList.add("active");
-      currentTheme = this.getAttribute("data-theme");
-      updateColors(currentTheme);
-      setTimeout(function () { createRainbowAnimation(); }, 100);
-      gsap.to(qs(".cs-svg-container"), {
-        scale: 1.02, duration: 0.2, yoyo: true, repeat: 1, ease: "power2.inOut"
-      });
-    });
-  });
-
-  qs(".cs-blur-btn").addEventListener("click", toggleBlur);
-  qs(".cs-randomize-btn").addEventListener("click", randomizeColors);
-  qs(".cs-sound-toggle").addEventListener("click", toggleSound);
+  /* ── Event listeners removed (header controls removed) ── */
 
   /* ── Hero nav hover effects ── */
   var heroNavItems = qsa(".cs-hero-nav-item");
@@ -3245,20 +3195,7 @@
       }, 0.8 + index * 0.2);
     });
 
-    /* Scroll hint continuous blur animation */
-    var scrollHint = qs(".cs-nav-bottom-center");
-    var scrollHintSplit = SplitText.create(scrollHint, { type: "chars" });
-    gsap.set(scrollHintSplit.chars, { opacity: 0, filter: "blur(3px)" });
-    gsap.to(scrollHintSplit.chars, {
-      opacity: 1, filter: "blur(0px)", duration: 0.6,
-      stagger: { each: 0.08, repeat: -1, yoyo: true },
-      ease: "sine.inOut", delay: 1
-    });
-    gsap.to(scrollHintSplit.chars, {
-      filter: "blur(1px)", duration: 0.8,
-      stagger: { each: 0.08, repeat: -1, yoyo: true },
-      ease: "sine.inOut", delay: 1.04
-    });
+    /* Scroll hint removed (header controls removed) */
 
     /* --- Scroll-triggered animations --- */
     var animSection = qs(".cs-animation-section");
@@ -3296,9 +3233,6 @@
       .to(svgContainer, {
         transform: "scaleY(1) translateY(0px)", duration: 1.2, ease: "power2.out"
       }, 0.3)
-      .to(qsa(".cs-nav-bottom-left, .cs-nav-bottom-right, .cs-nav-bottom-center"), {
-        opacity: 0, duration: 0.6, ease: "power2.out"
-      }, 0.2)
       .to(allSplitLines, {
         duration: 0.8, y: 0, opacity: 1, filter: "blur(0px)", stagger: 0.08, ease: "power2.out"
       }, 0.9)
