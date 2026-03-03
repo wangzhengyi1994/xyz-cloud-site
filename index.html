@@ -1389,6 +1389,11 @@
     </div>
   </section>
 
+  <!-- Data Tunnel (sabosugi/azZmLoB) -->
+  <section id="data-tunnel-section" style="position:relative;width:100%;height:60vh;background:#080808;overflow:hidden;">
+    <canvas id="data-tunnel-canvas" style="display:block;width:100%;height:100%;"></canvas>
+  </section>
+
   <!-- Designed for Engineers (1) -->
   <section class="section-dark">
     <div class="container">
@@ -2164,6 +2169,160 @@
     });
   })();
   </script>
+
+<!-- ===== Data Tunnel (sabosugi/azZmLoB) ===== -->
+<script type="importmap">
+{
+  "imports": {
+    "three-tunnel": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three-tunnel/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module">
+(async function() {
+  const THREE = await import('three-tunnel');
+  const { EffectComposer } = await import('three-tunnel/addons/postprocessing/EffectComposer.js');
+  const { RenderPass } = await import('three-tunnel/addons/postprocessing/RenderPass.js');
+  const { UnrealBloomPass } = await import('three-tunnel/addons/postprocessing/UnrealBloomPass.js');
+
+  const container = document.getElementById('data-tunnel-section');
+  const canvas = document.getElementById('data-tunnel-canvas');
+  if (!container || !canvas) return;
+
+  const params = {
+    colorBg: '#080808', colorLine: '#373f48', colorSignal: '#8fc9ff',
+    lineCount: 80, spreadHeight: 30.33, spreadDepth: 0,
+    curveLength: 50, straightLength: 100, curvePower: 0.8265,
+    waveSpeed: 2.48, waveHeight: 0.145, lineOpacity: 0.557,
+    signalCount: 94, speedGlobal: 0.345, trailLength: 3,
+    bloomStrength: 3.0, bloomRadius: 0.5
+  };
+  params.positionX = (params.curveLength - params.straightLength) / 2;
+  const SEGMENTS = 150;
+
+  const w = container.offsetWidth, h = container.offsetHeight;
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(params.colorBg);
+  scene.fog = new THREE.FogExp2(params.colorBg, 0.002);
+
+  const camera = new THREE.PerspectiveCamera(45, w / h, 1, 1000);
+  camera.position.set(0, 0, 90);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setSize(w, h);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const contentGroup = new THREE.Group();
+  contentGroup.position.set(params.positionX, 0, 0);
+  scene.add(contentGroup);
+
+  const renderPass = new RenderPass(scene, camera);
+  const bloomPass = new UnrealBloomPass(new THREE.Vector2(w, h), 1.5, 0.4, 0.85);
+  bloomPass.threshold = 0;
+  bloomPass.strength = params.bloomStrength;
+  bloomPass.radius = params.bloomRadius;
+  const composer = new EffectComposer(renderer);
+  composer.addPass(renderPass);
+  composer.addPass(bloomPass);
+
+  function getPathPoint(t, lineIndex, time) {
+    var totalLen = params.curveLength + params.straightLength;
+    var cx = -params.curveLength + t * totalLen;
+    var y = 0, z = 0;
+    var sf = (lineIndex / params.lineCount - 0.5) * 2;
+    if (cx < 0) {
+      var ratio = (cx + params.curveLength) / params.curveLength;
+      var shapeFactor = Math.pow((Math.cos(ratio * Math.PI) + 1) / 2, params.curvePower);
+      y = sf * params.spreadHeight * shapeFactor;
+      z = sf * params.spreadDepth * shapeFactor;
+      y += Math.sin(time * params.waveSpeed + cx * 0.1 + lineIndex) * params.waveHeight * shapeFactor;
+    }
+    return new THREE.Vector3(cx, y, z);
+  }
+
+  var bgMat = new THREE.LineBasicMaterial({ color: params.colorLine, transparent: true, opacity: params.lineOpacity, depthWrite: false });
+  var sigMat = new THREE.LineBasicMaterial({ vertexColors: true, blending: THREE.AdditiveBlending, depthWrite: false, depthTest: false, transparent: true });
+  var sigColor = new THREE.Color(params.colorSignal);
+
+  var lines = [];
+  for (var i = 0; i < params.lineCount; i++) {
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(SEGMENTS * 3), 3));
+    var line = new THREE.Line(geo, bgMat);
+    line.userData = { id: i };
+    line.renderOrder = 0;
+    contentGroup.add(line);
+    lines.push(line);
+  }
+
+  var signals = [];
+  for (var i = 0; i < params.signalCount; i++) {
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(150 * 3), 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(new Float32Array(150 * 3), 3));
+    var mesh = new THREE.Line(geo, sigMat);
+    mesh.frustumCulled = false;
+    mesh.renderOrder = 1;
+    contentGroup.add(mesh);
+    signals.push({ mesh: mesh, laneIndex: Math.floor(Math.random() * params.lineCount), speed: 0.2 + Math.random() * 0.5, progress: Math.random(), history: [], assignedColor: sigColor.clone() });
+  }
+
+  var clock = new THREE.Clock();
+  var isVisible = false;
+  var observer = new IntersectionObserver(function(entries) {
+    isVisible = entries[0].isIntersecting;
+  }, { threshold: 0 });
+  observer.observe(container);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    if (!isVisible) return;
+    var time = clock.getElapsedTime();
+    lines.forEach(function(line) {
+      var pos = line.geometry.attributes.position.array;
+      var id = line.userData.id;
+      for (var j = 0; j < SEGMENTS; j++) {
+        var t = j / (SEGMENTS - 1);
+        var v = getPathPoint(t, id, time);
+        pos[j*3] = v.x; pos[j*3+1] = v.y; pos[j*3+2] = v.z;
+      }
+      line.geometry.attributes.position.needsUpdate = true;
+    });
+    signals.forEach(function(sig) {
+      sig.progress += sig.speed * 0.005 * params.speedGlobal;
+      if (sig.progress > 1) { sig.progress = 0; sig.laneIndex = Math.floor(Math.random() * params.lineCount); sig.history = []; }
+      var p = getPathPoint(sig.progress, sig.laneIndex, time);
+      sig.history.push(p);
+      if (sig.history.length > params.trailLength + 1) sig.history.shift();
+      var pos = sig.mesh.geometry.attributes.position.array;
+      var col = sig.mesh.geometry.attributes.color.array;
+      var drawCount = Math.max(1, params.trailLength);
+      var len = sig.history.length;
+      for (var i = 0; i < drawCount; i++) {
+        var idx = len - 1 - i; if (idx < 0) idx = 0;
+        var pt = sig.history[idx] || new THREE.Vector3();
+        pos[i*3] = pt.x; pos[i*3+1] = pt.y; pos[i*3+2] = pt.z;
+        var a = params.trailLength > 0 ? Math.max(0, 1 - i / params.trailLength) : 1;
+        col[i*3] = sig.assignedColor.r * a; col[i*3+1] = sig.assignedColor.g * a; col[i*3+2] = sig.assignedColor.b * a;
+      }
+      sig.mesh.geometry.setDrawRange(0, drawCount);
+      sig.mesh.geometry.attributes.position.needsUpdate = true;
+      sig.mesh.geometry.attributes.color.needsUpdate = true;
+    });
+    composer.render();
+  }
+
+  window.addEventListener('resize', function() {
+    var nw = container.offsetWidth, nh = container.offsetHeight;
+    camera.aspect = nw / nh; camera.updateProjectionMatrix();
+    renderer.setSize(nw, nh); composer.setSize(nw, nh);
+  });
+
+  animate();
+})();
+</script>
 
 <!-- ===== Cosmic Spectrum (filipz/NPqJJyz) ===== -->
 <div id="codepen-spectrum">
