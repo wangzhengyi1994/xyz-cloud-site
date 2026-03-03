@@ -2094,11 +2094,11 @@
     });
     globeGroup.add(new THREE.Points(oceanGeo, oceanMat));
 
-    // Land dots - larger white
+    // Land dots - theme color
     var landGeo = new THREE.BufferGeometry();
     landGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(landPositions), 3));
     var landMat = new THREE.PointsMaterial({
-      color: 0xffffff, size: 0.028, transparent: true, opacity: 0.95, sizeAttenuation: true
+      color: 0x4362ff, size: 0.028, transparent: true, opacity: 0.95, sizeAttenuation: true
     });
     globeGroup.add(new THREE.Points(landGeo, landMat));
 
@@ -2109,18 +2109,27 @@
 
     // --- Atmosphere glow removed ---
 
-    // --- City markers (green glowing dots) ---
+    // --- City markers (theme color dots) ---
     var cities = [
       {lat:39.9,lng:116.4,name:'Beijing'},
+      {lat:31.2,lng:121.5,name:'Shanghai'},
+      {lat:22.5,lng:114.1,name:'Shenzhen'},
       {lat:35.7,lng:139.7,name:'Tokyo'},
+      {lat:37.6,lng:127.0,name:'Seoul'},
       {lat:1.3,lng:103.8,name:'Singapore'},
+      {lat:19.1,lng:72.9,name:'Mumbai'},
       {lat:25.2,lng:55.3,name:'Dubai'},
       {lat:51.5,lng:-0.1,name:'London'},
+      {lat:48.9,lng:2.3,name:'Paris'},
+      {lat:50.1,lng:8.7,name:'Frankfurt'},
+      {lat:40.7,lng:-74.0,name:'New York'},
+      {lat:37.8,lng:-122.4,name:'San Francisco'},
+      {lat:34.1,lng:-118.2,name:'Los Angeles'},
       {lat:-23.5,lng:-46.6,name:'São Paulo'},
-      {lat:37.8,lng:-122.4,name:'San Francisco'}
+      {lat:-33.9,lng:151.2,name:'Sydney'}
     ];
 
-    var cityColor = 0x4ade80;
+    var cityColor = 0x4362ff;
     var cityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.95, side: THREE.DoubleSide });
     var glowCityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
     var cityGeo = new THREE.CircleGeometry(0.02, 12);
@@ -2140,7 +2149,7 @@
 
     // --- Flight lines (arcs between cities) ---
     var lineMat = new THREE.LineBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3 });
-    var conns = [[0,1],[0,2],[2,3],[3,4],[4,6],[5,6],[0,6]];
+    var conns = [[0,1],[0,2],[0,3],[1,3],[1,4],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[8,10],[10,11],[11,12],[12,13],[11,14],[0,15],[3,15],[5,15],[0,7],[2,5],[8,11],[0,12]];
     conns.forEach(function(cn) {
       var p1 = ll2v(cities[cn[0]].lat, cities[cn[0]].lng, radius);
       var p2 = ll2v(cities[cn[1]].lat, cities[cn[1]].lng, radius);
@@ -2157,10 +2166,55 @@
     scene.add(globeGroup);
     globeGroup.rotation.x = 0.2;
 
+    // --- Mouse drag to rotate ---
+    var isDragging = false;
+    var prevMouse = { x: 0, y: 0 };
+    var autoSpeed = 0.002;
+    var dragSpeed = { x: 0, y: 0 };
+
+    renderer.domElement.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      prevMouse.x = e.clientX;
+      prevMouse.y = e.clientY;
+      dragSpeed.x = 0; dragSpeed.y = 0;
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      var dx = e.clientX - prevMouse.x;
+      var dy = e.clientY - prevMouse.y;
+      dragSpeed.x = dx * 0.005;
+      dragSpeed.y = dy * 0.005;
+      globeGroup.rotation.y += dragSpeed.x;
+      globeGroup.rotation.x += dragSpeed.y;
+      prevMouse.x = e.clientX;
+      prevMouse.y = e.clientY;
+    });
+    window.addEventListener('mouseup', function() { isDragging = false; });
+
+    // Touch support
+    renderer.domElement.addEventListener('touchstart', function(e) {
+      isDragging = true;
+      prevMouse.x = e.touches[0].clientX;
+      prevMouse.y = e.touches[0].clientY;
+    });
+    renderer.domElement.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      var dx = e.touches[0].clientX - prevMouse.x;
+      var dy = e.touches[0].clientY - prevMouse.y;
+      globeGroup.rotation.y += dx * 0.005;
+      globeGroup.rotation.x += dy * 0.005;
+      prevMouse.x = e.touches[0].clientX;
+      prevMouse.y = e.touches[0].clientY;
+    });
+    renderer.domElement.addEventListener('touchend', function() { isDragging = false; });
+    renderer.domElement.style.cursor = 'grab';
+
     // Animate
     (function animate() {
       requestAnimationFrame(animate);
-      globeGroup.rotation.y += 0.002;
+      if (!isDragging) {
+        globeGroup.rotation.y += autoSpeed;
+      }
       renderer.render(scene, camera);
     })();
 
