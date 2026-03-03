@@ -1746,40 +1746,82 @@
       var offX = (cw - svgW * sc) / 2;
       var offY = (ch - svgH * sc) / 2;
 
-      // Magnifying glass effect
+      // Ripple + Magnifying glass effect
       var dotSpacing = 16.8 * sc;
       var smallSize = dotSpacing * 0.25;
-      var bigSize = dotSpacing * 0.6;
-      var lensRadius = 80;  // px radius of magnifying area
+      var midSize = dotSpacing * 0.5;    // ripple target (all dots)
+      var lensExtra = dotSpacing * 0.2;  // extra size boost under lens
+      var lensRadius = 90;
       var mouseX = -9999, mouseY = -9999;
       var isHovering = false;
       var raf = null;
 
-      // Precompute screen positions
+      // Ripple state
+      var rippleCenterX = 0, rippleCenterY = 0;
+      var rippleRadius = 0;
+      var rippleMaxRadius = 0;
+      var rippleExpanding = false;  // true = expanding, false = contracting
+      var rippleSpeed = 12;  // px per frame
+
+      // Precompute screen positions + per-dot ripple progress
       var screenDots = [];
       function computeScreenDots() {
         dotSpacing = 16.8 * sc;
         smallSize = dotSpacing * 0.25;
-        bigSize = dotSpacing * 0.6;
+        midSize = dotSpacing * 0.5;
+        lensExtra = dotSpacing * 0.2;
         screenDots = [];
         for (var i = 0; i < dots.length; i++) {
           var d = dots[i];
           screenDots.push({
             cx: offX + (d.x + d.w / 2) * sc,
             cy: offY + (d.y + d.w / 2) * sc,
-            fill: d.fill
+            fill: d.fill,
+            distFromRipple: 0
           });
         }
       }
       computeScreenDots();
 
-      wrap.addEventListener('mouseenter', function() {
+      function calcRippleMaxRadius() {
+        // Max distance from ripple center to any corner
+        var d1 = Math.sqrt(rippleCenterX * rippleCenterX + rippleCenterY * rippleCenterY);
+        var d2 = Math.sqrt((cw - rippleCenterX) * (cw - rippleCenterX) + rippleCenterY * rippleCenterY);
+        var d3 = Math.sqrt(rippleCenterX * rippleCenterX + (ch - rippleCenterY) * (ch - rippleCenterY));
+        var d4 = Math.sqrt((cw - rippleCenterX) * (cw - rippleCenterX) + (ch - rippleCenterY) * (ch - rippleCenterY));
+        return Math.max(d1, d2, d3, d4) + 60;
+      }
+
+      function updateRippleDistances() {
+        for (var i = 0; i < screenDots.length; i++) {
+          var sd = screenDots[i];
+          var dx = sd.cx - rippleCenterX;
+          var dy = sd.cy - rippleCenterY;
+          sd.distFromRipple = Math.sqrt(dx * dx + dy * dy);
+        }
+      }
+
+      wrap.addEventListener('mouseenter', function(e) {
+        var rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+        rippleCenterX = mouseX;
+        rippleCenterY = mouseY;
+        rippleMaxRadius = calcRippleMaxRadius();
+        updateRippleDistances();
+        rippleExpanding = true;
         isHovering = true;
         if (!raf) renderLoop();
       });
       wrap.addEventListener('mouseleave', function() {
+        // Contract ripple from current mouse position
+        rippleCenterX = mouseX;
+        rippleCenterY = mouseY;
+        rippleMaxRadius = calcRippleMaxRadius();
+        rippleRadius = rippleMaxRadius;
+        updateRippleDistances();
+        rippleExpanding = false;
         isHovering = false;
-        mouseX = -9999; mouseY = -9999;
         if (!raf) renderLoop();
       });
       wrap.addEventListener('mousemove', function(e) {
@@ -1788,31 +1830,73 @@
         mouseY = e.clientY - rect.top;
       });
 
+      function smoothstep(t) {
+        return t * t * (3 - 2 * t);
+      }
+
       function draw() {
         ctx.clearRect(0, 0, cw, ch);
+        var edgeWidth = 60; // ripple edge softness in px
         for (var i = 0, len = screenDots.length; i < len; i++) {
           var sd = screenDots[i];
-          var dx = sd.cx - mouseX;
-          var dy = sd.cy - mouseY;
-          var dist = Math.sqrt(dx * dx + dy * dy);
-          // Smooth falloff within lens radius
-          var t = 1 - Math.min(dist / lensRadius, 1);
-          t = t * t * (3 - 2 * t); // smoothstep
-          var size = smallSize + (bigSize - smallSize) * t;
-          var half = size / 2;
+
+          // Ripple progress for this dot (0 = small, 1 = fully expanded)
+          var rp;
+          if (rippleExpanding) {
+            if (sd.distFromRipple < rippleRadius - edgeWidth) rp = 1;
+            else if (sd.distFromRipple > rippleRadius) rp = 0;
+            else rp = smoothstep(1 - (sd.distFromRipple - (rippleRadius - edgeWidth)) / edgeWidth);
+          } else {
+            // Contracting: dots beyond rippleRadius have collapsed
+            if (sd.distFromRipple > rippleRadius) rp = 0;
+            else if (sd.distFromRipple < rippleRadius - edgeWidth) rp = 1;
+            else rp = smoothstep(1 - (sd.distFromRipple - (rippleRadius - edgeWidth)) / edgeWidth);
+          }
+
+          // Base size from ripple
+          var baseSize = smallSize + (midSize - smallSize) * rp;
+
+          // Magnifying glass on top (only when ripple has reached this dot)
+          if (rp > 0.5 && isHovering) {
+            var dx = sd.cx - mouseX;
+            var dy = sd.cy - mouseY;
+            var lensDist = Math.sqrt(dx * dx + dy * dy);
+            var lt = 1 - Math.min(lensDist / lensRadius, 1);
+            lt = smoothstep(lt);
+            baseSize += lensExtra * lt;
+          }
+
+          var half = baseSize / 2;
           ctx.fillStyle = sd.fill;
-          ctx.fillRect(sd.cx - half, sd.cy - half, size, size);
+          ctx.fillRect(sd.cx - half, sd.cy - half, baseSize, baseSize);
         }
       }
 
+      var running = false;
       function renderLoop() {
-        draw();
-        if (isHovering) {
-          raf = requestAnimationFrame(renderLoop);
-        } else {
-          // One final draw with no hover
-          raf = null;
-        }
+        if (running) return;
+        running = true;
+        (function tick() {
+          // Update ripple radius
+          if (rippleExpanding) {
+            rippleRadius += rippleSpeed;
+            if (rippleRadius > rippleMaxRadius) rippleRadius = rippleMaxRadius;
+          } else {
+            rippleRadius -= rippleSpeed;
+            if (rippleRadius < 0) rippleRadius = 0;
+          }
+
+          draw();
+
+          // Keep running while animating or hovering
+          var rippleDone = rippleExpanding ? (rippleRadius >= rippleMaxRadius) : (rippleRadius <= 0);
+          if (!rippleDone || isHovering) {
+            raf = requestAnimationFrame(tick);
+          } else {
+            raf = null;
+            running = false;
+          }
+        })();
       }
 
       // Initial draw
