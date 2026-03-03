@@ -647,6 +647,15 @@
       border-left: 1px solid var(--white-2);
     }
     .grid-cell:first-child { border-left: none; }
+    .grid-cell:nth-child(odd) {
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 9px,
+        rgba(255,255,255,0.1) 9px,
+        rgba(255,255,255,0.1) 10px
+      );
+    }
     .grid-row.bottom .grid-cell {
       border-bottom: none;
       border-top: 1px solid var(--white-2);
