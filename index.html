@@ -1830,15 +1830,25 @@
       cubes.push({ s: modeConfigs[0][ci].s, op: modeConfigs[0][ci].op, zOff: 0 });
     }
 
-    // Hook into accordion clicks
+    // Hook into accordion clicks — toggle active/collapsed + switch cube mode
     var accItems = document.querySelectorAll('.core-value .accordion-item');
     accItems.forEach(function(item, idx) {
       item.addEventListener('click', function() {
-        if (idx === cubeMode) return;
-        modeFrom = cubeMode;
-        modeTo = idx;
-        cubeMode = idx;
-        modeTransition = 0;
+        // Toggle accordion UI
+        accItems.forEach(function(el, i) {
+          if (i === idx) {
+            el.className = 'accordion-item active';
+          } else {
+            el.className = 'accordion-item collapsed';
+          }
+        });
+        // Switch cube mode
+        if (idx !== cubeMode) {
+          modeFrom = cubeMode;
+          modeTo = idx;
+          cubeMode = idx;
+          modeTransition = 0;
+        }
       });
     });
 
