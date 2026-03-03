@@ -2094,11 +2094,11 @@
     });
     globeGroup.add(new THREE.Points(oceanGeo, oceanMat));
 
-    // Land dots - theme color
+    // Land dots - white
     var landGeo = new THREE.BufferGeometry();
     landGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(landPositions), 3));
     var landMat = new THREE.PointsMaterial({
-      color: 0x4362ff, size: 0.028, transparent: true, opacity: 0.95, sizeAttenuation: true
+      color: 0xffffff, size: 0.028, transparent: true, opacity: 0.95, sizeAttenuation: true
     });
     globeGroup.add(new THREE.Points(landGeo, landMat));
 
