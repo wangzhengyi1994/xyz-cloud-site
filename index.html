@@ -1392,7 +1392,7 @@
   <!-- Data Tunnel (sabosugi/azZmLoB) -->
   <section id="data-tunnel-section" class="section-dark">
     <div class="container">
-      <div class="section-inner" style="padding:20px 0;position:relative;height:50vh;overflow:hidden;">
+      <div class="section-inner" style="padding:20px 0;position:relative;height:30vh;overflow:hidden;">
         <canvas id="data-tunnel-canvas" style="display:block;position:absolute;top:0;left:-200px;right:-200px;width:calc(100% + 400px);height:100%;"></canvas>
       </div>
     </div>
@@ -2184,22 +2184,22 @@
 
   var BG = '#090e1a';
   var params = {
-    colorLine: 0x373f48, colorSignal: new THREE.Color('#8fc9ff'),
+    colorLine: 0x373f48, colorSignal: new THREE.Color('#4362ff'),
     lineCount: 80, spreadHeight: 55, spreadDepth: 0,
-    curveLength: 80, straightLength: 120, curvePower: 0.8265,
+    curveLength: 80, straightLength: 200, curvePower: 0.8265,
     waveSpeed: 2.48, waveHeight: 0.145, lineOpacity: 0.557,
     signalCount: 94, speedGlobal: 0.345, trailLength: 3
   };
-  var posX = (params.curveLength - params.straightLength) / 2;
+  var posX = -10;
   var SEG = 150;
 
   var w = container.offsetWidth, h = container.offsetHeight;
   var scene = new THREE.Scene();
   scene.background = new THREE.Color(BG);
-  scene.fog = new THREE.FogExp2(BG, 0.002);
+  scene.fog = new THREE.FogExp2(BG, 0.001);
 
   var camera = new THREE.PerspectiveCamera(45, w / h, 1, 1000);
-  camera.position.set(0, 0, 110);
+  camera.position.set(10, 0, 100);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 
   var renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
