@@ -485,25 +485,18 @@
       border-radius: 12px;
       transform: rotate(15deg);
     }
-    /* Dot matrix SVG container */
+    /* Dot matrix Canvas container */
     .dot-matrix-wrap {
       flex: 1;
       min-height: 480px;
       overflow: hidden;
       position: relative;
+      cursor: crosshair;
     }
-    .dot-matrix-wrap svg {
+    .dot-matrix-wrap canvas {
       width: 100%;
       height: 100%;
-    }
-    .dot-matrix-wrap svg rect {
-      transform: scale(0.15);
-      transform-box: fill-box;
-      transform-origin: center;
-      transition: transform 0.4s ease;
-    }
-    .dot-matrix-wrap:hover svg rect {
-      transform: scale(0.71);
+      display: block;
     }
 
     /* ===== End-to-End Platform ===== */
@@ -1703,22 +1696,111 @@
   })();
   </script>
 
-  <!-- Load dot-matrix SVG into Story section -->
+  <!-- Dot matrix Canvas renderer -->
   <script>
   (function() {
     var wrap = document.getElementById('dotMatrixWrap');
     if (!wrap) return;
+
     var xhr = new XMLHttpRequest();
     xhr.open('GET', 'dot-matrix.svg', true);
     xhr.onload = function() {
-      if (xhr.status === 200) {
-        wrap.innerHTML = xhr.responseText;
-        // Ensure hover scaling works - reduce default rect size for better effect
-        var svg = wrap.querySelector('svg');
-        if (svg) {
-          svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+      if (xhr.status !== 200) return;
+
+      // Parse SVG rects
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(xhr.responseText, 'image/svg+xml');
+      var rects = doc.querySelectorAll('rect');
+      var dots = [];
+      for (var i = 0; i < rects.length; i++) {
+        var r = rects[i];
+        dots.push({
+          x: parseFloat(r.getAttribute('x')),
+          y: parseFloat(r.getAttribute('y')),
+          w: parseFloat(r.getAttribute('width')),
+          fill: r.getAttribute('fill')
+        });
+      }
+
+      // SVG dimensions
+      var svgW = 1915, svgH = 924;
+
+      // Create canvas
+      var canvas = document.createElement('canvas');
+      var dpr = Math.min(window.devicePixelRatio, 2);
+      var cw = wrap.offsetWidth || 700;
+      var ch = wrap.offsetHeight || 480;
+      canvas.width = cw * dpr;
+      canvas.height = ch * dpr;
+      canvas.style.width = cw + 'px';
+      canvas.style.height = ch + 'px';
+      wrap.appendChild(canvas);
+
+      var ctx = canvas.getContext('2d');
+      ctx.scale(dpr, dpr);
+
+      // Scale factor to fit SVG into container
+      var scaleX = cw / svgW;
+      var scaleY = ch / svgH;
+      var sc = Math.min(scaleX, scaleY);
+      var offX = (cw - svgW * sc) / 2;
+      var offY = (ch - svgH * sc) / 2;
+
+      // Animation state
+      var smallSize = 3;   // default dot size
+      var bigSize = 10;    // hover dot size
+      var currentSize = smallSize;
+      var targetSize = smallSize;
+      var isHovering = false;
+      var animating = false;
+
+      wrap.addEventListener('mouseenter', function() { targetSize = bigSize; isHovering = true; if (!animating) animate(); });
+      wrap.addEventListener('mouseleave', function() { targetSize = smallSize; isHovering = false; if (!animating) animate(); });
+
+      function draw() {
+        ctx.clearRect(0, 0, cw, ch);
+        var half = currentSize / 2;
+        for (var i = 0, len = dots.length; i < len; i++) {
+          var d = dots[i];
+          var cx = offX + (d.x + d.w / 2) * sc;
+          var cy = offY + (d.y + d.w / 2) * sc;
+          ctx.fillStyle = d.fill;
+          ctx.fillRect(cx - half, cy - half, currentSize, currentSize);
         }
       }
+
+      function animate() {
+        animating = true;
+        var diff = targetSize - currentSize;
+        if (Math.abs(diff) < 0.1) {
+          currentSize = targetSize;
+          draw();
+          animating = false;
+          return;
+        }
+        currentSize += diff * 0.12;
+        draw();
+        requestAnimationFrame(animate);
+      }
+
+      // Initial draw
+      draw();
+
+      // Resize
+      window.addEventListener('resize', function() {
+        cw = wrap.offsetWidth || 700;
+        ch = wrap.offsetHeight || 480;
+        canvas.width = cw * dpr;
+        canvas.height = ch * dpr;
+        canvas.style.width = cw + 'px';
+        canvas.style.height = ch + 'px';
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
+        ctx.scale(dpr, dpr);
+        sc = Math.min(cw / svgW, ch / svgH);
+        offX = (cw - svgW * sc) / 2;
+        offY = (ch - svgH * sc) / 2;
+        draw();
+      });
     };
     xhr.send();
   })();
