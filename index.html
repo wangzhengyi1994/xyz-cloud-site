@@ -2217,18 +2217,71 @@
       </clipPath>
     </defs>
   </svg>
+  <div class="cs-title">
+    Where Light Becomes Color<br>
+    Across the Infinite Spectrum
+  </div>
+  <div class="cs-text-grid">
+    <div class="cs-text-col"><span>Violet<br>Waves<br>380nm</span></div>
+    <div class="cs-text-col"><span>Blue<br>Photons<br>450nm</span></div>
+    <div class="cs-text-col"><span>Cyan<br>Spectrum<br>490nm</span></div>
+    <div class="cs-text-col"><span>Green<br>Energy<br>530nm</span></div>
+    <div class="cs-text-col"><span>Yellow<br>Radiance<br>580nm</span></div>
+    <div class="cs-text-col"><span>Orange<br>Glow<br>620nm</span></div>
+    <div class="cs-text-col"><span>Red<br>Shift<br>680nm</span></div>
+    <div class="cs-text-col"><span>Infrared<br>Heat<br>750nm</span></div>
+    <div class="cs-text-col"><span>Beyond<br>Visible<br>800nm</span></div>
+  </div>
 </section>
 <style>
 .cosmic-spectrum {
+  position: relative;
   width: 100%;
   height: 80vh;
   background: #f5f5f5;
-  display: flex;
-  align-items: flex-end;
+  overflow: hidden;
 }
 .cosmic-spectrum .spectrum-svg {
+  position: absolute;
+  bottom: 0; left: 0;
   width: 100%;
   height: 100%;
+}
+.cs-title {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-family: 'PPSupplyMono', 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #333;
+  line-height: 1.4;
+  z-index: 2;
+}
+.cs-text-grid {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  align-items: flex-end;
+  z-index: 2;
+}
+.cs-text-col {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 2rem;
+}
+.cs-text-col span {
+  font-family: 'PPSupplyMono', 'JetBrains Mono', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #333;
+  text-align: center;
+  line-height: 1.3;
 }
 </style>
 </body>
