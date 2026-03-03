@@ -1390,8 +1390,12 @@
   </section>
 
   <!-- Data Tunnel (sabosugi/azZmLoB) -->
-  <section id="data-tunnel-section" style="position:relative;width:100%;height:60vh;background:#090e1a;overflow:hidden;">
-    <canvas id="data-tunnel-canvas" style="display:block;width:100%;height:100%;"></canvas>
+  <section id="data-tunnel-section" class="section-dark">
+    <div class="container">
+      <div class="section-inner" style="padding:0;position:relative;height:60vh;overflow:hidden;">
+        <canvas id="data-tunnel-canvas" style="display:block;position:absolute;top:0;left:-200px;right:-200px;width:calc(100% + 400px);height:100%;"></canvas>
+      </div>
+    </div>
   </section>
 
   <!-- Designed for Engineers (1) -->
@@ -2173,9 +2177,10 @@
 <!-- ===== Data Tunnel (sabosugi/azZmLoB) ===== -->
 <script>
 (function() {
-  var container = document.getElementById('data-tunnel-section');
+  var section = document.getElementById('data-tunnel-section');
   var canvas = document.getElementById('data-tunnel-canvas');
-  if (!container || !canvas || typeof THREE === 'undefined') return;
+  if (!section || !canvas || typeof THREE === 'undefined') return;
+  var container = canvas.parentElement;
 
   var BG = '#090e1a';
   var params = {
@@ -2247,7 +2252,7 @@
   var clock = new THREE.Clock();
   var isVisible = false;
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function(e) { isVisible = e[0].isIntersecting; }, { threshold: 0 }).observe(container);
+    new IntersectionObserver(function(e) { isVisible = e[0].isIntersecting; }, { threshold: 0 }).observe(section);
   } else { isVisible = true; }
 
   function animate() {
