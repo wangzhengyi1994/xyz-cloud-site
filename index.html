@@ -1771,12 +1771,15 @@
         midSize = dotSpacing * 0.5;
         lensExtra = dotSpacing * 0.2;
         screenDots = [];
+        var themeColor = '#4362ff';
         for (var i = 0; i < dots.length; i++) {
           var d = dots[i];
+          // Randomly tint ~12% of dots with theme color
+          var fill = (Math.random() < 0.12) ? themeColor : d.fill;
           screenDots.push({
             cx: offX + (d.x + d.w / 2) * sc,
             cy: offY + (d.y + d.w / 2) * sc,
-            fill: d.fill,
+            fill: fill,
             distFromRipple: 0
           });
         }
