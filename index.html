@@ -506,8 +506,10 @@
     .platform-tab .tab-icon {
       width: 24px;
       height: 24px;
-      border-radius: 4px;
-      background: var(--white-2);
+    }
+    .platform-tab .tab-icon svg {
+      width: 24px;
+      height: 24px;
     }
     .platform-tab .tab-title {
       font-size: 16px;
@@ -523,23 +525,18 @@
       color: var(--white-6);
     }
     .platform-tab.active .tab-desc { color: var(--white-8); }
-    .platform-img {
+    .platform-canvas {
       flex: 1;
-      background: var(--white-2);
       min-height: 760px;
       border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      position: relative;
       overflow: hidden;
       position: relative;
     }
-    .platform-img::after {
-      content: '';
-      position: absolute;
-      width: 300px;
-      height: 300px;
-      background: radial-gradient(circle, rgba(67,98,255,0.2) 0%, transparent 70%);
+    .platform-canvas canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
     }
 
     /* ===== XYZ Cloud Story ===== */
@@ -939,7 +936,7 @@
       .hero-content { padding: 0 40px; }
       .section-row { flex-direction: column; gap: 40px; }
       .core-value .left, .story-left, .platform-tabs, .stats-left, .engineer-left { width: 100%; }
-      .platform-img { min-height: 400px; }
+      .platform-canvas { min-height: 400px; }
       .engineer-section { flex-direction: column; }
       .footer-anc { font-size: 100px; line-height: 100px; }
       .stats-section { flex-direction: column; }
@@ -1281,37 +1278,238 @@
         <p class="section-subtitle-dark" data-en="From data to production, we provide the tools you need at every stage." data-cn="从数据到生产，我们在每个阶段提供您所需的工具。">From data to production, we provide the tools you need at every stage.</p>
         <div class="section-row">
           <div class="platform-tabs">
-            <div class="platform-tab active">
-              <div class="tab-icon"></div>
+            <div class="platform-tab active" data-shape="0">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><circle cx="12" cy="12" r="9"/></svg></div>
               <div class="tab-title" data-en="Model Hub" data-cn="模型中心">Model Hub</div>
               <div class="tab-desc" data-en="A collection of mainstream and the latest open-source models, supporting one-click deployment to services." data-cn="汇集主流和最新开源模型，支持一键部署为服务。">A collection of mainstream and the latest open-source models, supporting one-click deployment to services.</div>
             </div>
-            <div class="platform-tab">
-              <div class="tab-icon"></div>
+            <div class="platform-tab" data-shape="1">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></div>
               <div class="tab-title" data-en="Development - Cloud Container Instances" data-cn="开发 - 云容器实例">Development - Cloud Container Instances</div>
               <div class="tab-desc" data-en="Instant development environments with second-level startup of Jupyter/VSCode, no complex configuration needed." data-cn="即时开发环境，秒级启动 Jupyter/VSCode，无需复杂配置。">Instant development environments with second-level startup of Jupyter/VSCode, no complex configuration needed.</div>
             </div>
-            <div class="platform-tab">
-              <div class="tab-icon"></div>
+            <div class="platform-tab" data-shape="2">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,3 22,21 2,21"/></svg></div>
               <div class="tab-title" data-en="Training - Extreme Core Training" data-cn="训练 - 极致核心训练">Training - Extreme Core Training</div>
               <div class="tab-desc" data-en="Ready-to-use distributed training tasks with GPU intelligent scheduling." data-cn="开箱即用的分布式训练任务，GPU 智能调度。">Ready-to-use distributed training tasks with GPU intelligent scheduling.</div>
             </div>
-            <div class="platform-tab">
-              <div class="tab-icon"></div>
+            <div class="platform-tab" data-shape="3">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,2 22,12 12,22 2,12"/></svg></div>
               <div class="tab-title" data-en="Inference - Inference Service" data-cn="推理 - 推理服务">Inference - Inference Service</div>
               <div class="tab-desc" data-en="Built-in large model inference engine, with one-click environment adaptation and fast API calls." data-cn="内置大模型推理引擎，一键适配环境，快速 API 调用。">Built-in large model inference engine, with one-click environment adaptation and fast API calls.</div>
             </div>
-            <div class="platform-tab">
-              <div class="tab-icon"></div>
+            <div class="platform-tab" data-shape="4">
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,2 21.5,7.5 21.5,16.5 12,22 2.5,16.5 2.5,7.5"/></svg></div>
               <div class="tab-title" data-en="GPU Cluster - VKS Elastic Container Cluster" data-cn="GPU 集群 - VKS 弹性容器集群">GPU Cluster - VKS Elastic Container Cluster</div>
               <div class="tab-desc" data-en="High-performance, fully isolated GPU elastic clusters optimized for large models." data-cn="高性能、完全隔离的 GPU 弹性集群，针对大模型优化。">High-performance, fully isolated GPU elastic clusters optimized for large models.</div>
             </div>
           </div>
-          <div class="platform-img"></div>
+          <div class="platform-canvas" id="platformCanvas"></div>
         </div>
       </div>
     </div>
   </section>
+
+  <script>
+  (function() {
+    var container = document.getElementById('platformCanvas');
+    if (!container) return;
+
+    var width = container.offsetWidth;
+    var height = container.offsetHeight;
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(50, width / height, 0.1, 100);
+    camera.position.z = 4.5;
+
+    var renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setClearColor(0x000000, 0);
+    container.appendChild(renderer.domElement);
+
+    var PARTICLE_COUNT = 4000;
+    var isMob = window.innerWidth <= 800;
+    if (isMob) PARTICLE_COUNT = 2000;
+
+    // Shape generators - points on surface
+    function genSphere(n, r) {
+      var a = new Float32Array(n * 3);
+      for (var i = 0; i < n; i++) {
+        var phi = Math.acos(2 * Math.random() - 1);
+        var theta = Math.random() * Math.PI * 2;
+        a[i*3]   = r * Math.sin(phi) * Math.cos(theta);
+        a[i*3+1] = r * Math.sin(phi) * Math.sin(theta);
+        a[i*3+2] = r * Math.cos(phi);
+      }
+      return a;
+    }
+
+    function genCube(n, s) {
+      var a = new Float32Array(n * 3);
+      var h = s / 2;
+      for (var i = 0; i < n; i++) {
+        var face = Math.floor(Math.random() * 6);
+        var u = Math.random() * s - h, v = Math.random() * s - h;
+        var j = i * 3;
+        switch(face) {
+          case 0: a[j]=h;  a[j+1]=u; a[j+2]=v; break;
+          case 1: a[j]=-h; a[j+1]=u; a[j+2]=v; break;
+          case 2: a[j]=u;  a[j+1]=h; a[j+2]=v; break;
+          case 3: a[j]=u;  a[j+1]=-h;a[j+2]=v; break;
+          case 4: a[j]=u;  a[j+1]=v; a[j+2]=h; break;
+          case 5: a[j]=u;  a[j+1]=v; a[j+2]=-h;break;
+        }
+      }
+      return a;
+    }
+
+    function genPyramid(n, r, ht) {
+      var a = new Float32Array(n * 3);
+      for (var i = 0; i < n; i++) {
+        var j = i * 3;
+        if (Math.random() < 0.25) {
+          // base circle
+          var ang = Math.random() * Math.PI * 2;
+          var rr = r * Math.sqrt(Math.random());
+          a[j] = rr * Math.cos(ang);
+          a[j+1] = -ht/2;
+          a[j+2] = rr * Math.sin(ang);
+        } else {
+          // cone surface
+          var t = Math.random();
+          var ang = Math.random() * Math.PI * 2;
+          var rad = r * t;
+          a[j]   = rad * Math.cos(ang);
+          a[j+1] = ht/2 - t * ht;
+          a[j+2] = rad * Math.sin(ang);
+        }
+      }
+      return a;
+    }
+
+    function genDiamond(n, r, ht) {
+      var a = new Float32Array(n * 3);
+      for (var i = 0; i < n; i++) {
+        var t = Math.random() * 2 - 1;
+        var ang = Math.random() * Math.PI * 2;
+        var rad = r * (1 - Math.abs(t));
+        var j = i * 3;
+        a[j]   = rad * Math.cos(ang);
+        a[j+1] = t * ht / 2;
+        a[j+2] = rad * Math.sin(ang);
+      }
+      return a;
+    }
+
+    function genTorus(n, R, r) {
+      var a = new Float32Array(n * 3);
+      for (var i = 0; i < n; i++) {
+        var u = Math.random() * Math.PI * 2;
+        var v = Math.random() * Math.PI * 2;
+        var j = i * 3;
+        a[j]   = (R + r * Math.cos(v)) * Math.cos(u);
+        a[j+1] = r * Math.sin(v);
+        a[j+2] = (R + r * Math.cos(v)) * Math.sin(u);
+      }
+      return a;
+    }
+
+    // Pre-generate all shapes
+    var shapes = [
+      genSphere(PARTICLE_COUNT, 1.5),
+      genCube(PARTICLE_COUNT, 2.4),
+      genPyramid(PARTICLE_COUNT, 1.5, 3),
+      genDiamond(PARTICLE_COUNT, 1.3, 3),
+      genTorus(PARTICLE_COUNT, 1.2, 0.45)
+    ];
+
+    // Per-particle noise for organic look
+    var noise = new Float32Array(PARTICLE_COUNT * 3);
+    for (var i = 0; i < PARTICLE_COUNT * 3; i++) {
+      noise[i] = (Math.random() - 0.5) * 0.08;
+    }
+
+    // Create particle system
+    var geometry = new THREE.BufferGeometry();
+    var positions = new Float32Array(PARTICLE_COUNT * 3);
+    for (var i = 0; i < PARTICLE_COUNT * 3; i++) positions[i] = shapes[0][i] + noise[i];
+    geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+    // Varying opacity per particle via vertex colors
+    var colors = new Float32Array(PARTICLE_COUNT * 3);
+    for (var i = 0; i < PARTICLE_COUNT; i++) {
+      var c = 0.5 + Math.random() * 0.5;
+      colors[i*3] = c; colors[i*3+1] = c; colors[i*3+2] = c;
+    }
+    geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    var material = new THREE.PointsMaterial({
+      size: 0.018,
+      transparent: true,
+      opacity: 0.9,
+      vertexColors: THREE.VertexColors,
+      sizeAttenuation: true,
+      depthWrite: false
+    });
+
+    var particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    // Morphing state
+    var fromPos = new Float32Array(PARTICLE_COUNT * 3);
+    var toPos = shapes[0];
+    var morph = { v: 1 };
+    var curShape = 0;
+    for (var i = 0; i < PARTICLE_COUNT * 3; i++) fromPos[i] = positions[i];
+
+    function morphTo(idx) {
+      if (idx === curShape) return;
+      var pos = geometry.attributes.position.array;
+      for (var i = 0; i < PARTICLE_COUNT * 3; i++) fromPos[i] = pos[i];
+      toPos = shapes[idx];
+      curShape = idx;
+      morph.v = 0;
+      TweenMax.to(morph, 1.5, { v: 1, ease: Power2.easeInOut });
+    }
+    window.platformMorphTo = morphTo;
+
+    // Visibility observer
+    var isVis = true;
+    var obs = new IntersectionObserver(function(e) { isVis = e[0].isIntersecting; }, { threshold: 0 });
+    obs.observe(container);
+
+    // Animation
+    function animate() {
+      requestAnimationFrame(animate);
+      if (!isVis) return;
+
+      var pos = geometry.attributes.position.array;
+      var t = morph.v;
+      for (var i = 0; i < PARTICLE_COUNT * 3; i++) {
+        pos[i] = fromPos[i] + (toPos[i] + noise[i] - fromPos[i]) * t;
+      }
+      geometry.attributes.position.needsUpdate = true;
+
+      particles.rotation.y += 0.003;
+      particles.rotation.x += 0.0008;
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // Resize
+    var rTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(rTimer);
+      rTimer = setTimeout(function() {
+        var w = container.offsetWidth, h = container.offsetHeight;
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      }, 150);
+    });
+  })();
+  </script>
 
   <!-- The XYZ Cloud Story -->
   <section class="section-light">
@@ -1563,11 +1761,12 @@
       });
     });
 
-    // Platform tab interaction
-    document.querySelectorAll('.platform-tab').forEach(tab => {
+    // Platform tab interaction + particle morph
+    document.querySelectorAll('.platform-tab').forEach((tab, index) => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
+        if (window.platformMorphTo) window.platformMorphTo(index);
       });
     });
 
