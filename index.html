@@ -1002,6 +1002,16 @@
     .animate-in {
       animation: fadeInUp 0.6s ease forwards;
     }
+    .scroll-fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      transition-delay: var(--delay, 0s);
+    }
+    .scroll-fade-in.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
     /* ===== Responsive ===== */
     @media (max-width: 1200px) {
@@ -1318,8 +1328,8 @@
   <section class="section-light core-value">
     <div class="container">
       <div class="section-inner">
-        <h2 class="section-title" data-en="Core Value Proposition" data-cn="核心价值主张">Core Value Proposition</h2>
-        <div class="section-row">
+        <h2 class="section-title scroll-fade-in" data-en="Core Value Proposition" data-cn="核心价值主张">Core Value Proposition</h2>
+        <div class="section-row scroll-fade-in" style="--delay:0.15s">
           <div class="left">
             <div class="accordion-item active">
               <div class="accordion-header" data-en="High-Performance AI Infrastructure" data-cn="高性能 AI 基础设施">High-Performance AI Infrastructure</div>
@@ -1350,9 +1360,9 @@
   <section class="section-dark">
     <div class="container">
       <div class="section-inner">
-        <h2 class="section-title-dark" data-en="End-to-End AI Development Platform" data-cn="端到端 AI 开发平台">End-to-End AI Development Platform</h2>
-        <p class="section-subtitle-dark" data-en="From data to production, we provide the tools you need at every stage." data-cn="从数据到生产，我们在每个阶段提供您所需的工具。">From data to production, we provide the tools you need at every stage.</p>
-        <div class="section-row">
+        <h2 class="section-title-dark scroll-fade-in" data-en="End-to-End AI Development Platform" data-cn="端到端 AI 开发平台">End-to-End AI Development Platform</h2>
+        <p class="section-subtitle-dark scroll-fade-in" style="--delay:0.1s" data-en="From data to production, we provide the tools you need at every stage." data-cn="从数据到生产，我们在每个阶段提供您所需的工具。">From data to production, we provide the tools you need at every stage.</p>
+        <div class="section-row scroll-fade-in" style="--delay:0.2s">
           <div class="platform-tabs">
             <div class="platform-tab active" data-shape="0">
               <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><circle cx="12" cy="12" r="9"/></svg></div>
@@ -1390,8 +1400,8 @@
   <section class="section-light">
     <div class="container">
       <div class="section-inner">
-        <h2 class="section-title" data-en="The XYZ Cloud Story" data-cn="XYZ Cloud 的故事">The XYZ Cloud Story</h2>
-        <div class="section-row">
+        <h2 class="section-title scroll-fade-in" data-en="The XYZ Cloud Story" data-cn="XYZ Cloud 的故事">The XYZ Cloud Story</h2>
+        <div class="section-row scroll-fade-in" style="--delay:0.15s">
           <div class="story-left">
             <ul>
               <li data-en="In an era where Artificial Intelligence defines competitive advantage, the world needs a cloud infrastructure that speaks the language of AI." data-cn="在人工智能定义竞争优势的时代，世界需要一个能说 AI 语言的云基础设施。">In an era where Artificial Intelligence defines competitive advantage, the world needs a cloud infrastructure that speaks the language of AI.</li>
@@ -1411,8 +1421,8 @@
   <section class="section-dark build-section">
     <div class="container">
       <div class="section-inner">
-        <h2 class="section-title-dark" data-en="Build Anything with AI" data-cn="用 AI 构建一切">Build Anything with AI</h2>
-        <div class="build-cards">
+        <h2 class="section-title-dark scroll-fade-in" data-en="Build Anything with AI" data-cn="用 AI 构建一切">Build Anything with AI</h2>
+        <div class="build-cards scroll-fade-in" style="--delay:0.15s">
           <div class="build-card">
             <div class="number">01<span>/</span></div>
             <div class="card-text" data-en="Private deployment of DeepSeek-R1 with vLLM." data-cn="使用 vLLM 私有化部署 DeepSeek-R1。">Private deployment of DeepSeek-R1 with vLLM.</div>
@@ -1443,9 +1453,9 @@
   <section class="section-dark">
     <div class="container">
       <div class="section-inner">
-        <h2 class="section-title-dark" data-en="Designed for Engineers" data-cn="为工程师而设计">Designed for Engineers</h2>
-        <p class="section-subtitle-dark" data-en="Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms." data-cn="命令行工具 (CLI) 和 API 支持，快速启动本地集群，与 AlayaNew 云平台无缝集成。">Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms.</p>
-        <div class="engineer-section">
+        <h2 class="section-title-dark scroll-fade-in" data-en="Designed for Engineers" data-cn="为工程师而设计">Designed for Engineers</h2>
+        <p class="section-subtitle-dark scroll-fade-in" style="--delay:0.1s" data-en="Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms." data-cn="命令行工具 (CLI) 和 API 支持，快速启动本地集群，与 AlayaNew 云平台无缝集成。">Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms.</p>
+        <div class="engineer-section scroll-fade-in" style="--delay:0.2s">
           <div class="engineer-left">
             <div class="grid-row">
               <div class="grid-cell"></div>
@@ -1501,9 +1511,9 @@
   <section class="section-dark">
     <div class="container">
       <div class="section-inner">
-        <h2 class="section-title-dark" data-en="Designed for Engineers" data-cn="为工程师而设计">Designed for Engineers</h2>
-        <p class="section-subtitle-dark" data-en="Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms." data-cn="命令行工具 (CLI) 和 API 支持，快速启动本地集群，与 AlayaNew 云平台无缝集成。">Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms.</p>
-        <div class="stats-section">
+        <h2 class="section-title-dark scroll-fade-in" data-en="Designed for Engineers" data-cn="为工程师而设计">Designed for Engineers</h2>
+        <p class="section-subtitle-dark scroll-fade-in" style="--delay:0.1s" data-en="Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms." data-cn="命令行工具 (CLI) 和 API 支持，快速启动本地集群，与 AlayaNew 云平台无缝集成。">Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms.</p>
+        <div class="stats-section scroll-fade-in" style="--delay:0.2s">
           <div class="stats-left">
             <div class="stat-item">
               <div class="stat-label" data-en="Intelligent Computing Centers" data-cn="智算中心">Intelligent Computing Centers</div>
@@ -1529,13 +1539,13 @@
     <div class="services-bg"></div>
     <div class="container">
       <div class="services-content">
-        <h2 class="services-title">services.</h2>
-        <div class="services-icon">
+        <h2 class="services-title scroll-fade-in">services.</h2>
+        <div class="services-icon scroll-fade-in" style="--delay:0.1s">
           <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
         </div>
-        <div class="services-divider"></div>
-        <p class="services-text" data-en="Start Using DataCanvas AlayaNeW Cloud's Inclusive Computing Power Now" data-cn="立即开始使用 DataCanvas AlayaNeW Cloud 的普惠算力">Start Using DataCanvas AlayaNeW Cloud's Inclusive Computing Power Now</p>
-        <p class="services-subtext" data-en="High Performance · High Elasticity · Computing Power Services, Accelerate Your AI Innovation Journey!" data-cn="高性能 · 高弹性 · 算力服务，加速您的 AI 创新之旅！">High Performance · High Elasticity · Computing Power Services, Accelerate Your AI Innovation Journey!</p>
+        <div class="services-divider scroll-fade-in" style="--delay:0.15s"></div>
+        <p class="services-text scroll-fade-in" style="--delay:0.2s" data-en="Start Using DataCanvas AlayaNeW Cloud's Inclusive Computing Power Now" data-cn="立即开始使用 DataCanvas AlayaNeW Cloud 的普惠算力">Start Using DataCanvas AlayaNeW Cloud's Inclusive Computing Power Now</p>
+        <p class="services-subtext scroll-fade-in" style="--delay:0.25s" data-en="High Performance · High Elasticity · Computing Power Services, Accelerate Your AI Innovation Journey!" data-cn="高性能 · 高弹性 · 算力服务，加速您的 AI 创新之旅！">High Performance · High Elasticity · Computing Power Services, Accelerate Your AI Innovation Journey!</p>
       </div>
     </div>
   </section>
@@ -2619,6 +2629,21 @@
           globeGroup.add(new THREE.Line(geo, lineMat));
         });
       });
+  })();
+
+  // --- Scroll fade-in animation ---
+  (function() {
+    var els = document.querySelectorAll('.scroll-fade-in');
+    if (!els.length) return;
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    els.forEach(function(el) { obs.observe(el); });
   })();
 
   // --- Stat counter animation ---
