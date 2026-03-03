@@ -2197,9 +2197,7 @@
   var totalLen = params.curveLength + params.straightLength;
   var posX = (params.curveLength - params.straightLength) / 2;
   var FOV = 60;
-  var zForWidth = (totalLen / 2) / (Math.tan(FOV * Math.PI / 360) * aspect);
-  var zForHeight = (params.spreadHeight) / Math.tan(FOV * Math.PI / 360);
-  var camZ = Math.max(zForWidth, zForHeight) * 1.02;
+  var camZ = (totalLen / 2) / (Math.tan(FOV * Math.PI / 360) * aspect);
 
   var scene = new THREE.Scene();
   scene.background = new THREE.Color(BG);
@@ -2305,10 +2303,8 @@
   window.addEventListener('resize', function() {
     var nw = container.offsetWidth, nh = container.offsetHeight;
     var na = nw / nh;
-    var nzW = (totalLen / 2) / (Math.tan(FOV * Math.PI / 360) * na);
-    var nzH = (params.spreadHeight) / Math.tan(FOV * Math.PI / 360);
     camera.aspect = na;
-    camera.position.z = Math.max(nzW, nzH) * 1.02;
+    camera.position.z = (totalLen / 2) / (Math.tan(FOV * Math.PI / 360) * na);
     camera.updateProjectionMatrix();
     renderer.setSize(nw, nh);
   });
