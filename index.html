@@ -7,24 +7,142 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #4362ff;
-      --dark: #090e1a;
-      --text-heading: #090e1a;
-      --text-secondary: #344256;
-      --border-secondary: #e1e7ef;
-      --white-10: #ffffff;
-      --white-8: rgba(255,255,255,0.8);
-      --white-6: rgba(255,255,255,0.5);
-      --white-4: rgba(255,255,255,0.3);
-      --white-2: rgba(255,255,255,0.1);
-      --white-1: rgba(255,255,255,0.08);
+      /* === Colors: Blue === */
+      --color-blue-1: #f0f5ff;
+      --color-blue-2: #e6edff;
+      --color-blue-3: #bdceff;
+      --color-blue-4: #94adff;
+      --color-blue-5: #6b89ff;
+      --color-blue-6: #4362ff;
+      --color-blue-7: #2e44d9;
+      --color-blue-8: #1d2cb3;
+      --color-blue-9: #0f188c;
+      --color-blue-10: #0a0d66;
+
+      /* === Colors: Gray === */
+      --color-gray-1: #f8fafc;
+      --color-gray-2: #f1f5f9;
+      --color-gray-3: #e1e7ef;
+      --color-gray-4: #c8d5e5;
+      --color-gray-5: #9eacbf;
+      --color-gray-6: #65758b;
+      --color-gray-7: #48566a;
+      --color-gray-8: #344256;
+      --color-gray-9: #0f1728;
+      --color-gray-10: #090e1a;
+      --color-gray-11: #060a10;
+
+      /* === Colors: White === */
+      --color-white-1: rgba(255, 255, 255, 0.08);
+      --color-white-2: rgba(255, 255, 255, 0.10);
+      --color-white-3: rgba(255, 255, 255, 0.20);
+      --color-white-4: rgba(255, 255, 255, 0.30);
+      --color-white-5: rgba(255, 255, 255, 0.40);
+      --color-white-6: rgba(255, 255, 255, 0.50);
+      --color-white-7: rgba(255, 255, 255, 0.60);
+      --color-white-8: rgba(255, 255, 255, 0.80);
+      --color-white-9: rgba(255, 255, 255, 0.90);
+      --color-white-10: #ffffff;
+
+      /* === Colors: Secondary Orange === */
+      --color-orange-6: #ff8400;
+
+      /* === Semantic: Primary === */
+      --primary: var(--color-blue-6);
+      --primary-hover: var(--color-blue-5);
+      --primary-active: var(--color-blue-7);
+      --primary-bg: var(--color-blue-1);
+      --primary-bg-hover: var(--color-blue-2);
+      --primary-border: var(--color-blue-3);
+
+      /* === Semantic: Text === */
+      --color-text: var(--color-gray-10);
+      --color-text-secondary: var(--color-gray-8);
+      --color-text-tertiary: var(--color-gray-6);
+      --color-text-quaternary: var(--color-gray-5);
+      --color-text-light-solid: #ffffff;
+      --color-text-heading: var(--color-text);
+
+      /* === Semantic: Background === */
+      --color-bg-container: #ffffff;
+      --color-bg-layout: var(--color-gray-2);
+
+      /* === Semantic: Border === */
+      --color-border: var(--color-gray-4);
+      --color-border-secondary: var(--color-gray-3);
+
+      /* === Typography === */
+      --font-family: 'OPPO Sans 4.0', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-family-code: 'JetBrains Mono', 'Courier Prime', monospace;
+      --font-weight-normal: 300;
+      --font-weight-strong: 500;
+      --font-size-sm: 12px;
+      --font-size: 14px;
+      --font-size-lg: 16px;
+      --font-size-xl: 20px;
+      --font-size-heading-6: 16px;
+      --font-size-heading-5: 20px;
+      --font-size-heading-4: 24px;
+      --font-size-heading-3: 32px;
+      --font-size-heading-2: 40px;
+      --font-size-heading-1: 48px;
+      --font-size-heading-0: 72px;
+      --line-height-sm: 20px;
+      --line-height: 22px;
+      --line-height-lg: 24px;
+      --line-height-heading-5: 28px;
+      --line-height-heading-4: 32px;
+      --line-height-heading-3: 40px;
+      --line-height-heading-2: 48px;
+      --line-height-heading-1: 56px;
+      --line-height-heading-0: 80px;
+
+      /* === Space === */
+      --margin-xxs: 4px;
+      --margin-xs: 8px;
+      --margin-sm: 12px;
+      --margin: 16px;
+      --margin-md: 20px;
+      --margin-lg: 24px;
+      --margin-xl: 32px;
+      --margin-xxl: 40px;
+      --margin-xxxl: 80px;
+      --padding-xxs: 4px;
+      --padding-xs: 8px;
+      --padding-sm: 12px;
+      --padding: 16px;
+      --padding-md: 20px;
+      --padding-lg: 24px;
+      --padding-xl: 32px;
+      --padding-xl2: 40px;
+      --padding-xl3: 80px;
+      --padding-xl4: 120px;
+
+      /* === Border Radius === */
+      --border-radius-xs: 2px;
+      --border-radius-sm: 4px;
+      --border-radius: 6px;
+      --border-radius-lg: 8px;
+      --border-radius-xl: 24px;
+
+      /* === Aliases (backward compat) === */
+      --dark: var(--color-gray-10);
+      --text-heading: var(--color-text-heading);
+      --text-secondary: var(--color-text-secondary);
+      --border-secondary: var(--color-border-secondary);
+      --white-10: var(--color-white-10);
+      --white-8: var(--color-white-8);
+      --white-6: var(--color-white-6);
+      --white-4: var(--color-white-4);
+      --white-2: var(--color-white-2);
+      --white-1: var(--color-white-1);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'OPPO Sans', sans-serif;
-      color: var(--text-heading);
+      font-family: var(--font-family);
+      color: var(--color-text-heading);
       overflow-x: hidden;
     }
 
