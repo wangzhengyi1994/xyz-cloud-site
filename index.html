@@ -2000,6 +2000,9 @@
   })();
   </script>
 
+  <!-- TopoJSON client for accurate land data -->
+  <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>
+
   <!-- 3D Globe for Stats section -->
   <script>
   (function() {
@@ -2022,72 +2025,6 @@
     var globeGroup = new THREE.Group();
     var radius = 1;
 
-    // --- Simplified continent polygons for land detection ---
-    var continents = [
-      // North America
-      [[-170,72],[-168,65],[-165,60],[-140,60],[-130,55],[-124,48],[-117,33],[-105,25],[-97,19],[-87,15],[-83,10],[-80,8],[-79,9],[-77,18],[-81,25],[-90,30],[-95,36],[-88,40],[-82,42],[-77,44],[-67,45],[-60,47],[-55,50],[-58,52],[-64,55],[-75,55],[-80,60],[-85,65],[-95,70],[-120,72],[-140,72],[-170,72]],
-      // Greenland
-      [[-55,60],[-45,60],[-20,65],[-18,72],[-20,78],[-30,82],[-50,83],[-60,82],[-70,78],[-58,75],[-55,70],[-55,60]],
-      // South America
-      [[-80,8],[-77,7],[-72,12],[-67,6],[-60,5],[-52,4],[-50,0],[-50,-5],[-45,-10],[-38,-13],[-35,-10],[-35,-15],[-40,-20],[-42,-23],[-48,-28],[-52,-33],[-55,-35],[-58,-38],[-65,-42],[-65,-55],[-70,-55],[-75,-50],[-75,-45],[-72,-38],[-71,-30],[-70,-18],[-75,-15],[-76,-5],[-78,0],[-80,5],[-80,8]],
-      // Europe
-      [[-10,36],[0,38],[3,43],[0,45],[-5,44],[-10,44],[-10,36]],
-      [[0,38],[5,36],[15,38],[20,36],[25,35],[28,37],[30,40],[28,43],[25,42],[20,42],[15,43],[10,45],[5,48],[2,50],[0,50],[-5,50],[-10,52],[-8,55],[-5,58],[5,58],[10,57],[12,55],[15,55],[18,57],[20,55],[25,55],[28,56],[30,58],[28,60],[24,62],[18,63],[15,65],[10,64],[8,62],[5,62],[5,65],[10,68],[15,70],[20,70],[28,71],[32,70],[35,68],[40,68],[42,65],[38,62],[32,58],[32,55],[35,55],[40,52],[42,48],[42,42],[45,40],[50,37],[40,38],[35,35],[30,35],[25,38],[22,40],[18,43],[15,46],[10,47],[5,48],[2,50],[0,50],[0,45],[3,43],[0,38]],
-      // Africa
-      [[-18,15],[-16,12],[-12,10],[-8,5],[-5,5],[0,5],[3,6],[8,4],[10,2],[10,-2],[12,-5],[15,-5],[18,-8],[22,-10],[28,-15],[33,-20],[36,-25],[35,-30],[30,-34],[25,-34],[20,-30],[15,-28],[12,-18],[10,-10],[5,-5],[2,0],[-5,5],[-8,5],[-12,10],[-16,12],[-18,15]],
-      [[-18,15],[-17,20],[-16,25],[-13,28],[-5,33],[0,35],[5,36],[10,37],[12,33],[15,30],[20,32],[25,32],[30,30],[33,30],[35,32],[37,35],[40,33],[43,28],[43,12],[45,3],[42,0],[40,-5],[42,-10],[40,-15],[38,-12],[35,-8],[33,-5],[30,0],[30,5],[33,10],[35,15],[33,20],[30,25],[25,30],[20,32],[15,30],[10,33],[10,37],[5,36],[0,35],[-5,33],[-5,28],[-8,25],[-13,28],[-16,25],[-17,20],[-18,15]],
-      // Asia (simplified main body)
-      [[40,38],[45,40],[50,37],[55,38],[58,40],[60,42],[65,40],[68,38],[70,35],[72,30],[75,28],[78,22],[80,15],[82,10],[85,8],[88,15],[90,22],[95,20],[100,15],[105,10],[108,5],[110,2],[115,5],[118,10],[120,15],[122,22],[125,25],[128,30],[130,35],[132,38],[135,35],[138,33],[140,35],[142,40],[145,45],[143,48],[140,50],[135,55],[130,55],[125,52],[120,52],[115,55],[110,53],[105,50],[100,50],[95,48],[90,50],[85,52],[80,52],[75,55],[70,55],[68,58],[65,55],[60,55],[55,55],[50,52],[42,48],[40,42],[40,38]],
-      // Russia/Siberia upper
-      [[30,58],[35,55],[40,55],[50,52],[55,55],[60,55],[65,55],[68,58],[70,60],[75,62],[80,65],[85,68],[90,70],[100,72],[110,72],[120,70],[130,65],[140,60],[145,58],[150,55],[155,58],[160,60],[165,62],[170,65],[175,68],[180,68],[180,72],[170,72],[160,72],[150,72],[140,75],[130,78],[120,78],[100,78],[80,72],[70,68],[60,65],[50,60],[42,60],[35,60],[30,58]],
-      // Australia
-      [[115,-35],[118,-35],[120,-33],[125,-33],[128,-30],[130,-28],[132,-25],[135,-20],[137,-18],[138,-15],[140,-12],[142,-10],[145,-15],[148,-18],[150,-22],[152,-25],[154,-28],[153,-32],[150,-35],[148,-38],[145,-39],[140,-38],[135,-35],[130,-33],[128,-35],[125,-35],[120,-35],[115,-35]],
-      // Japan
-      [[130,31],[132,33],[134,34],[136,35],[137,37],[140,40],[142,43],[145,45],[144,43],[141,40],[139,38],[137,36],[135,34],[132,32],[130,31]],
-      // Indonesia
-      [[95,6],[100,2],[104,0],[106,-2],[108,-5],[110,-7],[115,-8],[118,-8],[120,-5],[122,-3],[125,-5],[127,-7],[130,-5],[133,-3],[135,-5],[138,-6],[140,-5],[142,-3],[140,-2],[135,-2],[130,0],[125,0],[120,2],[115,2],[110,3],[105,3],[100,4],[95,6]],
-      // India
-      [[68,8],[70,10],[72,15],[72,20],[70,24],[72,28],[75,28],[78,30],[80,28],[82,28],[85,28],[88,25],[90,22],[88,18],[85,15],[82,10],[80,8],[78,8],[75,10],[72,8],[68,8]],
-      // Middle East
-      [[35,32],[38,35],[40,38],[42,38],[45,37],[48,35],[50,28],[52,25],[55,22],[58,24],[60,25],[62,25],[65,28],[68,28],[70,25],[68,22],[65,18],[60,20],[55,20],[50,22],[48,28],[46,30],[44,32],[42,35],[38,35],[35,32]],
-      // UK/Ireland
-      [[-10,50],[-6,50],[-5,52],[-3,54],[0,55],[2,56],[2,52],[0,51],[-3,50],[-5,50],[-10,50]],
-      // Scandinavia
-      [[5,58],[10,57],[12,60],[10,64],[12,66],[15,68],[18,70],[20,70],[25,70],[28,71],[30,70],[32,68],[30,65],[25,62],[22,60],[18,58],[15,58],[12,57],[10,58],[5,58]],
-      // New Zealand
-      [[165,-35],[168,-37],[172,-40],[175,-42],[178,-44],[177,-46],[175,-45],[172,-42],[170,-40],[168,-38],[165,-35]],
-      // Taiwan
-      [[120,22],[121,22.5],[121.5,24],[121.5,25.3],[121,25.5],[120.5,24.5],[120,22]],
-      // Hainan
-      [[108.6,18.2],[109.5,18.2],[110.5,19.2],[110.5,20],[110,20],[109,19.5],[108.6,18.2]],
-      // Philippines
-      [[117,7],[119,10],[121,14],[122,18.5],[122,14],[124,12],[126,8],[125,6],[122,5],[119,7],[117,7]],
-      // Sri Lanka
-      [[79.5,6],[80,7.5],[81,9],[82,8],[81.5,6.5],[80,5.8],[79.5,6]],
-      // Papua New Guinea
-      [[141,-2],[145,-5],[148,-6],[150,-6],[152,-5],[155,-6],[155,-8],[150,-10],[147,-10],[143,-8],[141,-5],[141,-2]],
-      // Malaysia/Borneo
-      [[109,1],[112,1],[115,2],[117,4],[118,6],[117,7],[115,5],[112,3],[109,2],[109,1]],
-      // Madagascar
-      [[43,-12],[45,-14],[47,-16],[49,-18],[50,-22],[48,-25],[45,-25],[44,-22],[43,-18],[43,-15],[43,-12]]
-    ];
-
-    function isLand(lat, lng) {
-      for (var c = 0; c < continents.length; c++) {
-        var poly = continents[c];
-        var inside = false;
-        for (var i = 0, j = poly.length - 1; i < poly.length; j = i++) {
-          var xi = poly[i][0], yi = poly[i][1];
-          var xj = poly[j][0], yj = poly[j][1];
-          if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) {
-            inside = !inside;
-          }
-        }
-        if (inside) return true;
-      }
-      return false;
-    }
-
     function ll2v(lat, lng, r) {
       var la = lat * Math.PI / 180, lo = lng * Math.PI / 180;
       return new THREE.Vector3(
@@ -2097,101 +2034,40 @@
       );
     }
 
-    // --- Generate ocean and land dot arrays ---
-    var oceanPositions = [];
-    var landPositions = [];
-    var step = 2;
-    for (var lat = -85; lat <= 85; lat += step) {
-      var latRad = lat * Math.PI / 180;
-      var cosLat = Math.cos(latRad);
-      var lngStep = Math.max(step, Math.round(step / cosLat));
-      for (var lng = -180; lng < 180; lng += lngStep) {
-        var v = ll2v(lat, lng, radius);
-        if (isLand(lat, lng)) {
-          landPositions.push(v.x, v.y, v.z);
-        } else {
-          oceanPositions.push(v.x, v.y, v.z);
+    // --- Point-in-polygon (ray casting) for GeoJSON rings ---
+    function pointInRing(lng, lat, ring) {
+      var inside = false;
+      for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        var xi = ring[i][0], yi = ring[i][1];
+        var xj = ring[j][0], yj = ring[j][1];
+        if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) {
+          inside = !inside;
         }
       }
+      return inside;
     }
 
-    // Ocean dots - small gray (token: gray-7 #48566a)
-    var oceanGeo = new THREE.BufferGeometry();
-    oceanGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(oceanPositions), 3));
-    var oceanMat = new THREE.PointsMaterial({
-      color: 0x48566a, size: 0.012, transparent: true, opacity: 0.5, sizeAttenuation: true
-    });
-    globeGroup.add(new THREE.Points(oceanGeo, oceanMat));
+    function pointInPolygon(lng, lat, polygon) {
+      // polygon = array of rings: [outerRing, hole1, hole2, ...]
+      if (!pointInRing(lng, lat, polygon[0])) return false;
+      // Check holes
+      for (var h = 1; h < polygon.length; h++) {
+        if (pointInRing(lng, lat, polygon[h])) return false;
+      }
+      return true;
+    }
 
-    // Land dots - white
-    var landGeo = new THREE.BufferGeometry();
-    landGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(landPositions), 3));
-    var landMat = new THREE.PointsMaterial({
-      color: 0xffffff, size: 0.022, transparent: true, opacity: 0.95, sizeAttenuation: true
-    });
-    globeGroup.add(new THREE.Points(landGeo, landMat));
+    function isLandGeoJSON(lat, lng, polygons) {
+      for (var i = 0; i < polygons.length; i++) {
+        if (pointInPolygon(lng, lat, polygons[i])) return true;
+      }
+      return false;
+    }
 
-    // --- Dark globe body to occlude backside dots ---
+    // --- Dark globe body (render immediately) ---
     var bodyMat = new THREE.MeshBasicMaterial({ color: 0x090e1a, transparent: true, opacity: 0.95 });
     var body = new THREE.Mesh(new THREE.SphereGeometry(0.99, 48, 48), bodyMat);
     globeGroup.add(body);
-
-    // --- Atmosphere glow removed ---
-
-    // --- City markers (theme color dots) ---
-    var cities = [
-      {lat:39.9,lng:116.4,name:'Beijing'},
-      {lat:31.2,lng:121.5,name:'Shanghai'},
-      {lat:22.5,lng:114.1,name:'Shenzhen'},
-      {lat:35.7,lng:139.7,name:'Tokyo'},
-      {lat:37.6,lng:127.0,name:'Seoul'},
-      {lat:1.3,lng:103.8,name:'Singapore'},
-      {lat:19.1,lng:72.9,name:'Mumbai'},
-      {lat:25.2,lng:55.3,name:'Dubai'},
-      {lat:51.5,lng:-0.1,name:'London'},
-      {lat:48.9,lng:2.3,name:'Paris'},
-      {lat:50.1,lng:8.7,name:'Frankfurt'},
-      {lat:40.7,lng:-74.0,name:'New York'},
-      {lat:37.8,lng:-122.4,name:'San Francisco'},
-      {lat:34.1,lng:-118.2,name:'Los Angeles'},
-      {lat:-23.5,lng:-46.6,name:'São Paulo'},
-      {lat:-33.9,lng:151.2,name:'Sydney'}
-    ];
-
-    var cityColor = 0x4362ff;
-    var cityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.95, side: THREE.DoubleSide });
-    var glowCityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
-    var cityGeo = new THREE.CircleGeometry(0.02, 12);
-    var glowGeo = new THREE.CircleGeometry(0.04, 16);
-
-    cities.forEach(function(c) {
-      var p = ll2v(c.lat, c.lng, 1.005);
-      var dot = new THREE.Mesh(cityGeo, cityMat);
-      dot.position.copy(p);
-      dot.lookAt(0, 0, 0);
-      globeGroup.add(dot);
-      var glow = new THREE.Mesh(glowGeo, glowCityMat);
-      glow.position.copy(p.clone().multiplyScalar(1.001));
-      glow.lookAt(0, 0, 0);
-      globeGroup.add(glow);
-    });
-
-    // --- Flight lines (arcs between cities) ---
-    var lineMat = new THREE.LineBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3 });
-    var conns = [[0,1],[0,2],[0,3],[1,3],[1,4],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[8,10],[10,11],[11,12],[12,13],[11,14],[0,15],[3,15],[5,15],[0,7],[2,5],[8,11],[0,12]];
-    conns.forEach(function(cn) {
-      var p1 = ll2v(cities[cn[0]].lat, cities[cn[0]].lng, radius);
-      var p2 = ll2v(cities[cn[1]].lat, cities[cn[1]].lng, radius);
-      var mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
-      var alt = p1.distanceTo(p2) * 0.35 + radius;
-      mid.normalize().multiplyScalar(alt);
-      var curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
-      var pts = curve.getPoints(40);
-      var geo = new THREE.Geometry();
-      pts.forEach(function(pt) { geo.vertices.push(pt); });
-      globeGroup.add(new THREE.Line(geo, lineMat));
-    });
-
     scene.add(globeGroup);
     globeGroup.rotation.x = 0.2;
 
@@ -2199,22 +2075,18 @@
     var isDragging = false;
     var prevMouse = { x: 0, y: 0 };
     var autoSpeed = 0.002;
-    var dragSpeed = { x: 0, y: 0 };
 
     renderer.domElement.addEventListener('mousedown', function(e) {
       isDragging = true;
       prevMouse.x = e.clientX;
       prevMouse.y = e.clientY;
-      dragSpeed.x = 0; dragSpeed.y = 0;
     });
     window.addEventListener('mousemove', function(e) {
       if (!isDragging) return;
       var dx = e.clientX - prevMouse.x;
       var dy = e.clientY - prevMouse.y;
-      dragSpeed.x = dx * 0.005;
-      dragSpeed.y = dy * 0.005;
-      globeGroup.rotation.y += dragSpeed.x;
-      globeGroup.rotation.x += dragSpeed.y;
+      globeGroup.rotation.y += dx * 0.005;
+      globeGroup.rotation.x += dy * 0.005;
       prevMouse.x = e.clientX;
       prevMouse.y = e.clientY;
     });
@@ -2238,7 +2110,7 @@
     renderer.domElement.addEventListener('touchend', function() { isDragging = false; });
     renderer.domElement.style.cursor = 'grab';
 
-    // Animate
+    // Animate (starts immediately, dots added once data loads)
     (function animate() {
       requestAnimationFrame(animate);
       if (!isDragging) {
@@ -2251,6 +2123,114 @@
       var nw = container.offsetWidth || 640, nh = container.offsetHeight || 640;
       camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
     });
+
+    // --- Load TopoJSON land data and build dots ---
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')
+      .then(function(r) { return r.json(); })
+      .then(function(topology) {
+        var land = topojson.feature(topology, topology.objects.land);
+
+        // Extract all polygon rings from GeoJSON
+        var allPolygons = [];
+        land.features.forEach(function(f) {
+          var geom = f.geometry;
+          if (geom.type === 'Polygon') {
+            allPolygons.push(geom.coordinates);
+          } else if (geom.type === 'MultiPolygon') {
+            geom.coordinates.forEach(function(poly) {
+              allPolygons.push(poly);
+            });
+          }
+        });
+
+        // Generate dots
+        var oceanPositions = [];
+        var landPositions = [];
+        var step = 2;
+        for (var lat = -85; lat <= 85; lat += step) {
+          var latRad = lat * Math.PI / 180;
+          var cosLat = Math.cos(latRad);
+          var lngStep = Math.max(step, Math.round(step / cosLat));
+          for (var lng = -180; lng < 180; lng += lngStep) {
+            var v = ll2v(lat, lng, radius);
+            if (isLandGeoJSON(lat, lng, allPolygons)) {
+              landPositions.push(v.x, v.y, v.z);
+            } else {
+              oceanPositions.push(v.x, v.y, v.z);
+            }
+          }
+        }
+
+        // Ocean dots
+        var oceanGeo = new THREE.BufferGeometry();
+        oceanGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(oceanPositions), 3));
+        var oceanMat = new THREE.PointsMaterial({
+          color: 0x48566a, size: 0.012, transparent: true, opacity: 0.5, sizeAttenuation: true
+        });
+        globeGroup.add(new THREE.Points(oceanGeo, oceanMat));
+
+        // Land dots - white
+        var landGeo = new THREE.BufferGeometry();
+        landGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(landPositions), 3));
+        var landMat = new THREE.PointsMaterial({
+          color: 0xffffff, size: 0.022, transparent: true, opacity: 0.95, sizeAttenuation: true
+        });
+        globeGroup.add(new THREE.Points(landGeo, landMat));
+
+        // --- City markers (theme color dots) ---
+        var cities = [
+          {lat:39.9,lng:116.4,name:'Beijing'},
+          {lat:31.2,lng:121.5,name:'Shanghai'},
+          {lat:22.5,lng:114.1,name:'Shenzhen'},
+          {lat:35.7,lng:139.7,name:'Tokyo'},
+          {lat:37.6,lng:127.0,name:'Seoul'},
+          {lat:1.3,lng:103.8,name:'Singapore'},
+          {lat:19.1,lng:72.9,name:'Mumbai'},
+          {lat:25.2,lng:55.3,name:'Dubai'},
+          {lat:51.5,lng:-0.1,name:'London'},
+          {lat:48.9,lng:2.3,name:'Paris'},
+          {lat:50.1,lng:8.7,name:'Frankfurt'},
+          {lat:40.7,lng:-74.0,name:'New York'},
+          {lat:37.8,lng:-122.4,name:'San Francisco'},
+          {lat:34.1,lng:-118.2,name:'Los Angeles'},
+          {lat:-23.5,lng:-46.6,name:'São Paulo'},
+          {lat:-33.9,lng:151.2,name:'Sydney'}
+        ];
+
+        var cityColor = 0x4362ff;
+        var cityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.95, side: THREE.DoubleSide });
+        var glowCityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
+        var cityGeo = new THREE.CircleGeometry(0.02, 12);
+        var glowGeo = new THREE.CircleGeometry(0.04, 16);
+
+        cities.forEach(function(c) {
+          var p = ll2v(c.lat, c.lng, 1.005);
+          var dot = new THREE.Mesh(cityGeo, cityMat);
+          dot.position.copy(p);
+          dot.lookAt(0, 0, 0);
+          globeGroup.add(dot);
+          var glow = new THREE.Mesh(glowGeo, glowCityMat);
+          glow.position.copy(p.clone().multiplyScalar(1.001));
+          glow.lookAt(0, 0, 0);
+          globeGroup.add(glow);
+        });
+
+        // --- Flight lines (arcs between cities) ---
+        var lineMat = new THREE.LineBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3 });
+        var conns = [[0,1],[0,2],[0,3],[1,3],[1,4],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[8,10],[10,11],[11,12],[12,13],[11,14],[0,15],[3,15],[5,15],[0,7],[2,5],[8,11],[0,12]];
+        conns.forEach(function(cn) {
+          var p1 = ll2v(cities[cn[0]].lat, cities[cn[0]].lng, radius);
+          var p2 = ll2v(cities[cn[1]].lat, cities[cn[1]].lng, radius);
+          var mid = new THREE.Vector3().addVectors(p1, p2).multiplyScalar(0.5);
+          var alt = p1.distanceTo(p2) * 0.35 + radius;
+          mid.normalize().multiplyScalar(alt);
+          var curve = new THREE.QuadraticBezierCurve3(p1, mid, p2);
+          var pts = curve.getPoints(40);
+          var geo = new THREE.Geometry();
+          pts.forEach(function(pt) { geo.vertices.push(pt); });
+          globeGroup.add(new THREE.Line(geo, lineMat));
+        });
+      });
   })();
 
   // --- Stat counter animation ---
