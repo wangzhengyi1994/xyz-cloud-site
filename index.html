@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XYZ Cloud - AI-Native Cloud</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4362ff;
+      --dark: #090e1a;
+      --text-heading: #090e1a;
+      --text-secondary: #344256;
+      --border-secondary: #e1e7ef;
+      --white-10: #ffffff;
+      --white-8: rgba(255,255,255,0.8);
+      --white-6: rgba(255,255,255,0.5);
+      --white-4: rgba(255,255,255,0.3);
+      --white-2: rgba(255,255,255,0.1);
+      --white-1: rgba(255,255,255,0.08);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'OPPO Sans', sans-serif;
+      color: var(--text-heading);
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1460px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ===== Language Toggle ===== */
+    .lang-toggle {
+      position: fixed;
+      top: 16px;
+      right: 20px;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: white;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+    }
+    .lang-toggle:hover {
+      background: rgba(255,255,255,0.25);
+    }
+    .lang-toggle svg {
+      width: 16px;
+      height: 16px;
+      fill: white;
+    }
+
+    /* ===== Header / Navbar ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 80px;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 999;
+    }
+    .navbar-left {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      text-decoration: none;
+    }
+    .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logo-icon svg { width: 20px; height: 20px; fill: white; }
+    .logo-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 20px;
+      color: white;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      height: 64px;
+    }
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 300;
+      font-size: 12px;
+      color: var(--white-8);
+      text-decoration: none;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: white; }
+    .navbar-right {
+      display: flex;
+      align-items: center;
+      height: 64px;
+    }
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: content-box;
+      cursor: pointer;
+    }
+    .btn-signup {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 300;
+      font-size: 14px;
+      color: var(--white-8);
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-login {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 300;
+      font-size: 14px;
+      color: white;
+      background: var(--primary);
+      border: none;
+      width: 160px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-login:hover { background: #3451e6; }
+
+    /* ===== Hero Banner ===== */
+    .hero {
+      position: relative;
+      height: 960px;
+      background: var(--dark);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding-top: 304px;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #0a0e2a 0%, #131640 30%, #0d1035 60%, #090e1a 100%);
+    }
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 10%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(67,98,255,0.15) 0%, transparent 70%);
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: 10%;
+      right: 10%;
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(67,98,255,0.1) 0%, transparent 70%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      max-width: 1420px;
+      padding: 0 250px;
+    }
+    .hero h1 {
+      font-size: 72px;
+      font-weight: 500;
+      line-height: 80px;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .hero p {
+      font-size: 20px;
+      font-weight: 300;
+      line-height: 28px;
+      color: var(--white-8);
+      margin-bottom: 40px;
+    }
+    .btn-get-started {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      color: var(--primary);
+      font-size: 16px;
+      font-weight: 300;
+      padding: 8px 24px 8px 16px;
+      border: none;
+      cursor: pointer;
+      height: 40px;
+      transition: all 0.2s;
+    }
+    .btn-get-started:hover { background: #f0f0f0; }
+    .btn-get-started .arrow {
+      display: inline-block;
+      transform: rotate(-45deg);
+      font-size: 18px;
+    }
+
+    /* ===== Announcement Bar ===== */
+    .announcement {
+      background: white;
+      height: 102px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      border-bottom: 1px solid var(--border-secondary);
+    }
+    .announcement-text {
+      font-size: 16px;
+      color: var(--text-heading);
+    }
+    .announcement-link {
+      font-size: 16px;
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .announcement-link:hover { text-decoration: underline; }
+
+    /* ===== Section Base (Light) ===== */
+    .section-light {
+      background: white;
+    }
+    .section-light .section-inner {
+      border-left: 1px solid var(--border-secondary);
+      border-right: 1px solid var(--border-secondary);
+      border-bottom: 1px solid var(--border-secondary);
+      padding: 80px 20px;
+    }
+    .section-title {
+      font-size: 48px;
+      font-weight: 500;
+      line-height: 56px;
+      color: var(--text-heading);
+      margin-bottom: 80px;
+    }
+    .section-row {
+      display: flex;
+      gap: 80px;
+      align-items: flex-start;
+    }
+
+    /* ===== Section Base (Dark) ===== */
+    .section-dark {
+      background: var(--dark);
+    }
+    .section-dark .section-inner {
+      border-left: 1px solid var(--white-1);
+      border-right: 1px solid var(--white-1);
+      border-bottom: 1px solid var(--white-1);
+      padding: 80px 20px;
+    }
+    .section-title-dark {
+      font-size: 48px;
+      font-weight: 500;
+      line-height: 56px;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .section-subtitle-dark {
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 32px;
+      color: white;
+      margin-bottom: 80px;
+    }
+
+    /* ===== Core Value Proposition ===== */
+    .core-value .left {
+      width: 580px;
+      flex-shrink: 0;
+    }
+    .accordion-item {
+      border: 1px solid var(--text-heading);
+      margin-bottom: 20px;
+    }
+    .accordion-item.collapsed {
+      border-color: #65758b;
+    }
+    .accordion-header {
+      padding: 20px;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .accordion-item.active .accordion-header {
+      background: var(--dark);
+      color: white;
+    }
+    .accordion-item.collapsed .accordion-header {
+      color: var(--text-secondary);
+    }
+    .accordion-body {
+      padding: 8px;
+      display: none;
+    }
+    .accordion-item.active .accordion-body {
+      display: block;
+    }
+    .accordion-body li {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 22px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      margin-left: 21px;
+    }
+    .img-placeholder {
+      flex: 1;
+      min-height: 480px;
+      background: linear-gradient(135deg, #e8ecf4 0%, #d0d8e8 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .img-placeholder::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: linear-gradient(135deg, #4362ff33, #4362ff11);
+      border-radius: 12px;
+      transform: rotate(15deg);
+    }
+
+    /* ===== End-to-End Platform ===== */
+    .platform-tabs {
+      width: 640px;
+      flex-shrink: 0;
+    }
+    .platform-tab {
+      border: 1px solid var(--white-2);
+      padding: 21px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .platform-tab.active {
+      border-color: white;
+    }
+    .platform-tab .tab-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      background: var(--white-2);
+    }
+    .platform-tab .tab-title {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 24px;
+      color: var(--white-8);
+    }
+    .platform-tab.active .tab-title { color: white; }
+    .platform-tab .tab-desc {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 22px;
+      color: var(--white-6);
+    }
+    .platform-tab.active .tab-desc { color: var(--white-8); }
+    .platform-img {
+      flex: 1;
+      background: var(--white-2);
+      min-height: 760px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .platform-img::after {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(67,98,255,0.2) 0%, transparent 70%);
+    }
+
+    /* ===== XYZ Cloud Story ===== */
+    .story-left {
+      width: 580px;
+      flex-shrink: 0;
+    }
+    .story-left li {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 22px;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      margin-left: 21px;
+    }
+
+    /* ===== Build Anything with AI ===== */
+    .build-section {
+      position: relative;
+    }
+    .build-section .section-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 80px;
+    }
+    .build-cards {
+      display: flex;
+    }
+    .build-card {
+      flex: 1;
+      border: 1px solid var(--white-2);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    .build-card .number {
+      font-size: 40px;
+      font-weight: 500;
+      color: white;
+      line-height: 48px;
+    }
+    .build-card .number span {
+      color: var(--primary);
+    }
+    .build-card .card-text {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+      color: var(--white-8);
+    }
+
+    /* ===== Designed for Engineers (1) ===== */
+    .engineer-section {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+    .engineer-left {
+      width: 730px;
+      flex-shrink: 0;
+      border: 1px solid var(--white-2);
+    }
+    .grid-row {
+      display: flex;
+    }
+    .grid-cell {
+      width: 122px;
+      height: 122px;
+      border-bottom: 1px solid var(--white-2);
+      border-left: 1px solid var(--white-2);
+    }
+    .grid-cell:first-child { border-left: none; }
+    .grid-row.bottom .grid-cell {
+      border-bottom: none;
+      border-top: 1px solid var(--white-2);
+    }
+    .engineer-list {
+      padding: 20px;
+    }
+    .engineer-item {
+      padding: 20px 0;
+      position: relative;
+    }
+    .engineer-item.active::after {
+      content: '';
+      position: absolute;
+      right: -24px;
+      top: 24px;
+      width: 2px;
+      height: 32px;
+      background: var(--primary);
+    }
+    .engineer-item h4 {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+      color: white;
+      margin-bottom: 12px;
+    }
+    .engineer-item.inactive h4 { color: var(--white-6); }
+    .engineer-item p {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 22px;
+      color: white;
+    }
+    .engineer-item.inactive p { color: var(--white-6); }
+    .engineer-right {
+      flex: 1;
+      border: 1px solid var(--white-2);
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      background: #0d1220;
+      overflow: hidden;
+    }
+    .terminal-dots {
+      display: flex;
+      gap: 10px;
+      padding: 15px;
+    }
+    .terminal-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+    .terminal-dot.blue { background: var(--primary); }
+    .terminal-dot.gray { border: 1px solid var(--white-4); }
+    .terminal-code {
+      flex: 1;
+      padding: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--white-6);
+      line-height: 1.8;
+    }
+    .terminal-code .prompt { color: var(--primary); }
+    .terminal-code .cmd { color: white; }
+
+    /* ===== Designed for Engineers (2) - Stats ===== */
+    .stats-section {
+      display: flex;
+      align-items: center;
+      gap: 80px;
+    }
+    .stats-left {
+      width: 460px;
+      flex-shrink: 0;
+    }
+    .stat-item {
+      margin-bottom: 40px;
+    }
+    .stat-item:last-child { margin-bottom: 0; }
+    .stat-label {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+      color: var(--white-8);
+      margin-bottom: 12px;
+    }
+    .stat-value {
+      font-size: 48px;
+      font-weight: 500;
+      line-height: 56px;
+      color: white;
+    }
+    .stats-img {
+      flex: 1;
+      height: 640px;
+      background: radial-gradient(circle at center, #1a2040 0%, #0d1220 100%);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .stats-img::before {
+      content: '';
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      border: 1px solid var(--white-2);
+    }
+    .stats-img::after {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      border-radius: 50%;
+      border: 1px solid rgba(67,98,255,0.3);
+    }
+
+    /* ===== Services CTA ===== */
+    .services-section {
+      background: var(--dark);
+      position: relative;
+      overflow: hidden;
+    }
+    .services-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(67,98,255,0.08) 0%, transparent 50%),
+                  linear-gradient(135deg, #0a0e2a 0%, #090e1a 100%);
+    }
+    .services-content {
+      position: relative;
+      z-index: 1;
+      padding: 120px 0;
+      text-align: center;
+    }
+    .services-title {
+      font-size: 48px;
+      font-weight: 500;
+      line-height: 56px;
+      background: linear-gradient(90deg, white, rgba(255,255,255,0.6));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+    .services-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .services-icon svg { width: 28px; height: 28px; fill: white; }
+    .services-divider {
+      width: 48px;
+      height: 1px;
+      background: white;
+      margin: 0 auto 20px;
+    }
+    .services-text {
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 28px;
+      color: var(--white-8);
+      margin-bottom: 12px;
+    }
+    .services-subtext {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 22px;
+      color: var(--white-8);
+    }
+
+    /* ===== Footer ===== */
+    .footer {
+      background: var(--dark);
+    }
+    .footer-inner {
+      border-left: 1px solid var(--white-2);
+      border-right: 1px solid var(--white-2);
+    }
+    .footer-top {
+      padding: 40px 20px;
+      border-bottom: 1px solid var(--white-2);
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .footer-logo .logo-icon {
+      width: 32px;
+      height: 32px;
+      background: var(--primary);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .footer-logo .logo-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 20px;
+      color: white;
+      white-space: nowrap;
+    }
+    .footer-nav {
+      display: flex;
+      flex: 1;
+      gap: 16px;
+    }
+    .footer-nav a {
+      flex: 1;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--white-8);
+      text-decoration: none;
+    }
+    .footer-nav a:hover { color: white; }
+    .footer-mid {
+      padding: 40px 20px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .footer-mid-left {
+      display: flex;
+      align-items: flex-end;
+      gap: 40px;
+      flex: 1;
+    }
+    .footer-anc {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 200px;
+      line-height: 200px;
+      color: var(--white-1);
+      user-select: none;
+    }
+    .contact-col h5 {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 22px;
+      color: var(--white-8);
+      margin-bottom: 8px;
+    }
+    .contact-col p {
+      font-size: 24px;
+      font-weight: 500;
+      line-height: 32px;
+      color: var(--white-8);
+    }
+    .social-icons {
+      display: flex;
+      gap: 12px;
+    }
+    .social-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--white-4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .social-icon:hover { border-color: white; }
+    .social-icon svg { width: 16px; height: 16px; fill: var(--white-8); }
+    .footer-bottom {
+      padding: 20px;
+      border-top: 1px solid var(--white-2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-bottom-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+    .footer-bottom span, .footer-bottom a {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--white-6);
+      text-decoration: none;
+    }
+    .footer-bottom a:hover { color: var(--white-8); }
+    .footer-bottom-right {
+      display: flex;
+      gap: 4px;
+    }
+    .footer-bottom-right a {
+      font-size: 12px;
+      color: var(--white-6);
+      text-decoration: none;
+    }
+
+    /* ===== Animations ===== */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-in {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    /* ===== Responsive ===== */
+    @media (max-width: 1200px) {
+      .navbar { padding: 0 20px; }
+      .navbar-left { gap: 40px; }
+      .nav-links a { padding: 0 12px; font-size: 11px; }
+      .hero h1 { font-size: 48px; line-height: 56px; }
+      .hero-content { padding: 0 40px; }
+      .section-row { flex-direction: column; gap: 40px; }
+      .core-value .left, .story-left, .platform-tabs, .stats-left, .engineer-left { width: 100%; }
+      .platform-img { min-height: 400px; }
+      .engineer-section { flex-direction: column; }
+      .footer-anc { font-size: 100px; line-height: 100px; }
+      .stats-section { flex-direction: column; }
+      .stats-img { height: 400px; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Language Toggle Button -->
+  <button class="lang-toggle" onclick="toggleLanguage()" id="langBtn">
+    <svg viewBox="0 0 24 24"><path d="M12.87 15.07l-2.54-2.51.03-.03A17.52 17.52 0 0014.07 6H17V4h-7V2H8v2H1v1.99h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11.76-2.04zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2l-4.5-12zm-2.62 7l1.62-4.33L19.12 17h-3.24z"/></svg>
+    <span id="langLabel">EN / CN</span>
+  </button>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <a class="logo" href="#">
+        <div class="logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span class="logo-text">XYZ Cloud</span>
+      </a>
+      <div class="nav-links">
+        <a href="#" data-en="AI Compute Space" data-cn="AI 算力空间">AI Compute Space</a>
+        <a href="#" data-en="AI Compute Engine" data-cn="AI 算力引擎">AI Compute Engine</a>
+        <a href="#" data-en="Solutions" data-cn="解决方案">Solutions</a>
+        <a href="#" data-en="Documents" data-cn="文档中心">Documents</a>
+        <a href="#" data-en="Partners" data-cn="合作伙伴">Partners</a>
+        <a href="#" data-en="About Us" data-cn="关于我们">About Us</a>
+      </div>
+    </div>
+    <div class="navbar-right">
+      <button class="btn-signup" data-en="SIGN UP" data-cn="注册">SIGN UP</button>
+      <button class="btn-login">
+        <span data-en="LOG IN" data-cn="登录">LOG IN</span>
+        <span class="arrow">&uarr;</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero Banner -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1 data-en="Accelerate Your AI Journey with XYZ Cloud" data-cn="使用 XYZ Cloud 加速您的 AI 之旅">Accelerate Your AI Journey<br>with XYZ Cloud</h1>
+      <p data-en="Elastic Compute. Seamless Operation. Global Compliance. Experience the proven technology of DataCanvas, now deployed for the world." data-cn="弹性计算 · 无缝运维 · 全球合规。体验 DataCanvas 久经考验的技术，现已面向全球部署。">Elastic Compute. Seamless Operation. Global Compliance. Experience the proven technology of DataCanvas, now deployed for the world.</p>
+      <button class="btn-get-started">
+        <span data-en="Get Started" data-cn="立即开始">Get Started</span>
+        <span class="arrow">&uarr;</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Announcement Bar -->
+  <section class="announcement">
+    <span class="announcement-text" data-en="November 18, 2025 Alaya NeW System Upgrade Announcement" data-cn="2025年11月18日 Alaya NeW 系统升级公告">November 18, 2025 Alaya NeW System Upgrade Announcement</span>
+    <a href="#" class="announcement-link" data-en="View Details" data-cn="查看详情">View Details</a>
+  </section>
+
+  <!-- Core Value Proposition -->
+  <section class="section-light core-value">
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title" data-en="Core Value Proposition" data-cn="核心价值主张">Core Value Proposition</h2>
+        <div class="section-row">
+          <div class="left">
+            <div class="accordion-item active">
+              <div class="accordion-header" data-en="High-Performance AI Infrastructure" data-cn="高性能 AI 基础设施">High-Performance AI Infrastructure</div>
+              <div class="accordion-body">
+                <ul>
+                  <li data-en="Access a global network of 10+ AI data centers with high-availability NVIDIA H100 and H800 GPU clusters." data-cn="访问由 10+ AI 数据中心组成的全球网络，配备高可用 NVIDIA H100 和 H800 GPU 集群。">Access a global network of 10+ AI data centers with high-availability NVIDIA H100 and H800 GPU clusters.</li>
+                  <li data-en="Purpose-built for LLMs to deliver massive data throughput and extreme I/O performance." data-cn="专为大语言模型打造，提供海量数据吞吐和极致 I/O 性能。">Purpose-built for LLMs to deliver massive data throughput and extreme I/O performance.</li>
+                  <li data-en="High-speed InfiniBand networking with optimized collective communication for seamless large-scale synchronization." data-cn="高速 InfiniBand 网络，优化集合通信，实现无缝大规模同步。">High-speed InfiniBand networking with optimized collective communication for seamless large-scale synchronization.</li>
+                </ul>
+              </div>
+            </div>
+            <div class="accordion-item collapsed">
+              <div class="accordion-header" data-en="- Full-Stack Acceleration" data-cn="- 全栈加速">- Full-Stack Acceleration</div>
+              <div class="accordion-body"><ul><li>Optimized from hardware to software for maximum AI workload performance.</li></ul></div>
+            </div>
+            <div class="accordion-item collapsed">
+              <div class="accordion-header" data-en="- Pay for Effective Compute" data-cn="- 按有效算力付费">- Pay for Effective Compute</div>
+              <div class="accordion-body"><ul><li>Only pay for the compute resources you actually use.</li></ul></div>
+            </div>
+          </div>
+          <div class="img-placeholder"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- End-to-End AI Development Platform -->
+  <section class="section-dark">
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title-dark" data-en="End-to-End AI Development Platform" data-cn="端到端 AI 开发平台">End-to-End AI Development Platform</h2>
+        <p class="section-subtitle-dark" data-en="From data to production, we provide the tools you need at every stage." data-cn="从数据到生产，我们在每个阶段提供您所需的工具。">From data to production, we provide the tools you need at every stage.</p>
+        <div class="section-row">
+          <div class="platform-tabs">
+            <div class="platform-tab active">
+              <div class="tab-icon"></div>
+              <div class="tab-title" data-en="Model Hub" data-cn="模型中心">Model Hub</div>
+              <div class="tab-desc" data-en="A collection of mainstream and the latest open-source models, supporting one-click deployment to services." data-cn="汇集主流和最新开源模型，支持一键部署为服务。">A collection of mainstream and the latest open-source models, supporting one-click deployment to services.</div>
+            </div>
+            <div class="platform-tab">
+              <div class="tab-icon"></div>
+              <div class="tab-title" data-en="Development - Cloud Container Instances" data-cn="开发 - 云容器实例">Development - Cloud Container Instances</div>
+              <div class="tab-desc" data-en="Instant development environments with second-level startup of Jupyter/VSCode, no complex configuration needed." data-cn="即时开发环境，秒级启动 Jupyter/VSCode，无需复杂配置。">Instant development environments with second-level startup of Jupyter/VSCode, no complex configuration needed.</div>
+            </div>
+            <div class="platform-tab">
+              <div class="tab-icon"></div>
+              <div class="tab-title" data-en="Training - Extreme Core Training" data-cn="训练 - 极致核心训练">Training - Extreme Core Training</div>
+              <div class="tab-desc" data-en="Ready-to-use distributed training tasks with GPU intelligent scheduling." data-cn="开箱即用的分布式训练任务，GPU 智能调度。">Ready-to-use distributed training tasks with GPU intelligent scheduling.</div>
+            </div>
+            <div class="platform-tab">
+              <div class="tab-icon"></div>
+              <div class="tab-title" data-en="Inference - Inference Service" data-cn="推理 - 推理服务">Inference - Inference Service</div>
+              <div class="tab-desc" data-en="Built-in large model inference engine, with one-click environment adaptation and fast API calls." data-cn="内置大模型推理引擎，一键适配环境，快速 API 调用。">Built-in large model inference engine, with one-click environment adaptation and fast API calls.</div>
+            </div>
+            <div class="platform-tab">
+              <div class="tab-icon"></div>
+              <div class="tab-title" data-en="GPU Cluster - VKS Elastic Container Cluster" data-cn="GPU 集群 - VKS 弹性容器集群">GPU Cluster - VKS Elastic Container Cluster</div>
+              <div class="tab-desc" data-en="High-performance, fully isolated GPU elastic clusters optimized for large models." data-cn="高性能、完全隔离的 GPU 弹性集群，针对大模型优化。">High-performance, fully isolated GPU elastic clusters optimized for large models.</div>
+            </div>
+          </div>
+          <div class="platform-img"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The XYZ Cloud Story -->
+  <section class="section-light">
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title" data-en="The XYZ Cloud Story" data-cn="XYZ Cloud 的故事">The XYZ Cloud Story</h2>
+        <div class="section-row">
+          <div class="story-left">
+            <ul>
+              <li data-en="In an era where Artificial Intelligence defines competitive advantage, the world needs a cloud infrastructure that speaks the language of AI." data-cn="在人工智能定义竞争优势的时代，世界需要一个能说 AI 语言的云基础设施。">In an era where Artificial Intelligence defines competitive advantage, the world needs a cloud infrastructure that speaks the language of AI.</li>
+              <li data-en="XYZ Cloud was born from this necessity. We are not just another cloud provider; we are the AI-Native Cloud." data-cn="XYZ Cloud 因此而生。我们不仅仅是另一个云服务商——我们是 AI 原生云。">XYZ Cloud was born from this necessity. We are not just another cloud provider; we are the AI-Native Cloud.</li>
+              <li data-en="Our distinction lies in our DNA. XYZ Cloud is built upon the technological backbone of DataCanvas, a pioneer in AI infrastructure software. By integrating DataCanvas's years of R&D in heterogeneous computing, high-performance storage, and model serving, XYZ Cloud offers a seamless experience from bare metal to AI application." data-cn="我们的独特之处在于我们的基因。XYZ Cloud 构建在 AI 基础设施软件先驱 DataCanvas 的技术骨干之上。通过整合 DataCanvas 在异构计算、高性能存储和模型服务方面多年的研发成果，XYZ Cloud 提供从裸金属到 AI 应用的无缝体验。">Our distinction lies in our DNA. XYZ Cloud is built upon the technological backbone of DataCanvas, a pioneer in AI infrastructure software. By integrating DataCanvas's years of R&D in heterogeneous computing, high-performance storage, and model serving, XYZ Cloud offers a seamless experience from bare metal to AI application.</li>
+              <li data-en="We respect data sovereignty, ensuring local compliance, and providing localized support." data-cn="我们尊重数据主权，确保本地合规，并提供本地化支持。">We respect data sovereignty, ensuring local compliance, and providing localized support.</li>
+              <li data-en="XYZ Cloud: Powered by DataCanvas." data-cn="XYZ Cloud：由 DataCanvas 驱动。">XYZ Cloud: Powered by DataCanvas.</li>
+            </ul>
+          </div>
+          <div class="img-placeholder"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Build Anything with AI -->
+  <section class="section-dark build-section">
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title-dark" data-en="Build Anything with AI" data-cn="用 AI 构建一切">Build Anything with AI</h2>
+        <div class="build-cards">
+          <div class="build-card">
+            <div class="number">01<span>/</span></div>
+            <div class="card-text" data-en="Private deployment of DeepSeek-R1 with vLLM." data-cn="使用 vLLM 私有化部署 DeepSeek-R1。">Private deployment of DeepSeek-R1 with vLLM.</div>
+          </div>
+          <div class="build-card">
+            <div class="number">02<span>/</span></div>
+            <div class="card-text" data-en="Fine-tuning Llama 3 with NeMo." data-cn="使用 NeMo 微调 Llama 3。">Fine-tuning Llama 3 with NeMo.</div>
+          </div>
+          <div class="build-card">
+            <div class="number">03<span>/</span></div>
+            <div class="card-text" data-en="Building smart customer service with Dify." data-cn="使用 Dify 构建智能客服。">Building smart customer service with Dify.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Designed for Engineers (1) -->
+  <section class="section-dark">
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title-dark" data-en="Designed for Engineers" data-cn="为工程师而设计">Designed for Engineers</h2>
+        <p class="section-subtitle-dark" data-en="Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms." data-cn="命令行工具 (CLI) 和 API 支持，快速启动本地集群，与 AlayaNew 云平台无缝集成。">Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms.</p>
+        <div class="engineer-section">
+          <div class="engineer-left">
+            <div class="grid-row">
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+            </div>
+            <div class="engineer-list">
+              <div class="engineer-item active">
+                <h4 data-en="AI Lab" data-cn="AI 实验室">AI Lab</h4>
+                <p data-en="Create your own intelligent computing space for fast task initiation." data-cn="创建您自己的智算空间，快速启动任务。">Create your own intelligent computing space for fast task initiation.</p>
+              </div>
+              <div class="engineer-item inactive">
+                <h4 data-en="Monitoring Platform" data-cn="监控平台">Monitoring Platform</h4>
+                <p data-en="Real-time resource usage updates with a visual monitoring platform." data-cn="可视化监控平台，实时更新资源使用情况。">Real-time resource usage updates with a visual monitoring platform.</p>
+              </div>
+            </div>
+            <div class="grid-row bottom">
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+              <div class="grid-cell"></div>
+            </div>
+          </div>
+          <div class="engineer-right">
+            <div class="terminal-dots">
+              <div class="terminal-dot blue"></div>
+              <div class="terminal-dot gray"></div>
+            </div>
+            <div class="terminal-code">
+              <div><span class="prompt">$</span> <span class="cmd">anc login --token &lt;your-token&gt;</span></div>
+              <div style="color: #4ade80;">Successfully authenticated.</div>
+              <br>
+              <div><span class="prompt">$</span> <span class="cmd">anc cluster create --name my-gpu-cluster \</span></div>
+              <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="cmd">--gpu-type H100 --nodes 4</span></div>
+              <div style="color: #4ade80;">Cluster 'my-gpu-cluster' created.</div>
+              <br>
+              <div><span class="prompt">$</span> <span class="cmd">anc job submit --config train.yaml</span></div>
+              <div style="color: #4ade80;">Job submitted: job-2025-1118-001</div>
+              <div style="color: #facc15;">Status: Running on 4x H100 GPUs...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Designed for Engineers (2) - Stats -->
+  <section class="section-dark">
+    <div class="container">
+      <div class="section-inner">
+        <h2 class="section-title-dark" data-en="Designed for Engineers" data-cn="为工程师而设计">Designed for Engineers</h2>
+        <p class="section-subtitle-dark" data-en="Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms." data-cn="命令行工具 (CLI) 和 API 支持，快速启动本地集群，与 AlayaNew 云平台无缝集成。">Command-line tools (CLI) and API support for rapid local cluster startup and seamless integration with AlayaNew Cloud platforms.</p>
+        <div class="stats-section">
+          <div class="stats-left">
+            <div class="stat-item">
+              <div class="stat-label" data-en="Intelligent Computing Centers" data-cn="智算中心">Intelligent Computing Centers</div>
+              <div class="stat-value">10+</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label" data-en="Regions Covered" data-cn="覆盖区域">Regions Covered</div>
+              <div class="stat-value">10+</div>
+            </div>
+            <div class="stat-item">
+              <div class="stat-label" data-en="Computing Power Scale" data-cn="算力规模">Computing Power Scale</div>
+              <div class="stat-value">10000P</div>
+            </div>
+          </div>
+          <div class="stats-img">
+            <div style="width:120px;height:120px;border-radius:50%;background:rgba(67,98,255,0.2);position:absolute;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services CTA -->
+  <section class="services-section">
+    <div class="services-bg"></div>
+    <div class="container">
+      <div class="services-content">
+        <h2 class="services-title">services.</h2>
+        <div class="services-icon">
+          <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
+        </div>
+        <div class="services-divider"></div>
+        <p class="services-text" data-en="Start Using DataCanvas AlayaNeW Cloud's Inclusive Computing Power Now" data-cn="立即开始使用 DataCanvas AlayaNeW Cloud 的普惠算力">Start Using DataCanvas AlayaNeW Cloud's Inclusive Computing Power Now</p>
+        <p class="services-subtext" data-en="High Performance · High Elasticity · Computing Power Services, Accelerate Your AI Innovation Journey!" data-cn="高性能 · 高弹性 · 算力服务，加速您的 AI 创新之旅！">High Performance · High Elasticity · Computing Power Services, Accelerate Your AI Innovation Journey!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-top">
+          <div class="footer-logo">
+            <div class="logo-icon">
+              <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:white"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span class="logo-text">AlayaNeW Cloud</span>
+          </div>
+          <div class="footer-nav">
+            <a href="#" data-en="AI Compute Space" data-cn="AI 算力空间">AI Compute Space</a>
+            <a href="#" data-en="AI Compute Engine" data-cn="AI 算力引擎">AI Compute Engine</a>
+            <a href="#" data-en="Solutions" data-cn="解决方案">Solutions</a>
+            <a href="#" data-en="Documents" data-cn="文档中心">Documents</a>
+            <a href="#" data-en="Partners" data-cn="合作伙伴">Partners</a>
+            <a href="#" data-en="About Us" data-cn="关于我们">About Us</a>
+          </div>
+        </div>
+        <div class="footer-mid">
+          <div class="footer-mid-left">
+            <div class="footer-anc">ANC</div>
+            <div class="contact-col">
+              <h5 data-en="Free Consultation Hotline:" data-cn="免费咨询热线：">Free Consultation Hotline:</h5>
+              <p>00-805-7188</p>
+            </div>
+            <div class="contact-col">
+              <h5 data-en="Business Cooperation:" data-cn="商务合作：">Business Cooperation:</h5>
+              <p>sophia@zetyun.com</p>
+            </div>
+            <div class="contact-col">
+              <h5 data-en="Communication:" data-cn="联系我们：">Communication:</h5>
+              <p>contact@zetyun.com</p>
+            </div>
+          </div>
+          <div class="social-icons">
+            <div class="social-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm-1-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm5 7h-2v-3c0-.55-.45-1-1-1s-1 .45-1 1v3h-2v-6h2v1c.5-.75 1.25-1 2-1 1.65 0 2 1.35 2 3v3z"/></svg>
+            </div>
+            <div class="social-icon">
+              <svg viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8C4 18.39 5.61 20 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6C20 5.61 18.39 4 16.4 4H7.6m9.65 1.5a1.25 1.25 0 0 1 1.25 1.25A1.25 1.25 0 0 1 17.25 8 1.25 1.25 0 0 1 16 6.75a1.25 1.25 0 0 1 1.25-1.25M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3z"/></svg>
+            </div>
+            <div class="social-icon">
+              <svg viewBox="0 0 24 24"><path d="M12 2.04c-5.5 0-10 4.49-10 10.02 0 5 3.66 9.15 8.44 9.9v-7H7.9v-2.9h2.54V9.85c0-2.51 1.49-3.89 3.78-3.89 1.09 0 2.24.19 2.24.19v2.47h-1.26c-1.24 0-1.63.77-1.63 1.56v1.88h2.78l-.45 2.9h-2.33v7a10 10 0 0 0 8.44-9.9c0-5.53-4.5-10.02-10.01-10.02z"/></svg>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <div class="footer-bottom-left">
+            <span>Copyright &copy; 2024-2025 DataCanvas.</span>
+            <a href="#">京公网安备11010802044785号</a>
+            <a href="#">京ICP备13015186号-8</a>
+          </div>
+          <div class="footer-bottom-right">
+            <a href="#" data-en="User Agreement" data-cn="用户协议">用户协议</a>
+            <span style="color:var(--white-6)">丨</span>
+            <a href="#" data-en="Privacy Policy" data-cn="隐私政策">隐私政策</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    let currentLang = 'en';
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'en' ? 'cn' : 'en';
+      const label = document.getElementById('langLabel');
+      label.textContent = currentLang === 'en' ? 'EN / CN' : 'CN / EN';
+      document.documentElement.lang = currentLang === 'en' ? 'en' : 'zh-CN';
+
+      // Update all translatable elements
+      document.querySelectorAll('[data-en][data-cn]').forEach(el => {
+        const text = el.getAttribute(`data-${currentLang}`);
+        if (text) {
+          // Handle elements with <br> in hero title
+          if (el.tagName === 'H1' && currentLang === 'en') {
+            el.innerHTML = 'Accelerate Your AI Journey<br>with XYZ Cloud';
+          } else if (el.tagName === 'H1' && currentLang === 'cn') {
+            el.innerHTML = '使用 XYZ Cloud<br>加速您的 AI 之旅';
+          } else {
+            el.textContent = text;
+          }
+        }
+      });
+    }
+
+    // Accordion interaction
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const item = header.parentElement;
+        const siblings = item.parentElement.querySelectorAll('.accordion-item');
+        siblings.forEach(s => {
+          s.classList.remove('active');
+          s.classList.add('collapsed');
+        });
+        item.classList.remove('collapsed');
+        item.classList.add('active');
+      });
+    });
+
+    // Platform tab interaction
+    document.querySelectorAll('.platform-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.platform-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => e.preventDefault());
+    });
+  </script>
+</body>
+</html>
