@@ -1746,9 +1746,10 @@
       var offX = (cw - svgW * sc) / 2;
       var offY = (ch - svgH * sc) / 2;
 
-      // Animation state
-      var smallSize = 3;   // default dot size
-      var bigSize = 6;    // hover dot size
+      // Animation state - sizes relative to dot spacing
+      var dotSpacing = 16.8 * sc;
+      var smallSize = dotSpacing * 0.25;
+      var bigSize = dotSpacing * 0.55;
       var currentSize = smallSize;
       var targetSize = smallSize;
       var isHovering = false;
