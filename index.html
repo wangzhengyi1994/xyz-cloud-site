@@ -1746,42 +1746,73 @@
       var offX = (cw - svgW * sc) / 2;
       var offY = (ch - svgH * sc) / 2;
 
-      // Animation state - sizes relative to dot spacing
+      // Magnifying glass effect
       var dotSpacing = 16.8 * sc;
       var smallSize = dotSpacing * 0.25;
-      var bigSize = dotSpacing * 0.55;
-      var currentSize = smallSize;
-      var targetSize = smallSize;
+      var bigSize = dotSpacing * 0.6;
+      var lensRadius = 80;  // px radius of magnifying area
+      var mouseX = -9999, mouseY = -9999;
       var isHovering = false;
-      var animating = false;
+      var raf = null;
 
-      wrap.addEventListener('mouseenter', function() { targetSize = bigSize; isHovering = true; if (!animating) animate(); });
-      wrap.addEventListener('mouseleave', function() { targetSize = smallSize; isHovering = false; if (!animating) animate(); });
+      // Precompute screen positions
+      var screenDots = [];
+      function computeScreenDots() {
+        dotSpacing = 16.8 * sc;
+        smallSize = dotSpacing * 0.25;
+        bigSize = dotSpacing * 0.6;
+        screenDots = [];
+        for (var i = 0; i < dots.length; i++) {
+          var d = dots[i];
+          screenDots.push({
+            cx: offX + (d.x + d.w / 2) * sc,
+            cy: offY + (d.y + d.w / 2) * sc,
+            fill: d.fill
+          });
+        }
+      }
+      computeScreenDots();
+
+      wrap.addEventListener('mouseenter', function() {
+        isHovering = true;
+        if (!raf) renderLoop();
+      });
+      wrap.addEventListener('mouseleave', function() {
+        isHovering = false;
+        mouseX = -9999; mouseY = -9999;
+        if (!raf) renderLoop();
+      });
+      wrap.addEventListener('mousemove', function(e) {
+        var rect = canvas.getBoundingClientRect();
+        mouseX = e.clientX - rect.left;
+        mouseY = e.clientY - rect.top;
+      });
 
       function draw() {
         ctx.clearRect(0, 0, cw, ch);
-        var half = currentSize / 2;
-        for (var i = 0, len = dots.length; i < len; i++) {
-          var d = dots[i];
-          var cx = offX + (d.x + d.w / 2) * sc;
-          var cy = offY + (d.y + d.w / 2) * sc;
-          ctx.fillStyle = d.fill;
-          ctx.fillRect(cx - half, cy - half, currentSize, currentSize);
+        for (var i = 0, len = screenDots.length; i < len; i++) {
+          var sd = screenDots[i];
+          var dx = sd.cx - mouseX;
+          var dy = sd.cy - mouseY;
+          var dist = Math.sqrt(dx * dx + dy * dy);
+          // Smooth falloff within lens radius
+          var t = 1 - Math.min(dist / lensRadius, 1);
+          t = t * t * (3 - 2 * t); // smoothstep
+          var size = smallSize + (bigSize - smallSize) * t;
+          var half = size / 2;
+          ctx.fillStyle = sd.fill;
+          ctx.fillRect(sd.cx - half, sd.cy - half, size, size);
         }
       }
 
-      function animate() {
-        animating = true;
-        var diff = targetSize - currentSize;
-        if (Math.abs(diff) < 0.1) {
-          currentSize = targetSize;
-          draw();
-          animating = false;
-          return;
-        }
-        currentSize += diff * 0.12;
+      function renderLoop() {
         draw();
-        requestAnimationFrame(animate);
+        if (isHovering) {
+          raf = requestAnimationFrame(renderLoop);
+        } else {
+          // One final draw with no hover
+          raf = null;
+        }
       }
 
       // Initial draw
@@ -1800,6 +1831,7 @@
         sc = Math.min(cw / svgW, ch / svgH);
         offX = (cw - svgW * sc) / 2;
         offY = (ch - svgH * sc) / 2;
+        computeScreenDots();
         draw();
       });
     };
