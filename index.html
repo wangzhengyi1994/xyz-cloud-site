@@ -545,17 +545,12 @@
       border-color: white;
       background: rgba(255,255,255,0.03);
     }
-    .platform-tab .tab-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
     .platform-tab .tab-icon {
       width: 22px;
       height: 22px;
-      flex-shrink: 0;
       opacity: 0.5;
       transition: opacity 0.3s;
+      margin-bottom: 8px;
     }
     .platform-tab.active .tab-icon,
     .platform-tab:hover .tab-icon { opacity: 0.9; }
@@ -569,9 +564,6 @@
       line-height: 22px;
       color: var(--white-5);
       transition: color 0.3s;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
     .platform-tab:hover .tab-title { color: var(--white-8); }
     .platform-tab.active .tab-title { color: white; }
@@ -1504,38 +1496,28 @@
         <div class="section-row scroll-fade-in" style="--delay:0.2s">
           <div class="platform-tabs">
             <div class="platform-tab active" data-shape="0">
-              <div class="tab-header">
-                <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><circle cx="12" cy="12" r="9"/></svg></div>
-                <div class="tab-title" data-en="Model Hub" data-cn="模型中心">Model Hub</div>
-              </div>
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><circle cx="12" cy="12" r="9"/></svg></div>
+              <div class="tab-title" data-en="Model Hub" data-cn="模型中心">Model Hub</div>
               <div class="tab-desc" data-en="A collection of mainstream and the latest open-source models, supporting one-click deployment to services." data-cn="汇集主流和最新开源模型，支持一键部署为服务。">A collection of mainstream and the latest open-source models, supporting one-click deployment to services.</div>
             </div>
             <div class="platform-tab" data-shape="1">
-              <div class="tab-header">
-                <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></div>
-                <div class="tab-title" data-en="Development - Cloud Container Instances" data-cn="开发 - 云容器实例">Development - Cloud Container Instances</div>
-              </div>
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/></svg></div>
+              <div class="tab-title" data-en="Development - Cloud Container Instances" data-cn="开发 - 云容器实例">Development - Cloud Container Instances</div>
               <div class="tab-desc" data-en="Instant development environments with second-level startup of Jupyter/VSCode, no complex configuration needed." data-cn="即时开发环境，秒级启动 Jupyter/VSCode，无需复杂配置。">Instant development environments with second-level startup of Jupyter/VSCode, no complex configuration needed.</div>
             </div>
             <div class="platform-tab" data-shape="2">
-              <div class="tab-header">
-                <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,3 22,21 2,21"/></svg></div>
-                <div class="tab-title" data-en="Training - Extreme Core Training" data-cn="训练 - 极致核心训练">Training - Extreme Core Training</div>
-              </div>
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,3 22,21 2,21"/></svg></div>
+              <div class="tab-title" data-en="Training - Extreme Core Training" data-cn="训练 - 极致核心训练">Training - Extreme Core Training</div>
               <div class="tab-desc" data-en="Ready-to-use distributed training tasks with GPU intelligent scheduling." data-cn="开箱即用的分布式训练任务，GPU 智能调度。">Ready-to-use distributed training tasks with GPU intelligent scheduling.</div>
             </div>
             <div class="platform-tab" data-shape="3">
-              <div class="tab-header">
-                <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,2 22,12 12,22 2,12"/></svg></div>
-                <div class="tab-title" data-en="Inference - Inference Service" data-cn="推理 - 推理服务">Inference - Inference Service</div>
-              </div>
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,2 22,12 12,22 2,12"/></svg></div>
+              <div class="tab-title" data-en="Inference - Inference Service" data-cn="推理 - 推理服务">Inference - Inference Service</div>
               <div class="tab-desc" data-en="Built-in large model inference engine, with one-click environment adaptation and fast API calls." data-cn="内置大模型推理引擎，一键适配环境，快速 API 调用。">Built-in large model inference engine, with one-click environment adaptation and fast API calls.</div>
             </div>
             <div class="platform-tab" data-shape="4">
-              <div class="tab-header">
-                <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,2 21.5,7.5 21.5,16.5 12,22 2.5,16.5 2.5,7.5"/></svg></div>
-                <div class="tab-title" data-en="GPU Cluster - VKS Elastic Container Cluster" data-cn="GPU 集群 - VKS 弹性容器集群">GPU Cluster - VKS Elastic Container Cluster</div>
-              </div>
+              <div class="tab-icon"><svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"><polygon points="12,2 21.5,7.5 21.5,16.5 12,22 2.5,16.5 2.5,7.5"/></svg></div>
+              <div class="tab-title" data-en="GPU Cluster - VKS Elastic Container Cluster" data-cn="GPU 集群 - VKS 弹性容器集群">GPU Cluster - VKS Elastic Container Cluster</div>
               <div class="tab-desc" data-en="High-performance, fully isolated GPU elastic clusters optimized for large models." data-cn="高性能、完全隔离的 GPU 弹性集群，针对大模型优化。">High-performance, fully isolated GPU elastic clusters optimized for large models.</div>
             </div>
           </div>
