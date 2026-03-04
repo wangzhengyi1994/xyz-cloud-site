@@ -589,11 +589,10 @@
     }
     .platform-canvas {
       flex: 1;
-      min-height: 760px;
+      min-height: 520px;
       border-radius: 4px;
       position: relative;
       overflow: hidden;
-      position: relative;
     }
     .platform-canvas canvas {
       position: absolute;
@@ -1818,7 +1817,7 @@
     if (!container) return;
 
     var w = container.offsetWidth || 600;
-    var h = container.offsetHeight || 760;
+    var h = container.offsetHeight || 520;
 
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
@@ -2088,7 +2087,7 @@
 
     /* ===== Resize Handler ===== */
     window.addEventListener('resize', function() {
-      var nw = container.offsetWidth || 600, nh = container.offsetHeight || 760;
+      var nw = container.offsetWidth || 600, nh = container.offsetHeight || 520;
       camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
     });
   })();
