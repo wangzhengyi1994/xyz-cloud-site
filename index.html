@@ -2824,145 +2824,99 @@
       camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
     });
 
-    // --- Load TopoJSON and render country polygon outlines ---
+    // --- Point-in-polygon (ray casting) ---
+    function pointInRing(lng, lat, ring) {
+      var inside = false;
+      for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        var xi = ring[i][0], yi = ring[i][1], xj = ring[j][0], yj = ring[j][1];
+        if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) inside = !inside;
+      }
+      return inside;
+    }
+    function pointInPolygon(lng, lat, polygon) {
+      if (!pointInRing(lng, lat, polygon[0])) return false;
+      for (var h = 1; h < polygon.length; h++) { if (pointInRing(lng, lat, polygon[h])) return false; }
+      return true;
+    }
+    function isLandGeoJSON(lat, lng, polygons) {
+      for (var i = 0; i < polygons.length; i++) { if (pointInPolygon(lng, lat, polygons[i])) return true; }
+      return false;
+    }
+
+    // --- Load TopoJSON, build dot grid, cities & arcs ---
     fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json')
       .then(function(r) { return r.json(); })
       .then(function(topology) {
-        var countries = topojson.feature(topology, topology.objects.countries);
+        // Use "land" for merged landmass (better for dot detection)
+        var land = topojson.feature(topology, topology.objects.land);
 
-        // Build country outlines as line segments
-        var lineMaterial = new THREE.LineBasicMaterial({
-          color: 0xffffff, transparent: true, opacity: 0.25
-        });
-        var fillMaterial = new THREE.MeshBasicMaterial({
-          color: 0xffffff, transparent: true, opacity: 0.08, side: THREE.DoubleSide
-        });
-
-        // Convert a GeoJSON ring [lng,lat] to 3D vertices
-        function ringToVertices(ring, r) {
-          var verts = [];
-          for (var i = 0; i < ring.length; i++) {
-            verts.push(ll2v(ring[i][1], ring[i][0], r));
-          }
-          return verts;
-        }
-
-        // Ear-clipping triangulation for spherical polygon
-        function triangulateRing(ring, r) {
-          var verts2d = []; // project to 2D for triangulation
-          var verts3d = [];
-          // compute centroid for local tangent plane projection
-          var cx = 0, cy = 0, cz = 0;
-          var pts3d = ringToVertices(ring, r);
-          for (var i = 0; i < pts3d.length; i++) { cx += pts3d[i].x; cy += pts3d[i].y; cz += pts3d[i].z; }
-          var n = pts3d.length || 1;
-          cx /= n; cy /= n; cz /= n;
-          var center = new THREE.Vector3(cx, cy, cz);
-          var normal = center.clone().normalize();
-
-          // local tangent axes
-          var up = new THREE.Vector3(0, 1, 0);
-          if (Math.abs(normal.dot(up)) > 0.99) up = new THREE.Vector3(1, 0, 0);
-          var axisX = new THREE.Vector3().crossVectors(up, normal).normalize();
-          var axisY = new THREE.Vector3().crossVectors(normal, axisX).normalize();
-
-          for (var i = 0; i < pts3d.length; i++) {
-            var d = pts3d[i].clone().sub(center);
-            verts2d.push([d.dot(axisX), d.dot(axisY)]);
-            verts3d.push(pts3d[i]);
-          }
-          // Remove last if duplicate of first
-          if (verts2d.length > 1) {
-            var f = verts2d[0], l = verts2d[verts2d.length - 1];
-            if (Math.abs(f[0]-l[0]) < 1e-8 && Math.abs(f[1]-l[1]) < 1e-8) {
-              verts2d.pop(); verts3d.pop();
-            }
-          }
-          return { v2d: verts2d, v3d: verts3d };
-        }
-
-        // Simple ear-clipping
-        function earClip(pts) {
-          var indices = [];
-          var idx = [];
-          for (var i = 0; i < pts.length; i++) idx.push(i);
-
-          function cross2d(o, a, b) {
-            return (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]);
-          }
-          function pointInTri(p, a, b, c) {
-            var d1 = cross2d(p,a,b), d2 = cross2d(p,b,c), d3 = cross2d(p,c,a);
-            var hasNeg = (d1<0)||(d2<0)||(d3<0);
-            var hasPos = (d1>0)||(d2>0)||(d3>0);
-            return !(hasNeg && hasPos);
-          }
-          // Ensure counter-clockwise
-          var area = 0;
-          for (var i = 0; i < idx.length; i++) {
-            var j = (i+1)%idx.length;
-            area += pts[idx[i]][0]*pts[idx[j]][1] - pts[idx[j]][0]*pts[idx[i]][1];
-          }
-          if (area < 0) idx.reverse();
-
-          var safety = idx.length * 3;
-          while (idx.length > 2 && safety-- > 0) {
-            var found = false;
-            for (var i = 0; i < idx.length; i++) {
-              var prev = idx[(i-1+idx.length)%idx.length];
-              var cur = idx[i];
-              var next = idx[(i+1)%idx.length];
-              var c = cross2d(pts[prev], pts[cur], pts[next]);
-              if (c <= 0) continue; // not convex
-              var isEar = true;
-              for (var k = 0; k < idx.length; k++) {
-                if (idx[k]===prev||idx[k]===cur||idx[k]===next) continue;
-                if (pointInTri(pts[idx[k]], pts[prev], pts[cur], pts[next])) { isEar=false; break; }
-              }
-              if (isEar) {
-                indices.push(prev, cur, next);
-                idx.splice(i, 1);
-                found = true;
-                break;
-              }
-            }
-            if (!found) break;
-          }
-          return indices;
-        }
-
-        function addPolygon(coords) {
-          var outerRing = coords[0];
-          if (outerRing.length < 4) return;
-
-          // 1) Outline
-          var lineGeo = new THREE.Geometry();
-          var verts = ringToVertices(outerRing, radius * 1.002);
-          for (var i = 0; i < verts.length; i++) lineGeo.vertices.push(verts[i]);
-          globeGroup.add(new THREE.Line(lineGeo, lineMaterial));
-
-          // 2) Fill (triangulated)
-          var tri = triangulateRing(outerRing, radius * 1.001);
-          if (tri.v3d.length < 3) return;
-          var faceIndices = earClip(tri.v2d);
-          if (faceIndices.length < 3) return;
-
-          var fillGeo = new THREE.Geometry();
-          for (var i = 0; i < tri.v3d.length; i++) fillGeo.vertices.push(tri.v3d[i]);
-          for (var i = 0; i < faceIndices.length; i += 3) {
-            fillGeo.faces.push(new THREE.Face3(faceIndices[i], faceIndices[i+1], faceIndices[i+2]));
-          }
-          fillGeo.computeFaceNormals();
-          globeGroup.add(new THREE.Mesh(fillGeo, fillMaterial));
-        }
-
-        countries.features.forEach(function(f) {
+        // Extract all polygon rings
+        var allPolygons = [];
+        land.features.forEach(function(f) {
           var geom = f.geometry;
-          if (geom.type === 'Polygon') {
-            addPolygon(geom.coordinates);
-          } else if (geom.type === 'MultiPolygon') {
-            geom.coordinates.forEach(function(poly) { addPolygon(poly); });
+          if (geom.type === 'Polygon') { allPolygons.push(geom.coordinates); }
+          else if (geom.type === 'MultiPolygon') { geom.coordinates.forEach(function(p) { allPolygons.push(p); }); }
+        });
+
+        // Generate dot grid (step=2 for performance, 50m data for accuracy)
+        var oceanPositions = [], landPositions = [];
+        var step = 2;
+        for (var lat = -85; lat <= 85; lat += step) {
+          var cosLat = Math.cos(lat * Math.PI / 180);
+          var lngStep = Math.max(step, Math.round(step / cosLat));
+          for (var lng = -180; lng < 180; lng += lngStep) {
+            var v = ll2v(lat, lng, radius);
+            if (isLandGeoJSON(lat, lng, allPolygons)) {
+              landPositions.push(v.x, v.y, v.z);
+            } else {
+              oceanPositions.push(v.x, v.y, v.z);
+            }
+          }
+        }
+
+        // Manually add dots for small islands that 2-degree grid may miss
+        var islandSpots = [
+          // Taiwan (multiple points to ensure coverage)
+          {lat:25.0,lng:121.5},{lat:24.0,lng:121.0},{lat:23.0,lng:120.5},{lat:22.5,lng:120.8},
+          // Hainan
+          {lat:19.2,lng:109.7},{lat:18.5,lng:109.9},
+          // Sri Lanka
+          {lat:7.9,lng:80.8},{lat:7.0,lng:80.0},
+          // Iceland
+          {lat:64.9,lng:-18.5},{lat:65.5,lng:-20.0},
+          // Cuba
+          {lat:22.0,lng:-79.5},{lat:21.5,lng:-78.0},
+          // Jamaica
+          {lat:18.1,lng:-77.3},
+          // New Zealand
+          {lat:-41.3,lng:174.8},{lat:-43.5,lng:172.5},{lat:-36.8,lng:174.8},
+          // Philippines
+          {lat:14.6,lng:121.0},{lat:10.3,lng:124.0},{lat:7.1,lng:125.6},
+          // Japan extra (Kyushu, Hokkaido)
+          {lat:33.0,lng:131.0},{lat:43.0,lng:141.3},
+          // Indonesia
+          {lat:-6.2,lng:106.8},{lat:-8.3,lng:115.2},{lat:-7.8,lng:110.4},
+          // Madagascar
+          {lat:-18.9,lng:47.5},{lat:-15.7,lng:46.3}
+        ];
+        islandSpots.forEach(function(spot) {
+          if (isLandGeoJSON(spot.lat, spot.lng, allPolygons)) {
+            var v = ll2v(spot.lat, spot.lng, radius);
+            landPositions.push(v.x, v.y, v.z);
           }
         });
+
+        // Ocean dots
+        var oceanGeo = new THREE.BufferGeometry();
+        oceanGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(oceanPositions), 3));
+        var oceanMat = new THREE.PointsMaterial({ color: 0x48566a, size: 0.012, transparent: true, opacity: 0.5, sizeAttenuation: true });
+        globeGroup.add(new THREE.Points(oceanGeo, oceanMat));
+
+        // Land dots
+        var landGeo = new THREE.BufferGeometry();
+        landGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(landPositions), 3));
+        var landMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.022, transparent: true, opacity: 0.95, sizeAttenuation: true });
+        globeGroup.add(new THREE.Points(landGeo, landMat));
 
         // --- City markers ---
         var cityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.95, side: THREE.DoubleSide });
@@ -2973,12 +2927,10 @@
         cities.forEach(function(c) {
           var p = ll2v(c.lat, c.lng, 1.005);
           var dot = new THREE.Mesh(cityGeo, cityMat);
-          dot.position.copy(p);
-          dot.lookAt(0, 0, 0);
+          dot.position.copy(p); dot.lookAt(0, 0, 0);
           globeGroup.add(dot);
           var glow = new THREE.Mesh(glowGeo, glowCityMat);
-          glow.position.copy(p.clone().multiplyScalar(1.001));
-          glow.lookAt(0, 0, 0);
+          glow.position.copy(p.clone().multiplyScalar(1.001)); glow.lookAt(0, 0, 0);
           globeGroup.add(glow);
         });
 
