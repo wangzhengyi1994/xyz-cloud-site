@@ -1863,45 +1863,23 @@
       return a;
     }
 
-    /* ===== Model Loader (for custom 3D JSON models) ===== */
-    function loadModelVertices(url, particleCount, scale, callback) {
+    /* ===== Model Loader ===== */
+    function loadModelJSON(url, particleCount, callback) {
       var xhr = new XMLHttpRequest();
       xhr.open('GET', url, true);
       xhr.onload = function() {
-        if (xhr.status !== 200) return;
+        if (xhr.status !== 200) { console.warn('Failed to load model:', url); return; }
         var json = JSON.parse(xhr.responseText);
-        var vertices;
-        if (json.vertices) vertices = json.vertices;
-        else if (json.data && json.data.vertices) vertices = json.data.vertices;
-        else if (json.geometries && json.geometries[0]) vertices = json.geometries[0].data.vertices;
-        if (!vertices) { console.warn('No vertices found in model JSON'); return; }
-
+        var vertices = json.vertices;
+        if (!vertices) { console.warn('No vertices in model:', url); return; }
         var modelVertCount = vertices.length / 3;
         var result = new Float32Array(particleCount * 3);
-
-        // Center the model
-        var cx = 0, cy = 0, cz = 0;
-        for (var i = 0; i < modelVertCount; i++) {
-          cx += vertices[i * 3]; cy += vertices[i * 3 + 1]; cz += vertices[i * 3 + 2];
-        }
-        cx /= modelVertCount; cy /= modelVertCount; cz /= modelVertCount;
-
-        // Auto-normalize: compute bounding radius then scale to fit
-        var maxR = 0;
-        for (var i = 0; i < modelVertCount; i++) {
-          var dx = vertices[i*3] - cx, dy = vertices[i*3+1] - cy, dz = vertices[i*3+2] - cz;
-          var r2 = dx*dx + dy*dy + dz*dz;
-          if (r2 > maxR) maxR = r2;
-        }
-        maxR = Math.sqrt(maxR) || 1;
-        var normScale = (scale || 1.8) / maxR;
-
-        // Map N particles to model vertices (modular wrapping + jitter)
+        // Map N particles to model vertices (pre-processed: already centered & normalized)
         for (var i = 0; i < particleCount; i++) {
           var srcIdx = i % modelVertCount;
-          result[i*3]   = (vertices[srcIdx*3]   - cx) * normScale;
-          result[i*3+1] = (vertices[srcIdx*3+1] - cy) * normScale;
-          result[i*3+2] = (vertices[srcIdx*3+2] - cz) * normScale;
+          result[i*3]   = vertices[srcIdx*3];
+          result[i*3+1] = vertices[srcIdx*3+1];
+          result[i*3+2] = vertices[srcIdx*3+2];
         }
         // Add jitter for duplicate-mapped particles
         if (particleCount > modelVertCount) {
@@ -1916,6 +1894,7 @@
       xhr.send();
     }
 
+    /* ===== Shapes: procedural fallback, replaced by models on load ===== */
     var shapes = [
       genSphere(N, 1.8),
       genCube(N, 2.8),
@@ -1923,17 +1902,6 @@
       genDiamond(N, 1.5, 3.5),
       genTorus(N, 1.4, 0.5)
     ];
-
-    /* ===== Public API: Load external 3D model ===== */
-    window.platformLoadModel = function(url, scale, tabIndex) {
-      loadModelVertices(url, N, scale, function(verts) {
-        if (typeof tabIndex === 'number') {
-          shapes[tabIndex] = verts;
-        } else {
-          shapes.push(verts);
-        }
-      });
-    };
 
     /* ===== Geometry & Material ===== */
     var geometry = new THREE.BufferGeometry();
@@ -1969,6 +1937,34 @@
       backOut:    function(t) { var c=1.70158; return 1+(--t)*t*((c+1)*t+c); }
     };
     var currentEasing = easings.expoOut;
+
+    /* ===== Load 3D models to replace procedural shapes ===== */
+    var modelFiles = [
+      'models/cloud-computing.json',
+      'models/cloud-hosting.json',
+      'models/server.json',
+      'models/virtual-machine.json',
+      'models/access-control.json'
+    ];
+    modelFiles.forEach(function(file, idx) {
+      loadModelJSON(file, N, function(verts) {
+        shapes[idx] = verts;
+        // If first shape loaded and not morphing, update current particles
+        if (idx === 0 && curIdx === 0 && !isMorphing) {
+          var arr = geometry.attributes.position.array;
+          for (var i = 0; i < N * 3; i++) { arr[i] = verts[i]; startPos[i] = verts[i]; targetPos[i] = verts[i]; }
+          geometry.attributes.position.needsUpdate = true;
+        }
+      });
+    });
+
+    /* ===== Public API: Load external 3D model ===== */
+    window.platformLoadModel = function(url, tabIndex) {
+      loadModelJSON(url, N, function(verts) {
+        if (typeof tabIndex === 'number') shapes[tabIndex] = verts;
+        else shapes.push(verts);
+      });
+    };
 
     /* ===== Morph Trigger ===== */
     window.platformMorphTo = function(idx) {
