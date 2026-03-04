@@ -2702,37 +2702,7 @@
       );
     }
 
-    // --- Point-in-polygon (ray casting) for GeoJSON rings ---
-    function pointInRing(lng, lat, ring) {
-      var inside = false;
-      for (var i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-        var xi = ring[i][0], yi = ring[i][1];
-        var xj = ring[j][0], yj = ring[j][1];
-        if (((yi > lat) !== (yj > lat)) && (lng < (xj - xi) * (lat - yi) / (yj - yi) + xi)) {
-          inside = !inside;
-        }
-      }
-      return inside;
-    }
-
-    function pointInPolygon(lng, lat, polygon) {
-      // polygon = array of rings: [outerRing, hole1, hole2, ...]
-      if (!pointInRing(lng, lat, polygon[0])) return false;
-      // Check holes
-      for (var h = 1; h < polygon.length; h++) {
-        if (pointInRing(lng, lat, polygon[h])) return false;
-      }
-      return true;
-    }
-
-    function isLandGeoJSON(lat, lng, polygons) {
-      for (var i = 0; i < polygons.length; i++) {
-        if (pointInPolygon(lng, lat, polygons[i])) return true;
-      }
-      return false;
-    }
-
-    // --- Dark globe body (render immediately) ---
+    // --- Dark globe body ---
     var bodyMat = new THREE.MeshBasicMaterial({ color: 0x090e1a, transparent: true, opacity: 0.95 });
     var body = new THREE.Mesh(new THREE.SphereGeometry(0.99, 48, 48), bodyMat);
     globeGroup.add(body);
@@ -2787,95 +2757,214 @@
       }, { threshold: 0 }).observe(globeSection);
     }
 
-    // Animate (starts immediately, dots added once data loads)
+    // --- City data & ring pulse animation ---
+    var cities = [
+      {lat:39.9,lng:116.4,name:'Beijing'},
+      {lat:31.2,lng:121.5,name:'Shanghai'},
+      {lat:22.5,lng:114.1,name:'Shenzhen'},
+      {lat:35.7,lng:139.7,name:'Tokyo'},
+      {lat:37.6,lng:127.0,name:'Seoul'},
+      {lat:1.3,lng:103.8,name:'Singapore'},
+      {lat:19.1,lng:72.9,name:'Mumbai'},
+      {lat:25.2,lng:55.3,name:'Dubai'},
+      {lat:51.5,lng:-0.1,name:'London'},
+      {lat:48.9,lng:2.3,name:'Paris'},
+      {lat:50.1,lng:8.7,name:'Frankfurt'},
+      {lat:40.7,lng:-74.0,name:'New York'},
+      {lat:37.8,lng:-122.4,name:'San Francisco'},
+      {lat:34.1,lng:-118.2,name:'Los Angeles'},
+      {lat:-23.5,lng:-46.6,name:'São Paulo'},
+      {lat:-33.9,lng:151.2,name:'Sydney'}
+    ];
+    var cityColor = 0x4362ff;
+    var pulseRings = []; // for animated expanding rings
+
+    // Animate
     (function animate() {
       requestAnimationFrame(animate);
       if (!isGlobeVisible) return;
       if (!isDragging) {
         globeGroup.rotation.y += autoSpeed;
       }
+      // Animate pulse rings
+      for (var i = pulseRings.length - 1; i >= 0; i--) {
+        var ring = pulseRings[i];
+        ring.scale += 0.008;
+        ring.opacity -= 0.006;
+        if (ring.opacity <= 0) {
+          globeGroup.remove(ring.mesh);
+          pulseRings.splice(i, 1);
+        } else {
+          ring.mesh.scale.set(ring.scale, ring.scale, ring.scale);
+          ring.mesh.material.opacity = ring.opacity;
+        }
+      }
       renderer.render(scene, camera);
     })();
+
+    // Spawn pulse rings periodically
+    function spawnPulse(cityIdx) {
+      var c = cities[cityIdx];
+      if (!c) return;
+      var p = ll2v(c.lat, c.lng, 1.006);
+      var ringGeo = new THREE.RingGeometry(0.015, 0.02, 24);
+      var ringMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.6, side: THREE.DoubleSide });
+      var mesh = new THREE.Mesh(ringGeo, ringMat);
+      mesh.position.copy(p);
+      mesh.lookAt(0, 0, 0);
+      globeGroup.add(mesh);
+      pulseRings.push({ mesh: mesh, scale: 1, opacity: 0.6 });
+    }
+    setInterval(function() {
+      spawnPulse(Math.floor(Math.random() * cities.length));
+    }, 800);
 
     window.addEventListener('resize', function() {
       var nw = container.offsetWidth || 640, nh = container.offsetHeight || 640;
       camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
     });
 
-    // --- Load TopoJSON land data and build dots ---
-    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json')
+    // --- Load TopoJSON and render country polygon outlines ---
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-50m.json')
       .then(function(r) { return r.json(); })
       .then(function(topology) {
-        var land = topojson.feature(topology, topology.objects.land);
+        var countries = topojson.feature(topology, topology.objects.countries);
 
-        // Extract all polygon rings from GeoJSON
-        var allPolygons = [];
-        land.features.forEach(function(f) {
-          var geom = f.geometry;
-          if (geom.type === 'Polygon') {
-            allPolygons.push(geom.coordinates);
-          } else if (geom.type === 'MultiPolygon') {
-            geom.coordinates.forEach(function(poly) {
-              allPolygons.push(poly);
-            });
-          }
+        // Build country outlines as line segments
+        var lineMaterial = new THREE.LineBasicMaterial({
+          color: 0xffffff, transparent: true, opacity: 0.25
+        });
+        var fillMaterial = new THREE.MeshBasicMaterial({
+          color: 0xffffff, transparent: true, opacity: 0.08, side: THREE.DoubleSide
         });
 
-        // Generate dots
-        var oceanPositions = [];
-        var landPositions = [];
-        var step = 1.5;
-        for (var lat = -85; lat <= 85; lat += step) {
-          var latRad = lat * Math.PI / 180;
-          var cosLat = Math.cos(latRad);
-          var lngStep = Math.max(step, Math.round(step / cosLat));
-          for (var lng = -180; lng < 180; lng += lngStep) {
-            var v = ll2v(lat, lng, radius);
-            if (isLandGeoJSON(lat, lng, allPolygons)) {
-              landPositions.push(v.x, v.y, v.z);
-            } else {
-              oceanPositions.push(v.x, v.y, v.z);
-            }
+        // Convert a GeoJSON ring [lng,lat] to 3D vertices
+        function ringToVertices(ring, r) {
+          var verts = [];
+          for (var i = 0; i < ring.length; i++) {
+            verts.push(ll2v(ring[i][1], ring[i][0], r));
           }
+          return verts;
         }
 
-        // Ocean dots
-        var oceanGeo = new THREE.BufferGeometry();
-        oceanGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(oceanPositions), 3));
-        var oceanMat = new THREE.PointsMaterial({
-          color: 0x48566a, size: 0.012, transparent: true, opacity: 0.5, sizeAttenuation: true
+        // Ear-clipping triangulation for spherical polygon
+        function triangulateRing(ring, r) {
+          var verts2d = []; // project to 2D for triangulation
+          var verts3d = [];
+          // compute centroid for local tangent plane projection
+          var cx = 0, cy = 0, cz = 0;
+          var pts3d = ringToVertices(ring, r);
+          for (var i = 0; i < pts3d.length; i++) { cx += pts3d[i].x; cy += pts3d[i].y; cz += pts3d[i].z; }
+          var n = pts3d.length || 1;
+          cx /= n; cy /= n; cz /= n;
+          var center = new THREE.Vector3(cx, cy, cz);
+          var normal = center.clone().normalize();
+
+          // local tangent axes
+          var up = new THREE.Vector3(0, 1, 0);
+          if (Math.abs(normal.dot(up)) > 0.99) up = new THREE.Vector3(1, 0, 0);
+          var axisX = new THREE.Vector3().crossVectors(up, normal).normalize();
+          var axisY = new THREE.Vector3().crossVectors(normal, axisX).normalize();
+
+          for (var i = 0; i < pts3d.length; i++) {
+            var d = pts3d[i].clone().sub(center);
+            verts2d.push([d.dot(axisX), d.dot(axisY)]);
+            verts3d.push(pts3d[i]);
+          }
+          // Remove last if duplicate of first
+          if (verts2d.length > 1) {
+            var f = verts2d[0], l = verts2d[verts2d.length - 1];
+            if (Math.abs(f[0]-l[0]) < 1e-8 && Math.abs(f[1]-l[1]) < 1e-8) {
+              verts2d.pop(); verts3d.pop();
+            }
+          }
+          return { v2d: verts2d, v3d: verts3d };
+        }
+
+        // Simple ear-clipping
+        function earClip(pts) {
+          var indices = [];
+          var idx = [];
+          for (var i = 0; i < pts.length; i++) idx.push(i);
+
+          function cross2d(o, a, b) {
+            return (a[0]-o[0])*(b[1]-o[1]) - (a[1]-o[1])*(b[0]-o[0]);
+          }
+          function pointInTri(p, a, b, c) {
+            var d1 = cross2d(p,a,b), d2 = cross2d(p,b,c), d3 = cross2d(p,c,a);
+            var hasNeg = (d1<0)||(d2<0)||(d3<0);
+            var hasPos = (d1>0)||(d2>0)||(d3>0);
+            return !(hasNeg && hasPos);
+          }
+          // Ensure counter-clockwise
+          var area = 0;
+          for (var i = 0; i < idx.length; i++) {
+            var j = (i+1)%idx.length;
+            area += pts[idx[i]][0]*pts[idx[j]][1] - pts[idx[j]][0]*pts[idx[i]][1];
+          }
+          if (area < 0) idx.reverse();
+
+          var safety = idx.length * 3;
+          while (idx.length > 2 && safety-- > 0) {
+            var found = false;
+            for (var i = 0; i < idx.length; i++) {
+              var prev = idx[(i-1+idx.length)%idx.length];
+              var cur = idx[i];
+              var next = idx[(i+1)%idx.length];
+              var c = cross2d(pts[prev], pts[cur], pts[next]);
+              if (c <= 0) continue; // not convex
+              var isEar = true;
+              for (var k = 0; k < idx.length; k++) {
+                if (idx[k]===prev||idx[k]===cur||idx[k]===next) continue;
+                if (pointInTri(pts[idx[k]], pts[prev], pts[cur], pts[next])) { isEar=false; break; }
+              }
+              if (isEar) {
+                indices.push(prev, cur, next);
+                idx.splice(i, 1);
+                found = true;
+                break;
+              }
+            }
+            if (!found) break;
+          }
+          return indices;
+        }
+
+        function addPolygon(coords) {
+          var outerRing = coords[0];
+          if (outerRing.length < 4) return;
+
+          // 1) Outline
+          var lineGeo = new THREE.Geometry();
+          var verts = ringToVertices(outerRing, radius * 1.002);
+          for (var i = 0; i < verts.length; i++) lineGeo.vertices.push(verts[i]);
+          globeGroup.add(new THREE.Line(lineGeo, lineMaterial));
+
+          // 2) Fill (triangulated)
+          var tri = triangulateRing(outerRing, radius * 1.001);
+          if (tri.v3d.length < 3) return;
+          var faceIndices = earClip(tri.v2d);
+          if (faceIndices.length < 3) return;
+
+          var fillGeo = new THREE.Geometry();
+          for (var i = 0; i < tri.v3d.length; i++) fillGeo.vertices.push(tri.v3d[i]);
+          for (var i = 0; i < faceIndices.length; i += 3) {
+            fillGeo.faces.push(new THREE.Face3(faceIndices[i], faceIndices[i+1], faceIndices[i+2]));
+          }
+          fillGeo.computeFaceNormals();
+          globeGroup.add(new THREE.Mesh(fillGeo, fillMaterial));
+        }
+
+        countries.features.forEach(function(f) {
+          var geom = f.geometry;
+          if (geom.type === 'Polygon') {
+            addPolygon(geom.coordinates);
+          } else if (geom.type === 'MultiPolygon') {
+            geom.coordinates.forEach(function(poly) { addPolygon(poly); });
+          }
         });
-        globeGroup.add(new THREE.Points(oceanGeo, oceanMat));
 
-        // Land dots - white
-        var landGeo = new THREE.BufferGeometry();
-        landGeo.addAttribute('position', new THREE.BufferAttribute(new Float32Array(landPositions), 3));
-        var landMat = new THREE.PointsMaterial({
-          color: 0xffffff, size: 0.022, transparent: true, opacity: 0.95, sizeAttenuation: true
-        });
-        globeGroup.add(new THREE.Points(landGeo, landMat));
-
-        // --- City markers (theme color dots) ---
-        var cities = [
-          {lat:39.9,lng:116.4,name:'Beijing'},
-          {lat:31.2,lng:121.5,name:'Shanghai'},
-          {lat:22.5,lng:114.1,name:'Shenzhen'},
-          {lat:35.7,lng:139.7,name:'Tokyo'},
-          {lat:37.6,lng:127.0,name:'Seoul'},
-          {lat:1.3,lng:103.8,name:'Singapore'},
-          {lat:19.1,lng:72.9,name:'Mumbai'},
-          {lat:25.2,lng:55.3,name:'Dubai'},
-          {lat:51.5,lng:-0.1,name:'London'},
-          {lat:48.9,lng:2.3,name:'Paris'},
-          {lat:50.1,lng:8.7,name:'Frankfurt'},
-          {lat:40.7,lng:-74.0,name:'New York'},
-          {lat:37.8,lng:-122.4,name:'San Francisco'},
-          {lat:34.1,lng:-118.2,name:'Los Angeles'},
-          {lat:-23.5,lng:-46.6,name:'São Paulo'},
-          {lat:-33.9,lng:151.2,name:'Sydney'}
-        ];
-
-        var cityColor = 0x4362ff;
+        // --- City markers ---
         var cityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.95, side: THREE.DoubleSide });
         var glowCityMat = new THREE.MeshBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
         var cityGeo = new THREE.CircleGeometry(0.02, 12);
@@ -2893,8 +2982,8 @@
           globeGroup.add(glow);
         });
 
-        // --- Flight lines (arcs between cities) ---
-        var lineMat = new THREE.LineBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3 });
+        // --- Flight arcs ---
+        var arcMat = new THREE.LineBasicMaterial({ color: cityColor, transparent: true, opacity: 0.3 });
         var conns = [[0,1],[0,2],[0,3],[1,3],[1,4],[3,4],[4,5],[5,6],[6,7],[7,8],[8,9],[9,10],[8,10],[10,11],[11,12],[12,13],[11,14],[0,15],[3,15],[5,15],[0,7],[2,5],[8,11],[0,12]];
         conns.forEach(function(cn) {
           var p1 = ll2v(cities[cn[0]].lat, cities[cn[0]].lng, radius);
@@ -2906,7 +2995,7 @@
           var pts = curve.getPoints(40);
           var geo = new THREE.Geometry();
           pts.forEach(function(pt) { geo.vertices.push(pt); });
-          globeGroup.add(new THREE.Line(geo, lineMat));
+          globeGroup.add(new THREE.Line(geo, arcMat));
         });
       });
   })();
