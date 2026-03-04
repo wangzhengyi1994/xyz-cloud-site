@@ -580,10 +580,11 @@
                   margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       margin-top: 0;
     }
-    .platform-tab.active .tab-desc {
+    .platform-tab.active .tab-desc,
+    .platform-tab:hover .tab-desc {
       max-height: 120px;
       opacity: 1;
-      margin-top: 12px;
+      margin-top: 10px;
       color: var(--white-8);
     }
     .platform-canvas {
@@ -1795,9 +1796,9 @@
       });
     });
 
-    // Platform tab interaction
+    // Platform tab interaction — hover triggers morph + active
     document.querySelectorAll('.platform-tab').forEach(function(tab, index) {
-      tab.addEventListener('click', function() {
+      tab.addEventListener('mouseenter', function() {
         document.querySelectorAll('.platform-tab').forEach(function(t) { t.classList.remove('active'); });
         tab.classList.add('active');
         if (window.platformMorphTo) window.platformMorphTo(index);
