@@ -462,11 +462,11 @@
       flex-shrink: 0;
     }
     .accordion-item {
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid var(--text-heading);
       margin-bottom: 20px;
     }
     .accordion-item.collapsed {
-      border-color: rgba(255, 255, 255, 0.15);
+      border-color: #65758b;
     }
     .accordion-header {
       padding: 20px;
@@ -477,11 +477,11 @@
       transition: all 0.3s;
     }
     .accordion-item.active .accordion-header {
-      background: var(--primary);
+      background: var(--dark);
       color: white;
     }
     .accordion-item.collapsed .accordion-header {
-      color: rgba(255, 255, 255, 0.6);
+      color: var(--text-secondary);
     }
     .accordion-body {
       padding: 8px;
@@ -494,7 +494,7 @@
       font-size: 14px;
       font-weight: 300;
       line-height: 22px;
-      color: rgba(255, 255, 255, 0.7);
+      color: var(--text-secondary);
       margin-bottom: 8px;
       margin-left: 21px;
     }
@@ -1435,10 +1435,10 @@
   </section>
 
   <!-- Core Value Proposition -->
-  <section class="section-dark core-value">
+  <section class="section-light core-value">
     <div class="container">
       <div class="section-inner">
-        <h2 class="section-title-dark scroll-fade-in" data-en="Core Value Proposition" data-cn="核心价值主张">Core Value Proposition</h2>
+        <h2 class="section-title scroll-fade-in" data-en="Core Value Proposition" data-cn="核心价值主张">Core Value Proposition</h2>
         <div class="section-row scroll-fade-in" style="--delay:0.15s">
           <div class="left">
             <div class="accordion-item active">
