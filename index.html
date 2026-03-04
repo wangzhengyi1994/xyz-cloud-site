@@ -2793,7 +2793,7 @@
     });
 
     // --- Load TopoJSON land data and build dots ---
-    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-110m.json')
+    fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/land-50m.json')
       .then(function(r) { return r.json(); })
       .then(function(topology) {
         var land = topojson.feature(topology, topology.objects.land);
@@ -2814,7 +2814,7 @@
         // Generate dots
         var oceanPositions = [];
         var landPositions = [];
-        var step = 2;
+        var step = 1;
         for (var lat = -85; lat <= 85; lat += step) {
           var latRad = lat * Math.PI / 180;
           var cosLat = Math.cos(latRad);
