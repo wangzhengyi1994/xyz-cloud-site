@@ -2778,9 +2778,19 @@
     renderer.domElement.addEventListener('touchend', function() { isDragging = false; });
     renderer.domElement.style.cursor = 'grab';
 
+    // IntersectionObserver: pause when offscreen
+    var isGlobeVisible = true;
+    var globeSection = container.closest('section') || container;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        isGlobeVisible = entries[0].isIntersecting;
+      }, { threshold: 0 }).observe(globeSection);
+    }
+
     // Animate (starts immediately, dots added once data loads)
     (function animate() {
       requestAnimationFrame(animate);
+      if (!isGlobeVisible) return;
       if (!isDragging) {
         globeGroup.rotation.y += autoSpeed;
       }
@@ -2814,7 +2824,7 @@
         // Generate dots
         var oceanPositions = [];
         var landPositions = [];
-        var step = 1;
+        var step = 1.5;
         for (var lat = -85; lat <= 85; lat += step) {
           var latRad = lat * Math.PI / 180;
           var cosLat = Math.cos(latRad);
