@@ -1810,6 +1810,7 @@
 
     var N = (window.innerWidth <= 800) ? 2500 : 5000;
 
+    /* ===== Shape Generators ===== */
     function genSphere(n, r) {
       var a = new Float32Array(n * 3);
       for (var i = 0; i < n; i++) {
@@ -1862,6 +1863,59 @@
       return a;
     }
 
+    /* ===== Model Loader (for custom 3D JSON models) ===== */
+    function loadModelVertices(url, particleCount, scale, callback) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url, true);
+      xhr.onload = function() {
+        if (xhr.status !== 200) return;
+        var json = JSON.parse(xhr.responseText);
+        var vertices;
+        if (json.vertices) vertices = json.vertices;
+        else if (json.data && json.data.vertices) vertices = json.data.vertices;
+        else if (json.geometries && json.geometries[0]) vertices = json.geometries[0].data.vertices;
+        if (!vertices) { console.warn('No vertices found in model JSON'); return; }
+
+        var modelVertCount = vertices.length / 3;
+        var result = new Float32Array(particleCount * 3);
+
+        // Center the model
+        var cx = 0, cy = 0, cz = 0;
+        for (var i = 0; i < modelVertCount; i++) {
+          cx += vertices[i * 3]; cy += vertices[i * 3 + 1]; cz += vertices[i * 3 + 2];
+        }
+        cx /= modelVertCount; cy /= modelVertCount; cz /= modelVertCount;
+
+        // Auto-normalize: compute bounding radius then scale to fit
+        var maxR = 0;
+        for (var i = 0; i < modelVertCount; i++) {
+          var dx = vertices[i*3] - cx, dy = vertices[i*3+1] - cy, dz = vertices[i*3+2] - cz;
+          var r2 = dx*dx + dy*dy + dz*dz;
+          if (r2 > maxR) maxR = r2;
+        }
+        maxR = Math.sqrt(maxR) || 1;
+        var normScale = (scale || 1.8) / maxR;
+
+        // Map N particles to model vertices (modular wrapping + jitter)
+        for (var i = 0; i < particleCount; i++) {
+          var srcIdx = i % modelVertCount;
+          result[i*3]   = (vertices[srcIdx*3]   - cx) * normScale;
+          result[i*3+1] = (vertices[srcIdx*3+1] - cy) * normScale;
+          result[i*3+2] = (vertices[srcIdx*3+2] - cz) * normScale;
+        }
+        // Add jitter for duplicate-mapped particles
+        if (particleCount > modelVertCount) {
+          for (var i = modelVertCount; i < particleCount; i++) {
+            result[i*3]   += (Math.random() - 0.5) * 0.05;
+            result[i*3+1] += (Math.random() - 0.5) * 0.05;
+            result[i*3+2] += (Math.random() - 0.5) * 0.05;
+          }
+        }
+        callback(result);
+      };
+      xhr.send();
+    }
+
     var shapes = [
       genSphere(N, 1.8),
       genCube(N, 2.8),
@@ -1870,6 +1924,18 @@
       genTorus(N, 1.4, 0.5)
     ];
 
+    /* ===== Public API: Load external 3D model ===== */
+    window.platformLoadModel = function(url, scale, tabIndex) {
+      loadModelVertices(url, N, scale, function(verts) {
+        if (typeof tabIndex === 'number') {
+          shapes[tabIndex] = verts;
+        } else {
+          shapes.push(verts);
+        }
+      });
+    };
+
+    /* ===== Geometry & Material ===== */
     var geometry = new THREE.BufferGeometry();
     var pos = new Float32Array(N * 3);
     var startPos = new Float32Array(N * 3);
@@ -1881,34 +1947,128 @@
     var points = new THREE.Points(geometry, material);
     scene.add(points);
 
-    var curIdx = 0, progress = 1, isMorphing = false;
+    /* ===== Per-Particle Cascade Morph System ===== */
+    var curIdx = 0, isMorphing = false;
+    var MORPH_DURATION = 1.2;  // seconds per particle transition
+    var MAX_DELAY = 0.8;       // max random delay (seconds)
+    var morphStartTime = -1;
 
-    function easeInOut(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+    // Pre-allocate per-particle random delays
+    var particleDelays = new Float32Array(N);
+    function randomizeDelays() {
+      for (var i = 0; i < N; i++) particleDelays[i] = Math.random() * MAX_DELAY;
+    }
+    randomizeDelays();
 
+    // Multiple easing functions
+    var easings = {
+      cubicInOut: function(t) { return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; },
+      expoOut:    function(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+      expoInOut:  function(t) { return t < 0.5 ? Math.pow(2, 20*t-10)/2 : (2-Math.pow(2,-20*t+10))/2; },
+      elasticOut: function(t) { return t===0||t===1 ? t : Math.pow(2,-10*t)*Math.sin((t-0.075)*2*Math.PI/0.3)+1; },
+      backOut:    function(t) { var c=1.70158; return 1+(--t)*t*((c+1)*t+c); }
+    };
+    var currentEasing = easings.expoOut;
+
+    /* ===== Morph Trigger ===== */
     window.platformMorphTo = function(idx) {
       if (idx === curIdx && !isMorphing) return;
+      if (!shapes[idx]) return; // model not loaded yet
       curIdx = idx;
       var arr = geometry.attributes.position.array;
       for (var i = 0; i < N * 3; i++) { startPos[i] = arr[i]; targetPos[i] = shapes[idx][i]; }
-      progress = 0;
+      randomizeDelays();
+      morphStartTime = performance.now() / 1000;
       isMorphing = true;
     };
 
+    /* ===== Mouse/Touch Drag Rotation ===== */
+    var isDragging = false;
+    var prevMouse = { x: 0, y: 0 };
+
+    renderer.domElement.addEventListener('mousedown', function(e) {
+      isDragging = true;
+      prevMouse.x = e.clientX;
+      prevMouse.y = e.clientY;
+      renderer.domElement.style.cursor = 'grabbing';
+    });
+    window.addEventListener('mousemove', function(e) {
+      if (!isDragging) return;
+      points.rotation.y += (e.clientX - prevMouse.x) * 0.005;
+      points.rotation.x += (e.clientY - prevMouse.y) * 0.005;
+      prevMouse.x = e.clientX;
+      prevMouse.y = e.clientY;
+    });
+    window.addEventListener('mouseup', function() {
+      if (!isDragging) return;
+      isDragging = false;
+      renderer.domElement.style.cursor = 'grab';
+    });
+
+    // Touch support
+    renderer.domElement.addEventListener('touchstart', function(e) {
+      isDragging = true;
+      prevMouse.x = e.touches[0].clientX;
+      prevMouse.y = e.touches[0].clientY;
+    }, { passive: true });
+    renderer.domElement.addEventListener('touchmove', function(e) {
+      if (!isDragging) return;
+      e.preventDefault();
+      points.rotation.y += (e.touches[0].clientX - prevMouse.x) * 0.005;
+      points.rotation.x += (e.touches[0].clientY - prevMouse.y) * 0.005;
+      prevMouse.x = e.touches[0].clientX;
+      prevMouse.y = e.touches[0].clientY;
+    }, { passive: false });
+    renderer.domElement.addEventListener('touchend', function() { isDragging = false; });
+
+    renderer.domElement.style.cursor = 'grab';
+
+    /* ===== IntersectionObserver: pause when offscreen ===== */
+    var isVisible = true;
+    var platformSection = container.closest('section') || container;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        isVisible = entries[0].isIntersecting;
+      }, { threshold: 0 }).observe(platformSection);
+    }
+
+    /* ===== Render Loop ===== */
     (function animate() {
       requestAnimationFrame(animate);
+      if (!isVisible) return;
+
       if (isMorphing) {
-        progress += 0.015;
-        if (progress >= 1) { progress = 1; isMorphing = false; }
-        var t = easeInOut(progress);
+        var now = performance.now() / 1000;
+        var elapsed = now - morphStartTime;
+        var allDone = true;
         var arr = geometry.attributes.position.array;
-        for (var i = 0; i < N * 3; i++) { arr[i] = startPos[i] + (targetPos[i] - startPos[i]) * t; }
+
+        for (var i = 0; i < N; i++) {
+          var localT = (elapsed - particleDelays[i]) / MORPH_DURATION;
+          if (localT < 0) { allDone = false; continue; }
+          if (localT > 1) localT = 1;
+          else allDone = false;
+
+          var t = currentEasing(localT);
+          var j = i * 3;
+          arr[j]   = startPos[j]   + (targetPos[j]   - startPos[j])   * t;
+          arr[j+1] = startPos[j+1] + (targetPos[j+1] - startPos[j+1]) * t;
+          arr[j+2] = startPos[j+2] + (targetPos[j+2] - startPos[j+2]) * t;
+        }
+
         geometry.attributes.position.needsUpdate = true;
+        if (allDone) isMorphing = false;
       }
-      points.rotation.y += 0.002;
-      points.rotation.x += 0.0005;
+
+      if (!isDragging) {
+        points.rotation.y += 0.002;
+        points.rotation.x += 0.0005;
+      }
+
       renderer.render(scene, camera);
     })();
 
+    /* ===== Resize Handler ===== */
     window.addEventListener('resize', function() {
       var nw = container.offsetWidth || 600, nh = container.offsetHeight || 760;
       camera.aspect = nw / nh; camera.updateProjectionMatrix(); renderer.setSize(nw, nh);
