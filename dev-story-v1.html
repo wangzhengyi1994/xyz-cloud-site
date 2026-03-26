@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计产品如何去掉 AI 味儿 — XYZ Cloud 开发全记录</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #7c3aed;
+  --blue: #3b82f6;
+  --gradient: linear-gradient(135deg, #7c3aed, #3b82f6);
+  --gradient-soft: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(59,130,246,0.08));
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-dim: #94a3b8;
+  --border: rgba(0,0,0,0.06);
+  --shadow: 0 4px 24px rgba(0,0,0,0.06);
+  --shadow-hover: 0 12px 40px rgba(0,0,0,0.12);
+  --radius: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 100px;
+  --font: 'Inter', -apple-system, sans-serif;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-weight: 400;
+  line-height: 1.7;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--purple); color: #fff; }
+
+/* ═══════ LAYOUT ═══════ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+section { padding: 100px 0; }
+
+/* Scroll fade-in */
+.scroll-fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+  transition-delay: var(--delay, 0s);
+}
+.scroll-fade-in.visible { opacity: 1; transform: translateY(0); }
+
+/* Section titles */
+.section-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--purple); margin-bottom: 16px;
+  background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(59,130,246,0.1));
+  padding: 6px 16px; border-radius: var(--radius-pill);
+}
+.section-title {
+  font-size: 44px; font-weight: 700; line-height: 1.2;
+  color: var(--text); margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+.section-desc {
+  font-size: 17px; font-weight: 400; line-height: 1.7;
+  color: var(--text-secondary); max-width: 640px; margin-bottom: 56px;
+}
+.section-center { text-align: center; }
+.section-center .section-desc { margin-left: auto; margin-right: auto; }
+
+/* Gradient text */
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════ HERO ═══════ */
+.hero {
+  position: relative;
+  width: 100%;
+  min-height: 680px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 30%, #3b82f6 60%, #06b6d4 100%);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120px 24px 80px;
+}
+
+/* Decorative blobs */
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px; right: -200px;
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -150px; left: -150px;
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 800px;
+}
+
+.hero-label {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 500; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  padding: 8px 20px; border-radius: var(--radius-pill);
+  margin-bottom: 32px;
+  opacity: 0; animation: heroUp 0.8s ease forwards 0.2s;
+}
+
+.hero-title {
+  font-size: 56px; font-weight: 800; line-height: 1.15; color: #fff;
+  margin-bottom: 20px; letter-spacing: -0.03em;
+  opacity: 0; animation: heroUp 0.8s ease forwards 0.4s;
+}
+
+.hero-sub {
+  font-size: 19px; font-weight: 400; line-height: 1.7; color: rgba(255,255,255,0.85);
+  margin-bottom: 48px;
+  opacity: 0; animation: heroUp 0.8s ease forwards 0.6s;
+}
+
+@keyframes heroUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero stats */
+.hero-stats {
+  display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+  opacity: 0; animation: heroUp 0.8s ease forwards 0.8s;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius);
+  padding: 20px 32px;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.hero-stat:hover {
+  background: rgba(255,255,255,0.2);
+  transform: translateY(-2px);
+}
+
+.hero-stat-num { font-size: 32px; font-weight: 700; color: #fff; line-height: 1; margin-bottom: 4px; }
+.hero-stat-num .unit { font-size: 14px; font-weight: 400; opacity: 0.8; }
+.hero-stat-label { font-size: 12px; font-weight: 500; color: rgba(255,255,255,0.7); letter-spacing: 0.5px; }
+
+/* ═══════ CARDS (generic) ═══════ */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+/* ═══════ INPUT CARDS ═══════ */
+.input-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.input-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+.input-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.input-card .card-emoji { font-size: 36px; margin-bottom: 16px; }
+.input-card h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+.input-card p { font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--text-secondary); }
+.input-card code {
+  font-size: 12px; color: var(--purple); background: rgba(124,58,237,0.08);
+  padding: 2px 6px; border-radius: 6px; font-family: 'SF Mono', monospace;
+}
+
+/* ═══════ STACK GRID ═══════ */
+.stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+
+.stack-cell {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+.stack-cell:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.stack-cell h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.stack-cell p { font-size: 13px; font-weight: 400; color: var(--text-secondary); line-height: 1.6; }
+
+/* ═══════ TIMELINE ═══════ */
+.timeline { position: relative; }
+
+.timeline::before {
+  content: ''; position: absolute;
+  left: 23px; top: 0; bottom: 0;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--purple), var(--blue));
+  border-radius: 2px;
+}
+
+.tl-phase { position: relative; padding-left: 64px; padding-bottom: 48px; }
+.tl-phase:last-child { padding-bottom: 0; }
+
+.tl-dot {
+  position: absolute; left: 12px; top: 2px;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: var(--gradient);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 600; color: #fff;
+  z-index: 2;
+  box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px rgba(124,58,237,0.2);
+}
+
+.tl-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+.tl-title { font-size: 18px; font-weight: 600; color: var(--text); }
+.tl-date {
+  font-size: 12px; font-weight: 500; color: var(--text-dim);
+  background: rgba(124,58,237,0.08); padding: 2px 10px; border-radius: var(--radius-pill);
+}
+.tl-desc { font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--text-secondary); margin-bottom: 14px; max-width: 720px; }
+
+.commits { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.commits li {
+  font-size: 13px; font-weight: 400; color: var(--text-secondary);
+  padding: 8px 14px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: all 0.3s; cursor: default;
+}
+.commits li:hover { transform: translateX(4px); box-shadow: var(--shadow); }
+
+.hash { color: var(--purple); margin-right: 8px; font-family: 'SF Mono', monospace; font-size: 12px; }
+.tag {
+  display: inline-block; padding: 1px 8px; font-size: 10px; font-weight: 600;
+  letter-spacing: 0.3px; margin-right: 6px; text-transform: uppercase;
+  border-radius: var(--radius-pill);
+}
+.tag-feat { background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(59,130,246,0.15)); color: var(--purple); }
+.tag-fix { background: rgba(249,115,22,0.12); color: #ea580c; }
+.tag-perf { background: rgba(16,185,129,0.12); color: #059669; }
+.tag-style { background: rgba(139,92,246,0.12); color: #7c3aed; }
+.tag-revert { background: rgba(0,0,0,0.06); color: var(--text-dim); }
+
+/* ═══════ FX GRID ═══════ */
+.fx-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+.fx-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  position: relative; overflow: hidden;
+}
+.fx-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.fx-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+.fx-card .fx-emoji { font-size: 32px; margin-bottom: 12px; }
+.fx-card h4 { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.fx-tech {
+  font-size: 12px; font-weight: 500; margin-bottom: 10px;
+  background: var(--gradient);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.fx-card p { font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--text-secondary); }
+
+/* ═══════ CHALLENGES ═══════ */
+.challenge-grid { display: flex; flex-direction: column; gap: 16px; }
+.challenge-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+}
+
+.challenge-cell {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+.challenge-cell:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+
+.challenge-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+  margin-bottom: 10px; padding: 3px 10px; border-radius: var(--radius-pill);
+}
+.problem .challenge-label { background: rgba(249,115,22,0.1); color: #ea580c; }
+.solution .challenge-label { background: rgba(16,185,129,0.1); color: #059669; }
+.challenge-cell h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.challenge-cell p { font-size: 14px; font-weight: 400; line-height: 1.7; color: var(--text-secondary); }
+
+/* ═══════ ARCH BOX ═══════ */
+.arch-box {
+  background: #1e1b4b;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  font-family: 'SF Mono', 'Fira Code', monospace; font-size: 13px; line-height: 1.8;
+  color: rgba(255,255,255,0.7); overflow-x: auto; white-space: pre;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(30,27,75,0.3);
+}
+.arch-box::before {
+  content: '📁 FILE STRUCTURE'; position: absolute; top: 16px; right: 20px;
+  font-size: 11px; letter-spacing: 1px; color: rgba(255,255,255,0.3); font-family: var(--font);
+}
+.arch-box .dir { color: #a78bfa; }
+.arch-box .size { color: rgba(255,255,255,0.35); }
+.arch-box .comment { color: rgba(255,255,255,0.25); }
+
+/* ═══════ RESULT CTA ═══════ */
+.result-section {
+  text-align: center;
+  padding: 120px 24px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 30%, #3b82f6 60%, #06b6d4 100%);
+}
+.result-section .section-title { color: #fff; }
+.result-section .section-desc { color: rgba(255,255,255,0.8); margin-left: auto; margin-right: auto; }
+
+.result-url {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: var(--purple);
+  font-size: 16px; font-family: var(--font); font-weight: 600;
+  padding: 14px 28px;
+  border: none; border-radius: var(--radius-pill);
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  transition: all 0.3s ease; cursor: pointer;
+}
+.result-url:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,0,0,0.2); }
+.result-url .arrow { display: inline-block; font-size: 14px; }
+
+/* ═══════ DESIGN TOKENS ═══════ */
+.token-group { margin-bottom: 48px; }
+.token-group:last-child { margin-bottom: 0; }
+.token-label {
+  font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--text-dim); margin-bottom: 12px;
+}
+
+.color-row { display: flex; gap: 4px; border-radius: var(--radius); overflow: hidden; }
+.color-swatch {
+  flex: 1; height: 56px; position: relative;
+  transition: transform 0.3s, box-shadow 0.3s; cursor: default;
+  border-radius: 8px;
+}
+.color-swatch:hover { transform: scaleY(1.3); z-index: 1; box-shadow: var(--shadow-hover); }
+.color-swatch .sw-val {
+  position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; color: var(--text-dim); white-space: nowrap;
+  opacity: 0; transition: opacity 0.3s; pointer-events: none;
+}
+.color-swatch:hover .sw-val { opacity: 1; }
+
+.white-alpha-bg {
+  background: #1e1b4b; border-radius: var(--radius); overflow: hidden;
+  padding: 4px; display: flex; gap: 4px;
+}
+.white-alpha-bg .color-swatch .sw-val { color: rgba(255,255,255,0.6); }
+
+.type-scale { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.type-row {
+  display: flex; align-items: baseline; gap: 24px;
+  padding: 12px 20px; border-bottom: 1px solid var(--border);
+}
+.type-row:last-child { border-bottom: none; }
+.type-size { font-size: 11px; color: var(--purple); min-width: 52px; font-weight: 600; }
+.type-weight { font-size: 11px; color: var(--text-dim); min-width: 32px; }
+.type-sample { color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.spacing-row { display: flex; gap: 8px; align-items: flex-end; flex-wrap: wrap; }
+.spacing-block {
+  background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(59,130,246,0.1));
+  border: 1px solid rgba(124,58,237,0.15);
+  border-radius: 6px;
+  position: relative; transition: background 0.3s;
+}
+.spacing-block:hover { background: linear-gradient(135deg, rgba(124,58,237,0.25), rgba(59,130,246,0.25)); }
+.spacing-block .sp-val {
+  position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+  font-size: 9px; color: var(--text-dim); white-space: nowrap;
+}
+
+/* ═══════ SCREENSHOT SHOWCASE ═══════ */
+.shot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.shot-card {
+  position: relative; overflow: hidden;
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  aspect-ratio: 16/10;
+  transition: all 0.3s ease;
+}
+.shot-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.shot-card img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.shot-card:hover img { transform: scale(1.05); }
+.shot-card .shot-info {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 32px 16px 16px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+  border-radius: 0 0 var(--radius) var(--radius);
+}
+.shot-card .shot-name { font-size: 14px; font-weight: 600; color: #fff; }
+.shot-card .shot-tech {
+  font-size: 11px; margin-top: 4px;
+  background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; font-weight: 500;
+}
+
+/* ═══════ PIPELINE ═══════ */
+.pipeline {
+  display: flex; align-items: stretch; gap: 8px;
+  flex-wrap: wrap; justify-content: center;
+}
+.pipe-step {
+  flex: 1; min-width: 120px; text-align: center; padding: 24px 16px;
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow); transition: all 0.3s;
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+}
+.pipe-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.pipe-step .pipe-emoji { font-size: 28px; margin-bottom: 8px; }
+.pipe-step h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.pipe-step p { font-size: 11px; font-weight: 400; color: var(--text-dim); line-height: 1.5; }
+.pipe-arrow {
+  display: flex; align-items: center; font-size: 20px;
+  background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text; font-weight: 700;
+}
+
+.pipe-compare {
+  display: flex; align-items: center; justify-content: center; gap: 48px;
+  margin-top: 48px; background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 32px; box-shadow: var(--shadow);
+}
+.pipe-big { font-size: 40px; font-weight: 700; color: var(--text); line-height: 1; }
+.pipe-big .unit { font-size: 14px; font-weight: 400; color: var(--text-dim); }
+.pipe-label { font-size: 11px; color: var(--text-dim); letter-spacing: 0.5px; margin-top: 4px; }
+.pipe-vs {
+  font-size: 24px; font-weight: 700;
+  background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════ AI COLLAB ═══════ */
+.collab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.collab-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px; box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+.collab-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.collab-role {
+  display: inline-flex; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 3px 10px; border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(59,130,246,0.1));
+  color: var(--purple); margin-bottom: 12px;
+}
+.collab-card h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.collab-card p { font-size: 14px; font-weight: 400; color: var(--text-secondary); line-height: 1.7; }
+
+.collab-stats { display: flex; gap: 16px; margin-top: 24px; flex-wrap: wrap; }
+.collab-stat-item {
+  flex: 1; min-width: 120px; padding: 24px; text-align: center;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+}
+.collab-stat-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.collab-stat-item .cs-num {
+  font-size: 28px; font-weight: 700; line-height: 1; margin-bottom: 4px;
+  background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.collab-stat-item .cs-label { font-size: 11px; color: var(--text-dim); font-weight: 500; }
+
+/* ═══════ LESSONS ═══════ */
+.lesson-list { display: flex; flex-direction: column; gap: 16px; }
+.lesson-item {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+  box-shadow: var(--shadow);
+  display: flex; gap: 20px; align-items: flex-start;
+  transition: all 0.3s ease;
+}
+.lesson-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); }
+.lesson-num {
+  font-size: 28px; font-weight: 700; line-height: 1; min-width: 40px;
+  background: var(--gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.lesson-body h4 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.lesson-body p { font-size: 14px; font-weight: 400; color: var(--text-secondary); line-height: 1.7; }
+
+/* ═══════ FOOTER ═══════ */
+.footer {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #1e3a5f);
+  padding: 48px 24px; text-align: center;
+}
+.footer-text {
+  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.5px;
+}
+
+/* ═══════ COUNTER ═══════ */
+.counter { font-variant-numeric: tabular-nums; }
+
+/* ═══════ GLASS CARD (special sections) ═══════ */
+.glass-section {
+  background: linear-gradient(135deg, #f5f3ff, #eff6ff, #f0fdfa);
+}
+
+/* ═══════ RESPONSIVE ═══════ */
+@media (max-width: 1200px) {
+  .section-title { font-size: 32px; }
+  .input-grid { grid-template-columns: 1fr 1fr; }
+  .stack-grid { grid-template-columns: 1fr 1fr; }
+  .fx-grid { grid-template-columns: 1fr; }
+  .challenge-row { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; }
+  .hero-stat { flex: 1 1 auto; min-width: 120px; padding: 16px 24px; }
+  .hero-title { font-size: 40px; }
+  .shot-grid { grid-template-columns: 1fr; }
+  .collab-grid { grid-template-columns: 1fr; }
+  .pipe-compare { flex-wrap: wrap; gap: 24px; }
+}
+
+@media (max-width: 800px) {
+  .section-title { font-size: 26px; margin-bottom: 12px; }
+  section { padding: 60px 0; }
+  .input-grid, .stack-grid { grid-template-columns: 1fr; }
+  .tl-phase { padding-left: 48px; }
+  .tl-dot { left: 8px; width: 20px; height: 20px; font-size: 9px; }
+  .timeline::before { left: 17px; }
+  .tl-date { display: none; }
+  .hero { min-height: 520px; padding-top: 100px; }
+  .hero-title { font-size: 28px; }
+  .hero-sub { font-size: 15px; }
+  .hero-stat { padding: 12px 16px; }
+  .hero-stat-num { font-size: 24px; }
+  .lesson-item { flex-direction: column; gap: 8px; }
+  .collab-stats { flex-direction: column; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════ HERO ═══════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-label">✨ Development Case Study · 2026</div>
+    <h1 class="hero-title">设计产品如何去掉 AI 味儿</h1>
+    <p class="hero-sub">一个设计师 + AI 的官网开发全记录<br>用规范化设计流程，让 AI 输出达到专业标准</p>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="96">0</span></div>
+        <div class="hero-stat-label">次提交</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="9">0</span><span class="unit"> 个</span></div>
+        <div class="hero-stat-label">视觉特效</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="2">0</span><span class="unit"> 天</span></div>
+        <div class="hero-stat-label">核心开发</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">~<span class="counter" data-target="4000">0</span></div>
+        <div class="hero-stat-label">行代码</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 01: INPUTS ═══════ -->
+<section>
+  <div class="container">
+    <div class="section-label scroll-fade-in">📋 01 — INPUT MATERIALS</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">项目开始前，我拿到了什么</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      XYZ Cloud 是一个 AI 云计算平台的海外营销官网。设计师和产品经理提供了以下规范和素材。
+    </p>
+    <div class="input-grid scroll-fade-in" style="--delay:0.3s">
+      <div class="input-card">
+        <div class="card-emoji">🎨</div>
+        <h4>Figma 设计令牌</h4>
+        <p>完整品牌色系——蓝色 10 级梯度（主色 <code>#4362ff</code>）、灰色 11 级、白色透明度 10 级。间距 <code>4px</code>→<code>120px</code>，全部导出 CSS 变量。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">🔤</div>
+        <h4>字体规范</h4>
+        <p>UI 字体 <code>JetBrains Mono</code> 全站等宽，代码字体 <code>Courier Prime</code>。12 档字号，字重仅 300 和 500。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">📦</div>
+        <h4>OBJ 3D 模型</h4>
+        <p>5 个 OBJ 格式 3D 模型，原始 10-20MB / 7-15 万顶点，需预处理降采样到 5000 点导出 JSON。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">🔵</div>
+        <h4>点阵 SVG</h4>
+        <p>1915×924px 的 <code>dot-matrix.svg</code>（543KB），数千个 <code>&lt;rect&gt;</code> 元素。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">📝</div>
+        <h4>页面结构与文案</h4>
+        <p>12 个区块——Hero、核心价值、AI 平台 5Tab、品牌故事、隧道、地球、CTA、Footer。双语 EN/CN。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">⚙️</div>
+        <h4>技术约束</h4>
+        <p>必须 <code>Three.js r86</code>（不可升级），单文件 <code>index.html</code>，无构建工具。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 02: TECH STACK ═══════ -->
+<section class="glass-section">
+  <div class="container">
+    <div class="section-label scroll-fade-in">🛠️ 02 — TECH STACK</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">技术选型</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      单文件架构——没有 webpack、没有 npm。所有 JS/CSS/HTML 内联在一个文件里。
+    </p>
+    <div class="stack-grid scroll-fade-in" style="--delay:0.3s">
+      <div class="stack-cell"><h4>⚡ Three.js r86</h4><p>本地打包 517KB，旧版 API 稳定够用</p></div>
+      <div class="stack-cell"><h4>🎬 TweenMax</h4><p>GreenSock 经典版 112KB</p></div>
+      <div class="stack-cell"><h4>🖼️ Canvas 2D</h4><p>手写 3D 矩阵运算 + 透视投影</p></div>
+      <div class="stack-cell"><h4>🌍 TopoJSON CDN</h4><p>Natural Earth 数据渲染地球</p></div>
+      <div class="stack-cell"><h4>🎨 CSS 变量</h4><p>完整设计令牌系统</p></div>
+      <div class="stack-cell"><h4>👁️ IntersectionObserver</h4><p>离屏暂停渲染</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 03: TIMELINE ═══════ -->
+<section>
+  <div class="container">
+    <div class="section-label scroll-fade-in">⏱️ 03 — DEVELOPMENT TIMELINE</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">逐步落地的完整过程</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      按 Git 提交记录还原的真实开发时间线。
+    </p>
+    <div class="timeline scroll-fade-in" style="--delay:0.3s">
+
+      <div class="tl-phase">
+        <div class="tl-dot">1</div>
+        <div class="tl-header"><div class="tl-title">基础框架 + 设计令牌</div><div class="tl-date">3月3日 15:23</div></div>
+        <p class="tl-desc">创建 index.html，搭建 12 个 Section 骨架，注入 Figma 设计令牌。第一个可见页面 3 分钟完成。</p>
+        <ul class="commits">
+          <li><span class="hash">8f136c9</span><span class="tag tag-feat">feat</span>Initial commit with EN/CN toggle</li>
+          <li><span class="hash">f6520f3</span><span class="tag tag-style">style</span>Apply Figma design tokens</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">2</div>
+        <div class="tl-header"><div class="tl-title">Hero 3D 城市天际线</div><div class="tl-date">3月3日 15:36</div></div>
+        <p class="tl-desc">第一个 Three.js 特效。100 栋建筑 + 300 粒子旋涡 + 60 条光线。移动端减半 + 禁用阴影。</p>
+        <ul class="commits">
+          <li><span class="hash">23a9f11</span><span class="tag tag-feat">feat</span>Three.js animated cube grid</li>
+          <li><span class="hash">3b81117</span><span class="tag tag-perf">perf</span>Optimize hero performance</li>
+          <li><span class="hash">be76413</span><span class="tag tag-fix">fix</span>Fix fonts to match tokens</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">3</div>
+        <div class="tl-header"><div class="tl-title">粒子变形特效</div><div class="tl-date">3月3日 15:50</div></div>
+        <p class="tl-desc">5000 粒子在 5 种几何形状间变形（球→方→锥→菱→环）。修复任意 Tab 跳转。</p>
+        <ul class="commits">
+          <li><span class="hash">4be8381</span><span class="tag tag-feat">feat</span>Particle morphing effect</li>
+          <li><span class="hash">10070ad</span><span class="tag tag-fix">fix</span>Fix all tab transitions</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">4</div>
+        <div class="tl-header"><div class="tl-title">点阵动画——7 次迭代</div><div class="tl-date">3月3日 16:10—16:35</div></div>
+        <p class="tl-desc">SVG 方案失败改 Canvas，6 次尺寸调整，最终加涟漪 + 放大镜 + 12% 蓝色染色。</p>
+        <ul class="commits">
+          <li><span class="hash">69b1994</span><span class="tag tag-perf">perf</span>SVG → Canvas renderer</li>
+          <li><span class="hash">549662f</span><span class="tag tag-feat">feat</span>Ripple + magnifying glass</li>
+          <li><span class="hash">5126ac0</span><span class="tag tag-style">style</span>12% dots tinted blue</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">5</div>
+        <div class="tl-header"><div class="tl-title">Footer 光谱 + Cosmic Spectrum</div><div class="tl-date">3月3日 16:50—17:40</div></div>
+        <p class="tl-desc">Footer CSS 光谱动画。Cosmic Spectrum 全屏实验 8 次改造后因太抢眼被砍。</p>
+        <ul class="commits">
+          <li><span class="hash">69dff03</span><span class="tag tag-feat">feat</span>Spectrum gradient footer</li>
+          <li><span class="hash">5de3815</span><span class="tag tag-revert">hide</span>Hide Cosmic Spectrum</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">6</div>
+        <div class="tl-header"><div class="tl-title">数据隧道——8 次微调</div><div class="tl-date">3月3日 17:42—18:03</div></div>
+        <p class="tl-desc">80 条线 + 94 个发光信号。连续 8 次调参直到填满容器。</p>
+        <ul class="commits">
+          <li><span class="hash">1af7f11</span><span class="tag tag-feat">feat</span>Data Tunnel effect</li>
+          <li><span class="hash">8c7a2a1</span>→<span class="hash">efc037b</span><span class="tag tag-style">style</span>6 次参数微调</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">7</div>
+        <div class="tl-header"><div class="tl-title">3D 地球——最难的特效</div><div class="tl-date">3月3日—4日</div></div>
+        <p class="tl-desc">跨两天、5 次重写。台湾显示难题：最终 50m 高精度 + step=2 + 手动补岛屿。</p>
+        <ul class="commits">
+          <li><span class="hash">3d72504</span><span class="tag tag-feat">feat</span>16 cities, 24 arcs, drag rotation</li>
+          <li><span class="hash">a76fdd8</span><span class="tag tag-feat">feat</span>重写：点阵 → 多边形面</li>
+          <li><span class="hash">b199b61</span><span class="tag tag-revert">revert</span>改回点阵 + 50m + 手动补点</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">8</div>
+        <div class="tl-header"><div class="tl-title">立方体视差 + 装饰</div><div class="tl-date">3月3日 19:11—19:40</div></div>
+        <p class="tl-desc">Canvas 2D 手写 3D 矩阵 + 透视 fov=800。色差效果 + 十字角标 + 45° 斜线纹理。</p>
+        <ul class="commits">
+          <li><span class="hash">ffe2ebb</span><span class="tag tag-feat">feat</span>3D cube parallax</li>
+          <li><span class="hash">9674547</span><span class="tag tag-style">style</span>Cross markers at borders</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">9</div>
+        <div class="tl-header"><div class="tl-title">UI 打磨 + 响应式</div><div class="tl-date">3月3日 21:53—23:14</div></div>
+        <p class="tl-desc">Figma Logo、全站滚动淡入、Hero 标题 4 次字号调整、移动端适配。</p>
+        <ul class="commits">
+          <li><span class="hash">01a493e</span><span class="tag tag-feat">feat</span>Scroll fade-in all sections</li>
+          <li><span class="hash">42dce56</span><span class="tag tag-feat">feat</span>Mobile responsive ≤768px</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">10</div>
+        <div class="tl-header"><div class="tl-title">深度优化 + 决策回退</div><div class="tl-date">3月4日</div></div>
+        <p class="tl-desc">Core Value 改暗色→4分钟还原。粒子升级级联动效 + OBJ 模型。Tab 改 hover 触发。</p>
+        <ul class="commits">
+          <li><span class="hash">eaa4c4d</span><span class="tag tag-revert">revert</span>4 分钟后还原白色</li>
+          <li><span class="hash">279ad07</span><span class="tag tag-feat">feat</span>级联动效 + 模型 + 拖拽</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">11</div>
+        <div class="tl-header"><div class="tl-title">React 重写 + 多页面</div><div class="tl-date">3月16日—18日</div></div>
+        <p class="tl-desc">React 重写，新增 CCI/ECS/HPT 产品页。品牌改名 Alayance Cloud。全端适配。</p>
+        <ul class="commits">
+          <li><span class="hash">4bdc977</span><span class="tag tag-feat">feat</span>React rewrite + product pages</li>
+          <li><span class="hash">f453c1e</span><span class="tag tag-feat">feat</span>Mobile responsive all pages</li>
+        </ul>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-dot">12</div>
+        <div class="tl-header"><div class="tl-title">收尾与部署</div><div class="tl-date">3月19日—25日</div></div>
+        <p class="tl-desc">清理旧品牌引用，部署 Vercel 上线。</p>
+        <ul class="commits">
+          <li><span class="hash">f67032a</span><span class="tag tag-feat">feat</span>Update footer, remove old refs</li>
+          <li><span class="hash">2272699</span><span class="tag tag-fix">fix</span>Fix duplicated brand name</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 04: EFFECTS ═══════ -->
+<section class="glass-section">
+  <div class="container">
+    <div class="section-label scroll-fade-in">✨ 04 — VISUAL EFFECTS</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">9 个特效的技术实现</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，IntersectionObserver 离屏暂停。</p>
+    <div class="fx-grid scroll-fade-in" style="--delay:0.3s">
+      <div class="fx-card"><div class="fx-emoji">🏙️</div><h4>Hero 3D 城市天际线</h4><div class="fx-tech">Three.js r86 + TweenMax — 237 行</div><p>100 栋建筑 + 300 蓝色粒子旋涡 + 60 条 yoyo 光线。鼠标驱动旋转。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🔮</div><h4>粒子变形</h4><div class="fx-tech">Three.js + Float32Array — 280 行</div><p>5000 粒子在 5 个 OBJ 模型间变形。级联延迟 + 多 easing + 拖拽。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🧊</div><h4>线框立方体视差</h4><div class="fx-tech">Canvas 2D + 手写矩阵 — 344 行</div><p>rotXYZ + fov=800。色差 4 层叠加 + RGB 十字星。3 种模式。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🔵</div><h4>点阵动画</h4><div class="fx-tech">Canvas 2D + DOMParser — 242 行</div><p>12% 蓝色染色，涟漪 12px/帧 + 90px 放大镜 smoothstep。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🌍</div><h4>3D 地球</h4><div class="fx-tech">Three.js + TopoJSON — 325 行</div><p>~16k 点 + 16 城市 + 24 贝塞尔弧 + 手动补台湾/海南。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🚇</div><h4>数据隧道</h4><div class="fx-tech">Three.js + AdditiveBlending — 136 行</div><p>80 余弦曲线，94 发光信号，循环随机分配车道。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🌈</div><h4>Footer CSS 光谱</h4><div class="fx-tech">纯 CSS — 9 条渐变列</div><p>blur(40px)，5.5s–7.2s 异步波浪。</p></div>
+      <div class="fx-card"><div class="fx-emoji">📊</div><h4>统计数字 + 滚动淡入</h4><div class="fx-tech">IntersectionObserver + cubic ease-out</div><p>2000ms 计数 + translateY/opacity 淡入。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 05: CHALLENGES ═══════ -->
+<section>
+  <div class="container">
+    <div class="section-label scroll-fade-in">🧩 05 — CHALLENGES & DECISIONS</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">踩坑与决策</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">每一个"回退"都是快速实验和理性判断。</p>
+    <div class="challenge-grid scroll-fade-in" style="--delay:0.3s">
+      <div class="challenge-row">
+        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>地球上台湾消失</h4><p>低精度 TopoJSON + 大 step，台湾没有陆地点。step=1 有 65k 点太卡。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>高精度 + 手动补点</h4><p>countries-50m.json + step=2（~16k）+ 手动补台湾/海南/斯里兰卡。</p></div>
+      </div>
+      <div class="challenge-row">
+        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>点阵 SVG 性能崩溃</h4><p>数千 rect 用 CSS Transform 缩放，浏览器重排卡顿。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>Canvas + 涟漪算法</h4><p>DOMParser 提取坐标 → Canvas 逐帧。涟漪 12px/帧 + smoothstep 放大镜。</p></div>
+      </div>
+      <div class="challenge-row">
+        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>Core Value 暗色失败</h4><p>立方体和文本在暗色背景上对比度不好。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>4 分钟果断回退</h4><p>提交后立即还原，CLAUDE.md 记录"确认保持白色"。</p></div>
+      </div>
+      <div class="challenge-row">
+        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>Cosmic Spectrum 喧宾夺主</h4><p>GSAP 全屏滚动光谱完全抢走注意力。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>大胆砍掉</h4><p>display:none 观察 → 确认不需要 → 彻底删除 + 移除 GSAP CDN。</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 06: ARCHITECTURE ═══════ -->
+<section class="glass-section">
+  <div class="container">
+    <div class="section-label scroll-fade-in">🏗️ 06 — ARCHITECTURE</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">最终文件结构</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">极简主义，总体积 1.3MB。</p>
+    <div class="arch-box scroll-fade-in" style="--delay:0.3s"><span class="dir">xyz-cloud-site/</span>
+├── index.html          <span class="size">139 KB</span>  <span class="comment">// 单文件 ~4000 行</span>
+├── dot-matrix.svg      <span class="size">543 KB</span>  <span class="comment">// 点阵数据源</span>
+├── three.min.js        <span class="size">517 KB</span>  <span class="comment">// Three.js r86</span>
+├── TweenMax.min.js     <span class="size">112 KB</span>  <span class="comment">// GreenSock</span>
+├── <span class="dir">models/</span>
+│   ├── cloud-computing.json    <span class="size">109 KB</span>
+│   ├── cloud-hosting.json      <span class="size">108 KB</span>
+│   ├── server.json             <span class="size">108 KB</span>
+│   ├── virtual-machine.json    <span class="size">109 KB</span>
+│   └── access-control.json     <span class="size">108 KB</span>
+├── CLAUDE.md           <span class="comment">// AI 协作规范</span>
+└── PROJECT_SUMMARY.md  <span class="comment">// 技术文档</span></div>
+  </div>
+</section>
+
+<!-- ═══════ 07: DESIGN TOKENS ═══════ -->
+<section>
+  <div class="container">
+    <div class="section-label scroll-fade-in">🎨 07 — DESIGN TOKENS</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">Figma 设计令牌系统</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      从 Figma 导出的完整设计系统——颜色、字体、间距，全部转为 CSS 变量，零偏差。
+    </p>
+    <div class="scroll-fade-in" style="--delay:0.3s">
+      <div class="token-group">
+        <div class="token-label">Blue Scale — 10 级品牌色梯度</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background:#f0f5ff"><span class="sw-val">#f0f5ff</span></div>
+          <div class="color-swatch" style="background:#e6edff"><span class="sw-val">#e6edff</span></div>
+          <div class="color-swatch" style="background:#bdceff"><span class="sw-val">#bdceff</span></div>
+          <div class="color-swatch" style="background:#94adff"><span class="sw-val">#94adff</span></div>
+          <div class="color-swatch" style="background:#6b89ff"><span class="sw-val">#6b89ff</span></div>
+          <div class="color-swatch" style="background:#4362ff"><span class="sw-val">#4362ff ★</span></div>
+          <div class="color-swatch" style="background:#2e44d9"><span class="sw-val">#2e44d9</span></div>
+          <div class="color-swatch" style="background:#1d2cb3"><span class="sw-val">#1d2cb3</span></div>
+          <div class="color-swatch" style="background:#0f188c"><span class="sw-val">#0f188c</span></div>
+          <div class="color-swatch" style="background:#0a0d66"><span class="sw-val">#0a0d66</span></div>
+        </div>
+      </div>
+      <div class="token-group">
+        <div class="token-label">Gray Scale — 11 级中性色</div>
+        <div class="color-row">
+          <div class="color-swatch" style="background:#f8fafc"><span class="sw-val">#f8fafc</span></div>
+          <div class="color-swatch" style="background:#f1f5f9"><span class="sw-val">#f1f5f9</span></div>
+          <div class="color-swatch" style="background:#e1e7ef"><span class="sw-val">#e1e7ef</span></div>
+          <div class="color-swatch" style="background:#c8d5e5"><span class="sw-val">#c8d5e5</span></div>
+          <div class="color-swatch" style="background:#9eacbf"><span class="sw-val">#9eacbf</span></div>
+          <div class="color-swatch" style="background:#65758b"><span class="sw-val">#65758b</span></div>
+          <div class="color-swatch" style="background:#48566a"><span class="sw-val">#48566a</span></div>
+          <div class="color-swatch" style="background:#344256"><span class="sw-val">#344256</span></div>
+          <div class="color-swatch" style="background:#0f1728"><span class="sw-val">#0f1728</span></div>
+          <div class="color-swatch" style="background:#090e1a"><span class="sw-val">#090e1a</span></div>
+          <div class="color-swatch" style="background:#060a10"><span class="sw-val">#060a10</span></div>
+        </div>
+      </div>
+      <div class="token-group">
+        <div class="token-label">White Alpha Scale — 深色背景上的 10 级透明度</div>
+        <div class="white-alpha-bg color-row">
+          <div class="color-swatch" style="background:rgba(255,255,255,0.08)"><span class="sw-val">8%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.10)"><span class="sw-val">10%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.20)"><span class="sw-val">20%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.30)"><span class="sw-val">30%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.40)"><span class="sw-val">40%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.50)"><span class="sw-val">50%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.60)"><span class="sw-val">60%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.80)"><span class="sw-val">80%</span></div>
+          <div class="color-swatch" style="background:rgba(255,255,255,0.90)"><span class="sw-val">90%</span></div>
+          <div class="color-swatch" style="background:#ffffff"><span class="sw-val">100%</span></div>
+        </div>
+      </div>
+      <div class="token-group">
+        <div class="token-label">Typography Scale — JetBrains Mono</div>
+        <div class="type-scale">
+          <div class="type-row"><span class="type-size">72px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:36px;font-weight:500">Heading 0</span></div>
+          <div class="type-row"><span class="type-size">48px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:28px;font-weight:500">Heading 1</span></div>
+          <div class="type-row"><span class="type-size">40px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:24px;font-weight:500">Heading 2</span></div>
+          <div class="type-row"><span class="type-size">32px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:20px;font-weight:500">Heading 3</span></div>
+          <div class="type-row"><span class="type-size">20px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:18px;font-weight:500">Heading 5</span></div>
+          <div class="type-row"><span class="type-size">16px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:16px;font-weight:500">Heading 6 / Body Large</span></div>
+          <div class="type-row"><span class="type-size">14px</span><span class="type-weight">300</span><span class="type-sample" style="font-size:14px;font-weight:300">Body — 全站默认正文</span></div>
+          <div class="type-row"><span class="type-size">12px</span><span class="type-weight">300</span><span class="type-sample" style="font-size:12px;font-weight:300">Small — 标签、注释、辅助文字</span></div>
+        </div>
+      </div>
+      <div class="token-group">
+        <div class="token-label">Spacing System — 4px 基础倍数</div>
+        <div class="spacing-row">
+          <div><div class="spacing-block" style="width:4px;height:4px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">4</div></div>
+          <div><div class="spacing-block" style="width:8px;height:8px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">8</div></div>
+          <div><div class="spacing-block" style="width:12px;height:12px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">12</div></div>
+          <div><div class="spacing-block" style="width:16px;height:16px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">16</div></div>
+          <div><div class="spacing-block" style="width:20px;height:20px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">20</div></div>
+          <div><div class="spacing-block" style="width:24px;height:24px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">24</div></div>
+          <div><div class="spacing-block" style="width:32px;height:32px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">32</div></div>
+          <div><div class="spacing-block" style="width:40px;height:40px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">40</div></div>
+          <div><div class="spacing-block" style="width:56px;height:56px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">80</div></div>
+          <div><div class="spacing-block" style="width:72px;height:72px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">120</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 08: EFFECT SHOWCASE ═══════ -->
+<section class="glass-section">
+  <div class="container">
+    <div class="section-label scroll-fade-in">📸 08 — EFFECT SHOWCASE</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">最终效果实拍</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">1440×900 视口下截取的实际运行画面。</p>
+    <div class="shot-grid scroll-fade-in" style="--delay:0.3s">
+      <div class="shot-card">
+        <img src="./screenshots/01-hero-3d-city-skyline.png" alt="Hero 3D城市天际线" loading="lazy">
+        <div class="shot-info">
+          <div class="shot-name">Hero — 3D 城市天际线</div>
+          <div class="shot-tech">Three.js r86 · 100 建筑 + 300 粒子 + 60 光线</div>
+        </div>
+      </div>
+      <div class="shot-card">
+        <img src="./screenshots/02-particle-morph-ai-platform.png" alt="粒子变形 AI 平台" loading="lazy">
+        <div class="shot-info">
+          <div class="shot-name">粒子变形 — AI 开发平台</div>
+          <div class="shot-tech">Three.js · 5000 粒子 · 5 种 OBJ 模型变形</div>
+        </div>
+      </div>
+      <div class="shot-card">
+        <img src="./screenshots/04-data-tunnel.png" alt="数据隧道" loading="lazy">
+        <div class="shot-info">
+          <div class="shot-name">数据隧道 — 信号流动画</div>
+          <div class="shot-tech">Three.js · 80 余弦曲线 + 94 发光信号</div>
+        </div>
+      </div>
+      <div class="shot-card">
+        <img src="./screenshots/06-3d-globe-detail.png" alt="3D 地球" loading="lazy">
+        <div class="shot-info">
+          <div class="shot-name">3D 地球 — 全球基础设施</div>
+          <div class="shot-tech">Three.js + TopoJSON · 16k 点 + 16 城市 + 24 飞行弧线</div>
+        </div>
+      </div>
+      <div class="shot-card">
+        <img src="./screenshots/03-particle-morph-canvas-detail.png" alt="粒子变形细节" loading="lazy">
+        <div class="shot-info">
+          <div class="shot-name">粒子变形 — 近距离细节</div>
+          <div class="shot-tech">Float32Array 手动插值 · 级联延迟 + 多 easing</div>
+        </div>
+      </div>
+      <div class="shot-card">
+        <img src="./screenshots/05-3d-globe-section-top.png" alt="全球基础设施" loading="lazy">
+        <div class="shot-info">
+          <div class="shot-name">统计数字 + 地球入场</div>
+          <div class="shot-tech">IntersectionObserver · 2000ms cubic ease-out 计数</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 09: OBJ PIPELINE ═══════ -->
+<section>
+  <div class="container">
+    <div class="section-label scroll-fade-in">🔄 09 — OBJ PREPROCESSING PIPELINE</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">3D 模型预处理流水线</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      设计师交付 5 个 OBJ 模型（7-15 万顶点），需要预处理到 5000 点才能实时变形渲染。
+    </p>
+    <div class="pipeline scroll-fade-in" style="--delay:0.3s">
+      <div class="pipe-step">
+        <div class="pipe-emoji">📦</div>
+        <h4>原始 OBJ</h4>
+        <p>10-20MB<br>7-15 万顶点</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-emoji">🔍</div>
+        <h4>提取顶点</h4>
+        <p>解析 v x y z<br>过滤非顶点行</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-emoji">🎯</div>
+        <h4>居中原点</h4>
+        <p>计算包围盒<br>平移到 (0,0,0)</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-emoji">📐</div>
+        <h4>归一化</h4>
+        <p>缩放到半径 1.8<br>统一尺度</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-emoji">🔽</div>
+        <h4>降采样</h4>
+        <p>均匀采样<br>到 5000 点</p>
+      </div>
+      <div class="pipe-arrow">→</div>
+      <div class="pipe-step">
+        <div class="pipe-emoji">📄</div>
+        <h4>JSON 导出</h4>
+        <p>flat Float array<br>4 位小数精度</p>
+      </div>
+    </div>
+    <div class="pipe-compare scroll-fade-in" style="--delay:0.4s">
+      <div style="text-align:center">
+        <div class="pipe-big">~20<span class="unit">MB</span></div>
+        <div class="pipe-label">原始 OBJ 文件</div>
+      </div>
+      <div class="pipe-vs">→</div>
+      <div style="text-align:center">
+        <div class="pipe-big gradient-text">108<span class="unit">KB</span></div>
+        <div class="pipe-label">处理后 JSON</div>
+      </div>
+      <div class="pipe-vs">=</div>
+      <div style="text-align:center">
+        <div class="pipe-big" style="color:#059669">99.5<span class="unit">%</span></div>
+        <div class="pipe-label">体积压缩率</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 10: AI COLLABORATION ═══════ -->
+<section class="glass-section">
+  <div class="container">
+    <div class="section-label scroll-fade-in">🤖 10 — AI COLLABORATION</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">人机协作开发模式</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      这个项目从第一行代码到最终部署，全程由人类开发者与 Claude AI 协作完成。CLAUDE.md 是"AI 的规范手册"。
+    </p>
+    <div class="collab-grid scroll-fade-in" style="--delay:0.3s">
+      <div class="collab-card">
+        <div class="collab-role">🤖 AI 负责</div>
+        <h4>代码生成与算法实现</h4>
+        <p>所有 Three.js 特效代码、Canvas 2D 矩阵运算、TopoJSON 地球渲染、粒子变形插值算法——由 Claude 生成初始实现。</p>
+      </div>
+      <div class="collab-card">
+        <div class="collab-role">👨‍🎨 人类负责</div>
+        <h4>视觉判断与品质把控</h4>
+        <p>效果好不好看、动画速度是否舒服、颜色搭配对不对、模型变形是否自然——这些审美决策全部由人类拍板。</p>
+      </div>
+      <div class="collab-card">
+        <div class="collab-role">🔄 协作模式</div>
+        <h4>快速迭代 · 即时反馈</h4>
+        <p>数据隧道 8 次参数微调、点阵动画 7 次迭代、地球特效 5 次重写。人类说"不好"，AI 立刻改——平均 2 分钟一轮。</p>
+      </div>
+      <div class="collab-card">
+        <div class="collab-role">📚 知识沉淀</div>
+        <h4>CLAUDE.md — AI 的规范手册</h4>
+        <p>132 行的项目规范文件，记录每个技术约束、设计决策和踩坑经验。确保 AI 不会重复犯错，也是项目知识的永久存档。</p>
+      </div>
+    </div>
+    <div class="collab-stats scroll-fade-in" style="--delay:0.4s">
+      <div class="collab-stat-item"><div class="cs-num">96</div><div class="cs-label">Git Commits</div></div>
+      <div class="collab-stat-item"><div class="cs-num">~30</div><div class="cs-label">迭代轮次</div></div>
+      <div class="collab-stat-item"><div class="cs-num">132</div><div class="cs-label">CLAUDE.md 行数</div></div>
+      <div class="collab-stat-item"><div class="cs-num">2</div><div class="cs-label">核心开发天数</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 11: LESSONS LEARNED ═══════ -->
+<section>
+  <div class="container">
+    <div class="section-label scroll-fade-in">💡 11 — LESSONS LEARNED</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">复盘与收获</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      一个设计师，用 AI 把脑子里的特效落地成代码。这条路上踩过的坑和想明白的事。
+    </p>
+    <div class="lesson-list scroll-fade-in" style="--delay:0.3s">
+      <div class="lesson-item">
+        <div class="lesson-num">01</div>
+        <div class="lesson-body">
+          <h4>设计师最大的痛：看得到，做不出</h4>
+          <p>脑子里清楚想要 5000 粒子变形、地球飞线、数据隧道的效果，Figma 里也画得出概念稿——但打开编辑器就卡住了。Three.js 文档看不懂，矩阵运算写不来。AI 之前，这些特效只能等开发排期，等到的还不一定是你想要的。</p>
+        </div>
+      </div>
+      <div class="lesson-item">
+        <div class="lesson-num">02</div>
+        <div class="lesson-body">
+          <h4>AI 让"不好看，再改"成为可能</h4>
+          <p>以前改一个特效参数要提需求、排期、联调。现在是：看一眼→"粒子太稀了"→2 分钟后新版本出来→"颜色偏了"→再 2 分钟。数据隧道 8 轮微调、点阵动画 7 次迭代——这种密度的打磨，以前根本不可能。</p>
+        </div>
+      </div>
+      <div class="lesson-item">
+        <div class="lesson-num">03</div>
+        <div class="lesson-body">
+          <h4>审美判断是人不可替代的价值</h4>
+          <p>AI 能写出 Three.js 代码，但它不知道"这个动画看着不舒服"。Core Value 暗色背景 4 分钟回退、Cosmic Spectrum 果断砍掉——这些决策只有设计师能做。代码可以生成，品味不行。</p>
+        </div>
+      </div>
+      <div class="lesson-item">
+        <div class="lesson-num">04</div>
+        <div class="lesson-body">
+          <h4>不需要懂代码，但必须懂体验</h4>
+          <p>不懂代码怎么实现，但知道怎么做出来效果好、性能好。高级审美和交互直觉才是驱动 AI 输出高质量结果的真正引擎——你要能精准描述"哪里不对"，AI 才知道往哪改。</p>
+        </div>
+      </div>
+      <div class="lesson-item">
+        <div class="lesson-num">05</div>
+        <div class="lesson-body">
+          <h4>2 天做完不是重点，一个人做完才是</h4>
+          <p>以前这种项目：设计 → 开发 → 联调 → 改需求 → 返工，最少两周。现在设计师自己闭环——从 Figma 令牌到 Three.js 粒子，从构思到上线，中间没有任何沟通损耗。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ RESULT ═══════ -->
+<section class="result-section">
+  <div class="container section-center">
+    <div class="section-label" style="background:rgba(255,255,255,0.15);color:#fff;">🎉 FINAL RESULT</div>
+    <h2 class="section-title" style="margin-bottom: 16px;">从一张空白页到<br>9 个视觉特效的云平台官网</h2>
+    <p class="section-desc" style="text-align:center;">96 次提交，2 天核心开发，4000 行代码，1.3MB 总体积。</p>
+    <a href="https://xyz-cloud-site.vercel.app" target="_blank" class="result-url">xyz-cloud-site.vercel.app <span class="arrow">↗</span></a>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="footer">
+  <p class="footer-text">✨ XYZ Cloud Development Case Study · 2026</p>
+</footer>
+
+<!-- ═══════ SCRIPTS ═══════ -->
+<script>
+(function() {
+  'use strict';
+
+  // Scroll fade-in
+  const fadeObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.scroll-fade-in').forEach(el => fadeObs.observe(el));
+
+  // Counter animation
+  const counters = document.querySelectorAll('.counter');
+  let done = false;
+  const cObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !done) {
+        done = true;
+        counters.forEach(c => {
+          const target = parseInt(c.dataset.target), dur = 2000, start = performance.now();
+          (function up(now) {
+            const t = Math.min((now - start) / dur, 1);
+            c.textContent = Math.round((1 - Math.pow(1 - t, 3)) * target);
+            if (t < 1) requestAnimationFrame(up);
+          })(start);
+        });
+        cObs.disconnect();
+      }
+    });
+  }, { threshold: 0.3 });
+  counters.forEach(c => cObs.observe(c));
+
+})();
+</script>
+</body>
+</html>

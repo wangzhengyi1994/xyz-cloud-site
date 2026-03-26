@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>设计产品如何去掉 AI 味儿 — 对比演示</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #0a0a0a;
+  font-family: 'Inter', -apple-system, sans-serif;
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* ═══════ TAB BAR ═══════ */
+.tab-bar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: center;
+  gap: 4px;
+  height: 56px;
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0 24px;
+}
+
+.tab-bar .title {
+  position: absolute; left: 24px;
+  font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.4);
+  letter-spacing: 0.5px;
+}
+
+.tab-group {
+  display: flex;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.tab-btn {
+  position: relative;
+  padding: 8px 24px;
+  font-size: 13px; font-weight: 600; font-family: inherit;
+  color: rgba(255,255,255,0.5);
+  background: none; border: none; cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 8px;
+}
+.tab-btn:hover { color: rgba(255,255,255,0.8); }
+
+.tab-btn.active {
+  color: #fff;
+  background: rgba(255,255,255,0.12);
+}
+
+.tab-btn .dot {
+  width: 8px; height: 8px; border-radius: 50%;
+}
+.tab-btn.v1 .dot { background: linear-gradient(135deg, #7c3aed, #3b82f6); }
+.tab-btn.v2 .dot { background: #4362ff; }
+
+.tab-btn .badge {
+  font-size: 10px; font-weight: 500; padding: 1px 7px;
+  border-radius: 100px; letter-spacing: 0.3px;
+}
+.tab-btn.v1 .badge { background: rgba(124,58,237,0.2); color: #a78bfa; }
+.tab-btn.v2 .badge { background: rgba(67,98,255,0.2); color: #6b89ff; }
+
+/* Side-by-side button */
+.split-btn {
+  position: absolute; right: 24px;
+  padding: 7px 16px;
+  font-size: 12px; font-weight: 600; font-family: inherit;
+  color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px; cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex; align-items: center; gap: 6px;
+}
+.split-btn:hover { color: #fff; background: rgba(255,255,255,0.1); }
+.split-btn.active { color: #fff; background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.2); }
+
+/* ═══════ IFRAME CONTAINER ═══════ */
+.frame-container {
+  position: fixed;
+  top: 56px; left: 0; right: 0; bottom: 0;
+}
+
+.frame-container iframe {
+  width: 100%; height: 100%;
+  border: none;
+  position: absolute; top: 0; left: 0;
+  transition: opacity 0.3s ease;
+}
+
+.frame-container iframe.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Split mode */
+.frame-container.split-mode iframe {
+  width: 50%;
+}
+.frame-container.split-mode iframe:nth-child(2) {
+  left: 50%;
+}
+.frame-container.split-mode iframe.hidden {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.split-divider {
+  display: none;
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 3px;
+  background: rgba(255,255,255,0.15);
+  z-index: 10;
+  transform: translateX(-50%);
+}
+.frame-container.split-mode .split-divider { display: block; }
+
+.split-label {
+  display: none;
+  position: absolute; top: 12px; z-index: 11;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.5px;
+  padding: 4px 12px; border-radius: 100px;
+  pointer-events: none;
+}
+.frame-container.split-mode .split-label { display: block; }
+
+.split-label.left {
+  left: 12px;
+  background: linear-gradient(135deg, #7c3aed, #3b82f6);
+  color: #fff;
+}
+.split-label.right {
+  right: 12px;
+  background: #4362ff;
+  color: #fff;
+}
+
+/* ═══════ KEYBOARD HINT ═══════ */
+.hint {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  z-index: 100;
+  font-size: 11px; color: rgba(255,255,255,0.3);
+  display: flex; gap: 16px;
+}
+.hint kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 22px; height: 20px; padding: 0 5px;
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px; font-family: inherit; font-size: 10px; color: rgba(255,255,255,0.5);
+  margin: 0 3px;
+}
+</style>
+</head>
+<body>
+
+<div class="tab-bar">
+  <div class="title">设计产品如何去掉 AI 味儿</div>
+  <div class="tab-group">
+    <button class="tab-btn v1 active" data-tab="v1">
+      <span class="dot"></span>
+      V1 · AI 生成风格
+      <span class="badge">Before</span>
+    </button>
+    <button class="tab-btn v2" data-tab="v2">
+      <span class="dot"></span>
+      V2 · 设计师把控
+      <span class="badge">After</span>
+    </button>
+  </div>
+  <button class="split-btn" id="splitBtn">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="1" width="5" height="12" rx="1" stroke="currentColor" stroke-width="1.5"/></svg>
+    并排对比
+  </button>
+</div>
+
+<div class="frame-container" id="frameContainer">
+  <iframe src="dev-story-v1.html" id="frameV1"></iframe>
+  <iframe src="dev-story.html" id="frameV2" class="hidden"></iframe>
+  <div class="split-divider"></div>
+  <div class="split-label left">V1 · AI 生成风格</div>
+  <div class="split-label right">V2 · 设计师把控</div>
+</div>
+
+<div class="hint">
+  <span>按 <kbd>1</kbd> V1</span>
+  <span>按 <kbd>2</kbd> V2</span>
+  <span>按 <kbd>S</kbd> 并排</span>
+</div>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.tab-btn');
+  const frameV1 = document.getElementById('frameV1');
+  const frameV2 = document.getElementById('frameV2');
+  const container = document.getElementById('frameContainer');
+  const splitBtn = document.getElementById('splitBtn');
+  let splitMode = false;
+
+  function switchTab(tab) {
+    if (splitMode) return;
+    tabs.forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab-btn.${tab}`).classList.add('active');
+    if (tab === 'v1') {
+      frameV1.classList.remove('hidden');
+      frameV2.classList.add('hidden');
+    } else {
+      frameV2.classList.remove('hidden');
+      frameV1.classList.add('hidden');
+    }
+  }
+
+  tabs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (splitMode) toggleSplit();
+      switchTab(btn.dataset.tab);
+    });
+  });
+
+  function toggleSplit() {
+    splitMode = !splitMode;
+    container.classList.toggle('split-mode', splitMode);
+    splitBtn.classList.toggle('active', splitMode);
+    if (splitMode) {
+      frameV1.classList.remove('hidden');
+      frameV2.classList.remove('hidden');
+      tabs.forEach(t => t.classList.add('active'));
+    } else {
+      // Restore to V1 active
+      switchTab('v1');
+    }
+  }
+
+  splitBtn.addEventListener('click', toggleSplit);
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.key === '1') { if (splitMode) toggleSplit(); switchTab('v1'); }
+    if (e.key === '2') { if (splitMode) toggleSplit(); switchTab('v2'); }
+    if (e.key === 's' || e.key === 'S') toggleSplit();
+  });
+})();
+</script>
+</body>
+</html>
