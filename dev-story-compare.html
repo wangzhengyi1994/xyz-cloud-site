@@ -212,6 +212,10 @@ body {
     splitMode = false;
     container.classList.remove('split-mode');
     splitLabels.classList.remove('show');
+    // 恢复 iframe 自身滚动
+    Object.values(frames).forEach(f => {
+      try { f.contentDocument.documentElement.style.overflow = ''; } catch(e) {}
+    });
     tabs.forEach(t => t.classList.remove('active'));
     document.querySelector(`.tab-btn.${tab}`).classList.add('active');
     Object.entries(frames).forEach(([key, frame]) => {
@@ -220,30 +224,60 @@ body {
     });
   }
 
-  // 同步滚动：任一 iframe 滚动时，其余按百分比同步
-  function setupSyncScroll() {
-    Object.values(frames).forEach(frame => {
+  // 同步滚动：统一 wheel 驱动，用 scrollTop 百分比同步
+  let scrollPct = 0;
+  let syncBound = false;
+
+  function syncAllFrames() {
+    const allFrames = Object.values(frames);
+    allFrames.forEach(frame => {
       try {
         const doc = frame.contentDocument || frame.contentWindow.document;
-        doc.addEventListener('scroll', function() {
-          if (syncing) return;
-          syncing = true;
-          const scrollTop = doc.documentElement.scrollTop || doc.body.scrollTop;
-          const maxScroll = doc.documentElement.scrollHeight - doc.documentElement.clientHeight;
-          const pct = maxScroll > 0 ? scrollTop / maxScroll : 0;
-          Object.values(frames).forEach(other => {
-            if (other === frame) return;
-            try {
-              const oDoc = other.contentDocument || other.contentWindow.document;
-              const oMax = oDoc.documentElement.scrollHeight - oDoc.documentElement.clientHeight;
-              oDoc.documentElement.scrollTop = pct * oMax;
-            } catch(e) {}
-          });
-          syncing = false;
-        });
+        const maxScroll = doc.documentElement.scrollHeight - doc.documentElement.clientHeight;
+        doc.documentElement.scrollTop = scrollPct * maxScroll;
       } catch(e) {}
     });
   }
+
+  function handleWheel(e) {
+    if (!splitMode) return;
+    e.preventDefault();
+    // 用 V1 的总高度作为基准计算百分比增量
+    try {
+      const doc = frames.v1.contentDocument || frames.v1.contentWindow.document;
+      const maxScroll = doc.documentElement.scrollHeight - doc.documentElement.clientHeight;
+      if (maxScroll > 0) {
+        scrollPct += e.deltaY / maxScroll;
+        scrollPct = Math.max(0, Math.min(1, scrollPct));
+      }
+    } catch(e2) {}
+    syncAllFrames();
+  }
+
+  function setupSyncScroll() {
+    if (syncBound) return;
+    syncBound = true;
+    const allFrames = Object.values(frames);
+
+    // 外层 wheel
+    document.addEventListener('wheel', handleWheel, { passive: false });
+
+    // iframe 内 wheel 转发
+    allFrames.forEach(frame => {
+      try {
+        frame.contentWindow.addEventListener('wheel', handleWheel, { passive: false });
+      } catch(e) {}
+    });
+  }
+
+  // iframe 加载完成后绑定
+  let loaded = 0;
+  Object.values(frames).forEach(frame => {
+    frame.addEventListener('load', () => {
+      loaded++;
+      if (loaded >= 3) setupSyncScroll();
+    });
+  });
 
   tabs.forEach(btn => {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
