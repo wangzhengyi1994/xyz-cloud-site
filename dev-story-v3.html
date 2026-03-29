@@ -9,10 +9,11 @@
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
 <style>
 :root {
-  --primary: #6B89FF;
-  --primary-hover: #8BA4FF;
-  --dark: #000000;
+  --primary: #e8ee5a;
+  --primary-hover: #f0f4a0;
+  --dark: #0B0E15;
   --orange: #ff8400;
+  --accent: #e8ee5a;
   --white-1: rgba(255,255,255,0.08);
   --white-3: rgba(255,255,255,0.20);
   --white-5: rgba(255,255,255,0.60);
@@ -49,18 +50,18 @@ body {
 /* ═══ Waterfall layout ═══ */
 .section-dark .section-inner,
 .section-light .section-inner {
-  padding: 120px 48px 80px;
+  padding: 140px 48px 100px;
   max-width: none;
   margin: 0 auto;
   position: relative;
 }
 
 /* Section titles — compact for PPT slides, vw-scaled */
-.section-title-dark { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 12px; }
-.section-title-light { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 12px; }
-.section-num { font-size: 14px; color: var(--primary); letter-spacing: 3px; margin-bottom: 8px; }
-.section-desc-dark { font-size: 18px; font-weight: 400; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
-.section-desc-light { font-size: 18px; font-weight: 400; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
+.section-title-dark { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 20px; }
+.section-title-light { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 20px; }
+.section-num { font-size: 14px; color: var(--accent); letter-spacing: 3px; margin-bottom: 12px; }
+.section-desc-dark { font-size: 18px; font-weight: 400; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 56px; }
+.section-desc-light { font-size: 18px; font-weight: 400; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 56px; }
 .section-row { display: flex; gap: 80px; align-items: flex-start; }
 
 /* Content blocks fill remaining PPT slide space */
@@ -152,7 +153,6 @@ body {
   object-fit: cover;
   z-index: 3;
   pointer-events: none;
-  opacity: 0.8;
   mix-blend-mode: screen;
 }
 
@@ -198,7 +198,7 @@ body {
   opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.0s;
 }
 .hero-title .accent {
-  background: linear-gradient(135deg, #6B89FF, #8BA4FF);
+  background: linear-gradient(135deg, #e8ee5a, #f0f4a0);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -263,10 +263,10 @@ body {
   background: #1f1f1f;
   border: 1px solid rgba(255,255,255,0.06);
   border-radius: 0;
-  padding: 20px 20px 16px;
+  padding: 28px 24px 24px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 18px;
 }
 
 .input-card-head {
@@ -283,7 +283,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background: #000000;
+  background: #0B0E15;
   border-radius: 4px;
   padding: 8px 14px;
   order: 3;
@@ -307,7 +307,7 @@ body {
 }
 .input-card-desc code {
   font-family: var(--font-code); font-size: 11px;
-  color: var(--primary); background: rgba(107, 137, 255, 0.08);
+  color: var(--primary); background: rgba(232, 238, 90, 0.08);
   padding: 1px 4px; border-radius: 3px;
 }
 
@@ -357,7 +357,7 @@ body {
 .demo-tree .t-size { color: var(--white-3); font-size: 11px; margin-left: 8px; }
 .demo-tree .t-indent { padding-left: 20px; }
 .demo-tree .t-highlight {
-  background: rgba(67, 98, 255, 0.06);
+  background: rgba(232, 238, 90, 0.06);
   padding: 2px 6px; border-radius: 2px;
 }
 
@@ -387,7 +387,7 @@ body {
   border-radius: 2px;
 }
 .demo-block:hover { border-color: var(--primary); color: var(--primary); }
-.demo-block.wide { grid-column: span 4; background: rgba(107,137,255,0.04); }
+.demo-block.wide { grid-column: span 4; background: rgba(232,238,90,0.04); }
 .demo-block.half { grid-column: span 2; }
 
 /* Demo: code snippet */
@@ -520,9 +520,9 @@ body {
   transition: background 0.25s ease, color 0.25s ease;
 }
 .td-leaf:hover {
-  background: #4362ff;
-  color: #fff;
-  box-shadow: 0 0 20px rgba(67, 98, 255, 0.4);
+  background: #c5ca30;
+  color: #000;
+  box-shadow: 0 0 20px rgba(200, 206, 50, 0.4);
 }
 .td-leaf:hover em {
   color: #fff;
@@ -530,7 +530,7 @@ body {
 .td-leaf em { font-style: normal; color: var(--white-5); }
 .td-leaf code {
   font-family: var(--font-code); font-size: 14px;
-  color: var(--primary); background: rgba(107,137,255,0.1);
+  color: var(--primary); background: rgba(232,238,90,0.1);
   padding: 1px 6px; border-radius: 3px;
 }
 
@@ -570,7 +570,7 @@ body {
   color: var(--white-4);
   flex-shrink: 0;
 }
-.bd-item.active .bd-num { color: var(--primary); }
+.bd-item.active .bd-num { color: var(--accent); }
 .bd-title {
   font-size: 22px;
   font-weight: 500;
@@ -628,9 +628,9 @@ body {
 .iso-face {
   position: absolute; width: 40px; height: 40px;
 }
-.iso-face.top { background: #6b89ff; transform: translateZ(40px); }
-.iso-face.front { background: #4362ff; transform: rotateX(-90deg) translateZ(20px); transform-origin: bottom; }
-.iso-face.right { background: #3450d9; transform: rotateY(90deg) translateZ(20px); transform-origin: right; }
+.iso-face.top { background: #e8ee5a; transform: translateZ(40px); }
+.iso-face.front { background: #c5ca30; transform: rotateX(-90deg) translateZ(20px); transform-origin: bottom; }
+.iso-face.right { background: #a0a520; transform: rotateY(90deg) translateZ(20px); transform-origin: right; }
 
 .iso-block:nth-child(1) { left: 20px; top: 20px; }
 .iso-block:nth-child(1) .top { transform: translateZ(60px); height: 40px; }
@@ -666,8 +666,8 @@ body {
 }
 .wire-face {
   position: absolute; width: 100px; height: 100px;
-  border: 1px solid rgba(107,137,255,0.5);
-  background: rgba(107,137,255,0.03);
+  border: 1px solid rgba(232,238,90,0.5);
+  background: rgba(232,238,90,0.03);
 }
 .wire-face:nth-child(1) { transform: translateZ(50px); }
 .wire-face:nth-child(2) { transform: translateZ(-50px); }
@@ -718,9 +718,9 @@ body {
   background-color: rgba(255,255,255,0.1);
   background-image: radial-gradient(
     circle at 0% var(--scroll-y-position, -10%),
-    rgb(112, 153, 255) 0%,
-    rgba(56, 106, 249, 0.79) 10px,
-    rgba(10, 76, 242, 0.53) 20px,
+    rgb(232, 238, 90) 0%,
+    rgba(200, 206, 50, 0.79) 10px,
+    rgba(180, 186, 30, 0.53) 20px,
     rgba(255, 255, 255, 0) 40px,
     rgba(49, 49, 49, 0) 100%
   );
@@ -733,11 +733,11 @@ body {
   position: absolute;
   left: 0; top: 0; bottom: 0;
   background: linear-gradient(180deg,
-    rgba(10,76,242,0) 0%,
-    rgba(10,76,242,0.75) 38.3%,
-    rgb(77,127,255) 50.9%,
-    rgba(10,76,242,0.75) 63.1%,
-    rgba(10,76,242,0) 100%
+    rgba(180,186,30,0) 0%,
+    rgba(180,186,30,0.75) 38.3%,
+    rgb(210,216,60) 50.9%,
+    rgba(180,186,30,0.75) 63.1%,
+    rgba(180,186,30,0) 100%
   );
   background-repeat: no-repeat;
   background-position-y: var(--reflection-y-position, -50%);
@@ -757,11 +757,12 @@ body {
 /* Phase: 正常流式布局，默认暗淡 */
 .tl-phase {
   position: relative;
-  padding: 20px 0;
+  padding: 40px 0;
   opacity: 0.18;
   transform: translateY(6px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
+.tl-phase + .tl-phase { border-top: 1px solid rgba(255,255,255,0.06); }
 .tl-phase:last-child { padding-bottom: 0; }
 .tl-phase.active {
   opacity: 1;
@@ -783,13 +784,13 @@ body {
   font-size: 0;
   transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-phase.active .tl-dot { background: #ff6b4a; }
+.tl-phase.active .tl-dot { background: var(--primary); }
 .tl-dot.lit { border-color: transparent; color: transparent; box-shadow: none; }
 .tl-dot.lit::after { display: none; }
 
 /* Step number */
 .tl-step-num {
-  font-size: 14px; font-weight: 500;
+  font-size: 18px; font-weight: 500;
   color: rgba(255,255,255,0.25);
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -797,7 +798,7 @@ body {
 
 /* Title */
 .tl-title {
-  font-size: 22px; font-weight: 700;
+  font-size: 28px; font-weight: 700;
   color: rgba(255,255,255,0.25);
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -814,9 +815,9 @@ body {
 
 /* Description */
 .tl-desc {
-  font-size: 14px; font-weight: 400; line-height: 22px;
+  font-size: 17px; font-weight: 400; line-height: 28px;
   color: rgba(255,255,255,0.2);
-  margin-bottom: 8px; max-width: 720px;
+  margin-bottom: 8px;
   padding-left: 23px;
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -824,14 +825,14 @@ body {
 
 /* Takeaway — 方法论金句 */
 .tl-takeaway {
-  font-size: 13px; font-weight: 500; line-height: 20px;
-  color: rgba(107,137,255,0.15);
+  font-size: 16px; font-weight: 500; line-height: 24px;
+  color: rgba(232,238,90,0.15);
   padding-left: 23px; margin-top: 8px;
-  border-left: 2px solid rgba(107,137,255,0.1);
+  border-left: 2px solid rgba(232,238,90,0.1);
   padding-top: 4px; padding-bottom: 4px;
   transition: color 0.6s cubic-bezier(0.4,0,0.2,1), border-color 0.6s cubic-bezier(0.4,0,0.2,1);
 }
-.tl-phase.active .tl-takeaway { color: var(--primary); border-left-color: var(--primary); }
+.tl-phase.active .tl-takeaway { color: var(--accent); border-left-color: var(--accent); }
 
 /* Commits: dimmed by default */
 .commits { list-style: none; display: flex; flex-direction: column; gap: 4px; opacity: 0.25; padding-left: 23px; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1); }
@@ -846,56 +847,222 @@ body {
 
 .hash { color: var(--primary); margin-right: 8px; }
 .tag { display: inline-block; padding: 0px 5px; font-size: 9px; font-weight: 500; letter-spacing: 0.5px; margin-right: 6px; text-transform: uppercase; }
-.tag-feat { background: rgba(107, 137, 255, 0.1); color: var(--primary); }
+.tag-feat { background: rgba(232, 238, 90, 0.1); color: var(--primary); }
 .tag-fix { background: rgba(255, 132, 0, 0.1); color: var(--orange); }
 .tag-perf { background: rgba(52, 211, 153, 0.1); color: #059669; }
 .tag-style { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
 .tag-revert { background: rgba(255, 255, 255, 0.05); color: var(--white-5); }
 
-/* ═══════ FX GRID (dark bg) ═══════ */
-.fx-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--white-1); counter-reset: fx; flex: 1; min-height: 0; overflow: hidden; }
+/* ═══════ FX GRID — 3×3 卡片（参考 aaroniker CodePen） ═══════ */
+.fx-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  counter-reset: fx;
+}
 
 .fx-card {
-  padding: 20px 24px; border-bottom: 1px solid var(--white-1); border-right: 1px solid var(--white-1);
-  counter-increment: fx; position: relative; overflow: hidden; transition: all 0.4s;
+  counter-increment: fx;
+  position: relative;
+  padding: 48px 20px 20px;
+  border-radius: 0;
+  cursor: pointer;
+  background-color: var(--color-gray-10, #090e1a);
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.05),
+    0 8px 15px rgba(0,0,0,0.1),
+    0 0 0 1px rgba(255,255,255,0.08);
+  transition: box-shadow .25s;
 }
-.fx-card:nth-child(2n) { border-right: none; }
-.fx-card:nth-last-child(-n+2) { border-bottom: none; }
-.fx-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
-
 .fx-card::before {
-  content: counter(fx, decimal-leading-zero);
-  position: absolute; top: 16px; right: 20px;
-  font-size: 48px; font-weight: 500; color: var(--white-1); line-height: 1;
-  transition: color 0.4s;
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 0;
+  background-color: rgba(255,255,255,0.015);
 }
-.fx-card:hover::before { color: rgba(255,255,255,0.15); }
-.fx-card:hover { background: rgba(255,255,255,0.04); }
 
-.fx-card h4 { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 6px; }
-.fx-tech { font-size: 11px; color: var(--primary); margin-bottom: 10px; letter-spacing: 0.5px; }
-.fx-card p { font-size: 13px; font-weight: 400; line-height: 20px; color: var(--white-5); max-width: 480px; }
+/* 序号角标 */
+.fx-card::after {
+  content: counter(fx, decimal-leading-zero);
+  position: absolute; top: 16px; right: 16px;
+  font-size: 36px; font-weight: 500; color: rgba(255,255,255,0.06); line-height: 1;
+  z-index: 2; pointer-events: none;
+  transition: color .3s;
+}
 
-/* ═══════ CHALLENGES (light bg) ═══════ */
-.challenge-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--white-1); }
+/* 图标 */
+.fx-icon {
+  position: relative; z-index: 2;
+  display: inline-flex; padding: 8px;
+}
+.fx-icon::after {
+  content: '';
+  position: absolute; inset: 4.5px;
+  border-radius: 50%;
+  background-color: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  backdrop-filter: blur(2px);
+  transition: background-color .25s, border-color .25s;
+}
+.fx-icon svg {
+  position: relative; z-index: 1;
+  display: block; width: 24px; height: 24px;
+  color: #d4d4d8;
+  transition: color .25s;
+}
+
+.fx-card h4 {
+  position: relative; z-index: 2;
+  font-size: 18px; font-weight: 600; color: #fff;
+  margin: 12px 0 6px; line-height: 1.6;
+}
+.fx-tech {
+  position: relative; z-index: 2;
+  font-size: 13px; color: var(--accent); margin-bottom: 10px; letter-spacing: 0.5px;
+}
+.fx-card p {
+  position: relative; z-index: 2;
+  font-size: 15px; font-weight: 400; line-height: 1.7;
+  color: #a1a1aa; margin: 0;
+}
+
+/* ── Shine 光晕 ── */
+.fx-shine {
+  border-radius: inherit;
+  position: absolute; inset: 0;
+  z-index: 1; overflow: hidden;
+  opacity: 0; transition: opacity .5s;
+}
+.fx-shine::before {
+  content: '';
+  width: 150%; padding-bottom: 150%;
+  border-radius: 50%;
+  position: absolute; left: 50%; bottom: 55%;
+  filter: blur(35px);
+  opacity: .1;
+  transform: translateX(-50%);
+  background-image: conic-gradient(from 205deg at 50% 50%, rgba(200,206,50,0) 0deg, #c5ca30 25deg, rgba(232,238,90,0.18) 295deg, rgba(200,206,50,0) 360deg);
+}
+
+/* ── Background 网格瓦片 + 线条 ── */
+.fx-bg {
+  border-radius: inherit;
+  position: absolute; inset: 0;
+  overflow: hidden;
+  -webkit-mask-image: radial-gradient(circle at 60% 5%, black 0%, black 15%, transparent 60%);
+  mask-image: radial-gradient(circle at 60% 5%, black 0%, black 15%, transparent 60%);
+}
+.fx-tiles { opacity: 0; transition: opacity .25s; }
+.fx-tile {
+  position: absolute;
+  background-color: rgba(232,238,90,0.06);
+  animation-duration: 8s;
+  animation-iteration-count: infinite;
+  opacity: 0;
+}
+.fx-tile-1  { top:0;    left:0;     height:10%;   width:22.5%; }
+.fx-tile-2  { top:0;    left:22.5%; height:10%;   width:27.5%; animation-delay:-6s; }
+.fx-tile-3  { top:0;    left:50%;   height:10%;   width:27.5%; animation-delay:-4s; }
+.fx-tile-4  { top:0;    left:77.5%; height:10%;   width:22.5%; animation-delay:-2s; }
+.fx-tile-5  { top:10%;  left:0;     height:22.5%; width:22.5%; animation-delay:-4s; }
+.fx-tile-6  { top:10%;  left:22.5%; height:22.5%; width:27.5%; animation-delay:-2s; }
+.fx-tile-7  { top:10%;  left:50%;   height:22.5%; width:27.5%; }
+.fx-tile-8  { top:10%;  left:77.5%; height:22.5%; width:22.5%; animation-delay:-4s; }
+.fx-tile-9  { top:32.5%;left:50%;   height:22.5%; width:27.5%; animation-delay:-6s; }
+.fx-tile-10 { top:32.5%;left:77.5%; height:22.5%; width:22.5%; animation-delay:-2s; }
+
+@keyframes fxtile {
+  0%, 12.5%, 100% { opacity: 1; }
+  25%, 82.5% { opacity: 0; }
+}
+
+.fx-line {
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity .35s;
+}
+.fx-line::before, .fx-line::after {
+  content: ''; position: absolute;
+  background-color: rgba(255,255,255,0.06);
+  transition: transform .35s;
+}
+.fx-line::before { left:0; right:0; height:1px; transform-origin:0 50%; transform:scaleX(0); }
+.fx-line::after  { top:0; bottom:0; width:1px; transform-origin:50% 0; transform:scaleY(0); }
+.fx-line-1::before { top:10%; }
+.fx-line-1::after  { left:22.5%; }
+.fx-line-1::before, .fx-line-1::after { transition-delay:.3s; }
+.fx-line-2::before { top:32.5%; }
+.fx-line-2::after  { left:50%; }
+.fx-line-2::before, .fx-line-2::after { transition-delay:.15s; }
+.fx-line-3::before { top:55%; }
+.fx-line-3::after  { right:22.5%; }
+
+/* ── Hover 效果 ── */
+.fx-card:hover {
+  box-shadow:
+    0 3px 6px rgba(0,0,0,0.04),
+    0 15px 25px rgba(0,0,0,0.3),
+    0 0 0 1px rgba(255,255,255,0.2);
+}
+.fx-card:hover::after { color: rgba(255,255,255,0.12); }
+.fx-card:hover .fx-icon::after {
+  background-color: rgba(232,238,90,0.1);
+  border-color: rgba(232,238,90,0.2);
+}
+.fx-card:hover .fx-icon svg { color: #e8ee5a; }
+.fx-card:hover .fx-shine { opacity: 1; transition-duration: .5s; }
+.fx-card:hover .fx-tiles { opacity: 1; transition-delay: .25s; }
+.fx-card:hover .fx-tile { animation-name: fxtile; }
+.fx-card:hover .fx-line { opacity: 1; transition-duration: .15s; }
+.fx-card:hover .fx-line::before { transform: scaleX(1); }
+.fx-card:hover .fx-line::after  { transform: scaleY(1); }
+.fx-card:hover .fx-line-1::before, .fx-card:hover .fx-line-1::after { transition-delay: 0s; }
+.fx-card:hover .fx-line-2::before, .fx-card:hover .fx-line-2::after { transition-delay: .15s; }
+.fx-card:hover .fx-line-3::before, .fx-card:hover .fx-line-3::after { transition-delay: .3s; }
+
+/* ═══════ CHALLENGES — 竖线分隔对比 ═══════ */
+.challenge-row {
+  display: grid;
+  grid-template-columns: 1fr 1px 1fr;
+  align-items: stretch;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
 .challenge-row:last-child { border-bottom: none; }
 
-.challenge-cell { padding: 20px 24px; border-right: 1px solid var(--white-1); position: relative; }
-.challenge-cell:last-child { border-right: none; }
-
-.challenge-cell::before {
-  content: ''; position: absolute; top: 0; left: 0;
-  width: 3px; height: 0; transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+.challenge-cell {
+  padding: 32px 36px;
+  position: relative;
 }
-.challenge-cell:hover::before { height: 100%; }
-.challenge-cell.problem::before { background: var(--orange); }
-.challenge-cell.solution::before { background: #059669; }
 
-.challenge-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; color: var(--white-5); }
-.problem .challenge-label { color: var(--orange); }
-.solution .challenge-label { color: #059669; }
-.challenge-cell h4 { font-size: 15px; font-weight: 500; color: var(--white-8); margin-bottom: 10px; }
-.challenge-cell p { font-size: 13px; font-weight: 400; line-height: 20px; color: var(--white-5); }
+/* 左侧问题 */
+.challenge-cell.problem h4 {
+  font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.85);
+  margin-bottom: 10px;
+}
+.challenge-cell.problem p {
+  font-size: 13px; font-weight: 400; line-height: 20px; color: rgba(255,255,255,0.45);
+}
+
+/* 中间竖线 */
+.challenge-divider {
+  background: rgba(255,255,255,0.12);
+  align-self: stretch;
+}
+
+/* 右侧方案 */
+.challenge-cell.solution h4 {
+  font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.85);
+  margin-bottom: 10px;
+}
+.challenge-cell.solution p {
+  font-size: 13px; font-weight: 400; line-height: 20px; color: rgba(255,255,255,0.45);
+}
+
+/* 标签 */
+.challenge-label {
+  font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 10px; color: rgba(255,255,255,0.3);
+}
 
 /* ═══════ ARCH BOX (dark bg) ═══════ */
 .arch-box {
@@ -937,15 +1104,15 @@ body {
   flex: 1; height: 100%; will-change: transform, opacity;
   animation: specFloat 6s ease-in-out infinite alternate;
 }
-.footer-spectrum .col:nth-child(1) { background: linear-gradient(180deg, #2e44d9, #1d2cb3); animation-duration: 5.8s; }
-.footer-spectrum .col:nth-child(2) { background: linear-gradient(180deg, #4362ff, #2e44d9); animation-duration: 6.4s; animation-delay: -0.8s; }
-.footer-spectrum .col:nth-child(3) { background: linear-gradient(180deg, #6B89FF, #4362ff); animation-duration: 5.5s; animation-delay: -1.6s; }
-.footer-spectrum .col:nth-child(4) { background: linear-gradient(180deg, #8BA4FF, #6B89FF); animation-duration: 6.8s; animation-delay: -2.4s; }
-.footer-spectrum .col:nth-child(5) { background: linear-gradient(180deg, #6B89FF, #8BA4FF); animation-duration: 7.2s; animation-delay: -3s; }
-.footer-spectrum .col:nth-child(6) { background: linear-gradient(180deg, #4362ff, #6B89FF); animation-duration: 6.6s; animation-delay: -2.2s; }
-.footer-spectrum .col:nth-child(7) { background: linear-gradient(180deg, #2e44d9, #4362ff); animation-duration: 5.6s; animation-delay: -1.4s; }
-.footer-spectrum .col:nth-child(8) { background: linear-gradient(180deg, #1d2cb3, #2e44d9); animation-duration: 6.2s; animation-delay: -0.6s; }
-.footer-spectrum .col:nth-child(9) { background: linear-gradient(180deg, #0a0d66, #1d2cb3); animation-duration: 5.9s; animation-delay: -0.2s; }
+.footer-spectrum .col:nth-child(1) { background: linear-gradient(180deg, #a0a520, #7a7e10); animation-duration: 5.8s; }
+.footer-spectrum .col:nth-child(2) { background: linear-gradient(180deg, #c5ca30, #a0a520); animation-duration: 6.4s; animation-delay: -0.8s; }
+.footer-spectrum .col:nth-child(3) { background: linear-gradient(180deg, #e8ee5a, #c5ca30); animation-duration: 5.5s; animation-delay: -1.6s; }
+.footer-spectrum .col:nth-child(4) { background: linear-gradient(180deg, #f0f4a0, #e8ee5a); animation-duration: 6.8s; animation-delay: -2.4s; }
+.footer-spectrum .col:nth-child(5) { background: linear-gradient(180deg, #e8ee5a, #f0f4a0); animation-duration: 7.2s; animation-delay: -3s; }
+.footer-spectrum .col:nth-child(6) { background: linear-gradient(180deg, #c5ca30, #e8ee5a); animation-duration: 6.6s; animation-delay: -2.2s; }
+.footer-spectrum .col:nth-child(7) { background: linear-gradient(180deg, #a0a520, #c5ca30); animation-duration: 5.6s; animation-delay: -1.4s; }
+.footer-spectrum .col:nth-child(8) { background: linear-gradient(180deg, #7a7e10, #a0a520); animation-duration: 6.2s; animation-delay: -0.6s; }
+.footer-spectrum .col:nth-child(9) { background: linear-gradient(180deg, #3d3f08, #7a7e10); animation-duration: 5.9s; animation-delay: -0.2s; }
 
 @keyframes specFloat {
   0% { transform: translateY(8%) scaleY(1.05); opacity: 0.7; }
@@ -966,26 +1133,54 @@ body {
 /* ═══════ COUNTER ═══════ */
 .counter { font-variant-numeric: tabular-nums; }
 
-/* ═══════ DESIGN TOKENS VIZ (light bg) ═══════ */
-.token-group { margin-bottom: 48px; }
-.token-group:last-child { margin-bottom: 0; }
-.token-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--white-5); margin-bottom: 12px; }
+/* ═══════ DESIGN TOKENS — 便当盒布局 ═══════ */
+.bento-tokens {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 2px;
+  border: 1px solid var(--white-1);
+}
+.bento-cell {
+  padding: 28px;
+  background: rgba(255,255,255,0.02);
+  position: relative;
+  overflow: hidden;
+}
+.bento-cell:hover { background: rgba(255,255,255,0.04); }
+.bento-colors { grid-row: 1; grid-column: 1; }
+.bento-type   { grid-row: 1; grid-column: 2; border-left: 1px solid var(--white-1); }
+.bento-spacing { grid-row: 2; grid-column: 1; border-top: 1px solid var(--white-1); }
+.bento-sizes { grid-row: 2; grid-column: 2; border-top: 1px solid var(--white-1); border-left: 1px solid var(--white-1); }
 
-.color-row { display: flex; gap: 0; border-radius: 2px; overflow: hidden; }
+.sz-list { list-style: none; padding: 0; margin: 0; }
+.sz-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.sz-item:last-child { border-bottom: none; }
+.sz-value { font-size: 16px; font-weight: 500; color: var(--primary); min-width: 64px; }
+.sz-desc { font-size: 11px; color: var(--white-5); }
+.sz-tag { font-size: 9px; padding: 2px 6px; background: rgba(255,255,255,0.06); color: var(--white-5); letter-spacing: 1px; }
+
+.token-label { font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--white-5); margin-bottom: 16px; }
+.token-sublabel { font-size: 10px; color: rgba(255,255,255,0.25); margin-bottom: 8px; margin-top: 16px; }
+
+.color-row { display: flex; gap: 0; overflow: hidden; }
 .color-swatch {
-  flex: 1; height: 56px; position: relative;
+  flex: 1; height: 40px; position: relative;
   transition: transform 0.3s, box-shadow 0.3s; cursor: default;
 }
-.color-swatch:hover { transform: scaleY(1.4); z-index: 1; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+.color-swatch:hover { transform: scaleY(1.5); z-index: 1; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
 .color-swatch .sw-val {
-  position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
-  font-size: 9px; color: var(--white-5); white-space: nowrap;
+  position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%);
+  font-size: 8px; color: var(--white-5); white-space: nowrap;
   opacity: 0; transition: opacity 0.3s; pointer-events: none;
 }
 .color-swatch:hover .sw-val { opacity: 1; }
 
 .white-alpha-bg {
-  background: var(--dark); border-radius: 2px; overflow: hidden;
+  background: var(--dark); overflow: hidden;
   padding: 0; display: flex; gap: 0;
 }
 .white-alpha-bg .color-swatch .sw-val { color: var(--white-5); }
@@ -1002,7 +1197,7 @@ body {
 
 .spacing-row { display: flex; gap: 6px; align-items: flex-end; flex-wrap: wrap; }
 .spacing-block {
-  background: rgba(107,137,255,0.08); border: 1px solid rgba(107,137,255,0.15);
+  background: rgba(232,238,90,0.08); border: 1px solid rgba(232,238,90,0.15);
   position: relative; transition: background 0.3s;
 }
 .spacing-block:hover { background: rgba(255,255,255,0.12); }
@@ -1011,37 +1206,48 @@ body {
   font-size: 8px; color: var(--white-5); white-space: nowrap;
 }
 
-/* ═══════ SCREENSHOT SHOWCASE (dark bg) ═══════ */
-.shot-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; border: 1px solid var(--white-1); flex: 1; min-height: 0; overflow: hidden; }
-.shot-card {
-  position: relative; overflow: hidden; background: #000; aspect-ratio: 16/10;
+/* ═══════ PIPELINE — 横向时间轴 ═══════ */
+.pipeline {
+  display: flex; align-items: flex-start; position: relative;
+  padding: 60px 0 0;
 }
-.shot-card img {
-  width: 100%; height: 100%; object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), opacity 0.4s;
-  opacity: 0.85;
+/* 横贯线 */
+.pipeline::before {
+  content: ''; position: absolute;
+  top: 82px; left: 0; right: 0; height: 1px;
+  background: rgba(255,255,255,0.12);
 }
-.shot-card:hover img { transform: scale(1.05); opacity: 1; }
-.shot-card .shot-info {
-  position: absolute; bottom: 0; left: 0; right: 0;
-  padding: 32px 16px 16px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.85));
-}
-.shot-card .shot-name { font-size: 14px; font-weight: 500; color: #fff; }
-.shot-card .shot-tech { font-size: 10px; color: var(--primary); margin-top: 4px; letter-spacing: 0.5px; }
-
-/* ═══════ PIPELINE (light bg) ═══════ */
-.pipeline { display: flex; align-items: stretch; gap: 0; border: 1px solid var(--white-1); }
 .pipe-step {
-  flex: 1; text-align: center; padding: 28px 12px;
-  border-right: 1px solid var(--white-1); transition: all 0.3s;
-  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  flex: 1; text-align: center; position: relative;
+  padding: 0 8px;
 }
-.pipe-step:last-child { border-right: none; }
-.pipe-step:hover { background: rgba(255,255,255,0.06); }
-.pipe-step .pipe-icon { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
-.pipe-step h4 { font-size: 13px; font-weight: 500; color: var(--white-8); margin-bottom: 4px; }
-.pipe-step p { font-size: 10px; font-weight: 400; color: var(--white-5); line-height: 15px; }
+/* 节点圆点 */
+.pipe-step::before {
+  content: ''; position: absolute;
+  top: 18px; left: 50%; transform: translateX(-50%);
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--primary); box-shadow: 0 0 12px rgba(232,238,90,0.5);
+  z-index: 1;
+}
+/* 节点到线的竖线 */
+.pipe-step::after {
+  content: ''; position: absolute;
+  top: 28px; left: 50%; width: 1px; height: 16px;
+  background: rgba(255,255,255,0.15);
+}
+.pipe-step .pipe-icon {
+  font-size: 22px; color: var(--white-10);
+  width: 44px; height: 44px; margin: 48px auto 10px;
+  display: flex; align-items: center; justify-content: center;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.03);
+}
+.pipe-step h4 { font-size: 16px; font-weight: 500; color: var(--white-10); margin-bottom: 6px; }
+.pipe-step p { font-size: 13px; font-weight: 400; color: var(--white-5); line-height: 20px; }
+/* 序号标签（节点上方） */
+.pipe-step .pipe-num {
+  position: absolute; top: -24px; left: 50%; transform: translateX(-50%);
+  font-size: 13px; color: var(--white-3); letter-spacing: 1px; white-space: nowrap;
+}
 .pipe-arrow { display: none; }
 
 .pipe-compare {
@@ -1050,38 +1256,103 @@ body {
 }
 .pipe-big { font-size: 40px; font-weight: 500; color: var(--white-8); line-height: 1; }
 .pipe-big .unit { font-size: 14px; font-weight: 400; color: var(--white-5); }
-.pipe-label { font-size: 10px; color: var(--white-5); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
-.pipe-vs { font-size: 24px; color: var(--primary); font-weight: 400; }
+.pipe-label { font-size: 10px; color: var(--white-7); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+.pipe-vs { font-size: 24px; color: var(--white-10); font-weight: 400; }
 
-/* ═══════ AI COLLAB (dark bg) ═══════ */
-.collab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; flex: 1; min-height: 0; overflow: hidden; }
-.collab-card {
-  padding: 32px; border: 1px solid var(--white-1); transition: all 0.4s;
+/* ═══════ LESSONS — axisworks process style ═══════ */
+.lesson-scroll {
 }
-.collab-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
-.collab-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
-.collab-card h4 { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 8px; }
-.collab-card p { font-size: 13px; font-weight: 400; color: var(--white-5); line-height: 20px; }
-
-.collab-stats { display: flex; gap: 0; margin-top: 32px; border: 1px solid var(--white-1); }
-.collab-stat-item {
-  flex: 1; padding: 24px; text-align: center; border-right: 1px solid var(--white-1);
+.lesson-vh {
+  height: 350vh;
+  position: relative;
 }
-.collab-stat-item:last-child { border-right: none; }
-.collab-stat-item .cs-num { font-size: 28px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 4px; }
-.collab-stat-item .cs-label { font-size: 9px; color: var(--white-5); letter-spacing: 1px; text-transform: uppercase; }
+.lesson-sticky {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow: hidden;
+}
+.lesson-inner {
+  position: relative;
+  max-width: 1460px;
+  margin: 0 auto;
+  padding: 80px 20px 0;
+  height: 100%;
+}
+/* 4条虚线竖线背景 */
+.lesson-borders {
+  position: absolute; top: 0; bottom: 0;
+  left: 20px; right: 20px;
+  display: flex; pointer-events: none; z-index: 0;
+}
+.lesson-border-line {
+  flex: 1;
+  border-left: 1px dashed rgba(255,255,255,0.12);
+}
+.lesson-border-line.last { border-right: 1px dashed rgba(255,255,255,0.12); }
 
-/* ═══════ LESSONS (light bg) ═══════ */
-.lesson-list { border: 1px solid var(--white-1); flex: 1; min-height: 0; overflow: hidden; }
+/* 顶部三列阶段 */
+.lesson-phases {
+  display: flex; position: relative; z-index: 1;
+  margin-bottom: 60px;
+}
+.lesson-phase-item {
+  flex: 1;
+  padding: 14px 16px 14px 12px;
+  border-left: 3px solid rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.45);
+  font-size: 16px; font-weight: 500;
+  line-height: 1.5;
+  text-align: left;
+}
+.lesson-phase-item .phase-num {
+  color: #fff; font-size: 18px; font-weight: 600;
+  display: block; margin-bottom: 2px;
+}
+
+/* 卡片列表 — 竖向堆叠 */
+.lesson-list {
+  display: flex; flex-direction: column;
+  gap: 40px; position: relative; z-index: 1;
+}
 .lesson-item {
-  padding: 28px 24px; border-bottom: 1px solid var(--white-1);
-  display: flex; gap: 20px; align-items: flex-start; transition: background 0.3s;
+  will-change: transform;
 }
-.lesson-item:last-child { border-bottom: none; }
-.lesson-item:hover { background: rgba(255,255,255,0.05); }
-.lesson-num { font-size: 28px; font-weight: 500; color: var(--primary); line-height: 1; min-width: 40px; }
-.lesson-body h4 { font-size: 15px; font-weight: 500; color: var(--white-8); margin-bottom: 6px; }
-.lesson-body p { font-size: 13px; font-weight: 400; color: var(--white-5); line-height: 20px; }
+/* 卡片主体 — 灰色→白色渐变 + 黄色顶部高亮 */
+.lesson-card {
+  width: 420px;
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 24px 28px;
+  background: #1a1a1a;
+  border-top: 4px solid rgba(232,238,90,0.3);
+  font-size: 24px; font-weight: 500; color: rgba(255,255,255,0.6);
+  transition: background 0.4s, color 0.4s, border-color 0.4s;
+}
+.lesson-card.lit {
+  background: #fff;
+  border-top-color: #e8ee5a;
+  color: #000;
+}
+.lesson-card-num {
+  font-size: 24px; font-weight: 500; color: inherit;
+  opacity: 0.35; flex-shrink: 0; margin-left: 24px;
+}
+/* 标签 */
+.lesson-tags {
+  display: flex; gap: 12px; margin-top: 14px;
+  flex-wrap: wrap; overflow: hidden;
+}
+.lesson-tag {
+  padding: 8px 16px;
+  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.5);
+  font-size: 13px; font-weight: 600;
+  letter-spacing: 0.3px;
+  transition: background 0.4s, color 0.4s;
+}
+.lesson-tag.lit {
+  background: #e8ee5a; color: #000;
+}
+/* 阶梯位移由 JS 动画驱动，默认全部左对齐 */
 
 /* ═══════ RESPONSIVE ═══════ */
 @media (max-width: 1200px) {
@@ -1090,17 +1361,20 @@ body {
   .input-layout { grid-template-columns: 1fr 1fr; }
   .td { transform: scale(0.7); transform-origin: left center; }
   .bd-layout { gap: 40px; }
+  .fx-grid { grid-template-columns: 1fr 1fr; gap: 16px; }
+}
+@media (max-width: 600px) {
   .fx-grid { grid-template-columns: 1fr; }
-  .fx-card:nth-child(2n) { border-right: 1px solid var(--white-1); }
   .challenge-row { grid-template-columns: 1fr; }
-  .challenge-cell { border-right: none; border-bottom: 1px solid var(--white-1); }
-  .challenge-cell:last-child { border-bottom: none; }
+  .challenge-arrow { padding: 4px 0; font-size: 16px; transform: rotate(90deg); }
+  .challenge-cell.problem { border-left: 3px solid rgba(239,68,68,0.4); }
+  .challenge-cell.solution { border-right: none; border-left: 3px solid rgba(16,185,129,0.4); }
   .hero-stats { flex-wrap: wrap; }
   .hero-stat { flex: 1 1 auto; min-width: 120px; padding: 16px 24px; }
   .hero { min-height: 600px; }
   .hero-title { font-size: 56px; }
-  .shot-grid { grid-template-columns: 1fr 1fr; }
-  .collab-grid { grid-template-columns: 1fr; }
+  .lesson-inner { padding: 60px 20px 0; }
+  .lesson-card { width: 100%; }
   .pipe-compare { flex-wrap: wrap; gap: 24px; }
 }
 
@@ -1125,16 +1399,16 @@ body {
   .pipe-arrow { padding: 4px; }
   .pipe-step { min-width: 100px; }
   .color-swatch { min-height: 40px; }
-  .lesson-item { flex-direction: column; gap: 8px; }
-  .collab-stats { flex-wrap: wrap; }
-  .collab-stat-item { min-width: 50%; }
+  .lesson-phases { flex-direction: column; gap: 8px; margin-bottom: 30px; }
+  .lesson-inner { padding: 40px 16px 0; }
+  .lesson-card { width: 100%; font-size: 18px; }
+  .lesson-list { gap: 24px; }
 }
 
 .global-noise {
   position: fixed; top: 0; left: 0; width: 100%; height: 100%;
   pointer-events: none; z-index: 1;
-  opacity: 0.07;
-  mix-blend-mode: overlay;
+  mix-blend-mode: screen;
   object-fit: cover;
 }
 </style>
@@ -1331,7 +1605,7 @@ body {
           </div>
           <div class="input-card-demo">
             <div class="demo-structure">
-              <div class="demo-block wide" style="background:rgba(107,137,255,0.08);border-color:var(--primary)">Hero · 3D 天际线</div>
+              <div class="demo-block wide" style="background:rgba(232,238,90,0.08);border-color:var(--primary)">Hero · 3D 天际线</div>
               <div class="demo-block wide">AI Platform · 粒子变形</div>
               <div class="demo-block half">Brand Story</div>
               <div class="demo-block half">Stats</div>
@@ -1385,7 +1659,7 @@ body {
       <div class="td" id="treeDiagram">
 
         <!-- Root -->
-        <div class="td-root" data-td>设计师的规矩</div>
+        <div class="td-root" data-td>设计方面</div>
 
         <!-- Root connector -->
         <div class="td-line" data-td></div>
@@ -1457,33 +1731,29 @@ body {
       <div class="section-num scroll-fade-in">03 — AI BOUNDARY</div>
       <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">AI 目前还做不到的事</h2>
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s;margin-bottom:32px">
-        AI 能写代码、能排版，但这些领域仍然需要设计师的判断力和专业工具。<br>不知道这些边界在哪——恰恰说明你还没到能判断的水平。
+        AI 能写代码能排版，但设计判断力和专业工具仍不可替代。<br>不知道边界在哪，恰恰说明还没到能判断的水平。
       </p>
       <div class="bd-layout scroll-fade-in" style="--delay:0.3s">
         <div class="bd-list">
           <div class="bd-item active" data-bd="0">
             <div class="bd-item-head"><span class="bd-num">01</span><h4 class="bd-title">抽象概念图与可编辑素材</h4></div>
-            <p class="bd-desc">AI 能生图能生视频，但抽象概念的视觉表达永远"差点意思"。更致命的是输出全是死图——没有图层、没有矢量路径、没法二次编辑，设计师拿到手还得全部重做。</p>
+            <p class="bd-desc">AI 出图永远"差点意思"，且输出全是死图——没图层、没矢量、没法二次编辑。</p>
           </div>
           <div class="bd-item" data-bd="1">
             <div class="bd-item-head"><span class="bd-num">02</span><h4 class="bd-title">精确三维模型</h4></div>
-            <p class="bd-desc">品牌级 3D 资产需要精确拓扑、干净布线、正确 UV。AI 生成的模型面数爆炸、布线混乱，导入引擎后根本没法用。</p>
+            <p class="bd-desc">品牌级 3D 要精确拓扑和干净布线，AI 生成的面数爆炸、导入引擎没法用。</p>
           </div>
           <div class="bd-item" data-bd="2">
-            <div class="bd-item-head"><span class="bd-num">03</span><h4 class="bd-title">精细交互动效</h4></div>
-            <p class="bd-desc">按钮按下有弹性、角色跟随鼠标转头、加载动画带物理回弹——这类有"手感"的精细动效要用 Rive 手工调出来，AI 做不出这种活的、有温度的交互体验。</p>
+            <div class="bd-item-head"><span class="bd-num">03</span><h4 class="bd-title">精美交互动效</h4></div>
+            <p class="bd-desc">弹性按钮、鼠标跟随、物理回弹——精美复杂的动效要 Rive 手调，AI 做不出。</p>
           </div>
           <div class="bd-item" data-bd="3">
-            <div class="bd-item-head"><span class="bd-num">04</span><h4 class="bd-title">视觉品质的最终裁判</h4></div>
-            <p class="bd-desc">间距差 1px、透明度差 5%、字重粗了一档——AI 觉得"差不多"，设计师一眼看出不对。"能用"和"好看"之间的差距，每一轮都要截图对比、反复微调，这个判断力 AI 没有。</p>
+            <div class="bd-item-head"><span class="bd-num">04</span><h4 class="bd-title">拍板、背锅、推落地</h4></div>
+            <p class="bd-desc">选方案、扛责任、拉团队对齐——AI 能给建议，但不能替你决策，更不能背锅。</p>
           </div>
           <div class="bd-item" data-bd="4">
-            <div class="bd-item-head"><span class="bd-num">05</span><h4 class="bd-title">动效节奏编排</h4></div>
-            <p class="bd-desc">10 个元素依次入场，谁先谁后、间隔多少毫秒才"舒服"——AI 调不出这种韵律感。快了像赶场，慢了像卡顿，节奏全靠设计师的体感。</p>
-          </div>
-          <div class="bd-item" data-bd="5">
-            <div class="bd-item-head"><span class="bd-num">06</span><h4 class="bd-title">灵感采集与审美筛选</h4></div>
-            <p class="bd-desc">AI 不会自己逛 Awwwards、Dribbble 挑出"这个效果牛逼"的参考。设计师日常积累的审美眼界和素材库，才是让 AI 产出不 generic 的关键输入。</p>
+            <div class="bd-item-head"><span class="bd-num">05</span><h4 class="bd-title">灵感采集与审美筛选</h4></div>
+            <p class="bd-desc">AI 不会自己逛 Awwwards 挑参考。设计师的审美积累，才是让产出不 generic 的关键输入。</p>
           </div>
         </div>
         <div class="bd-video-wrap">
@@ -1492,7 +1762,6 @@ body {
           <video class="bd-video" src="assets/boundary-3.mp4" muted loop playsinline></video>
           <video class="bd-video" src="assets/boundary-4.mp4" muted loop playsinline></video>
           <video class="bd-video" src="assets/boundary-5.mp4" muted loop playsinline></video>
-          <video class="bd-video" src="assets/boundary-6.mp4" muted loop playsinline></video>
         </div>
       </div>
     </div>
@@ -1556,7 +1825,7 @@ body {
         <div class="tl-phase">
           <div class="tl-dot"></div>
           <div class="tl-header"><span class="tl-step-num">07</span><div class="tl-title">86 次迭代到最终版</div></div>
-          <p class="tl-desc">9 种视觉特效、3 个 Three.js 3D 场景、全端响应式、中英双语 — 全在一个 HTML 文件里，4000 行代码，0 行手写。从空白到上线，2 天。</p>
+          <p class="tl-desc">9 种视觉特效、3 个 Three.js 3D 场景、全端响应式 — 全在一个 HTML 文件里，4000 行代码，0 行手写。从空白到上线，2 天。</p>
           <p class="tl-takeaway">设计师从"出稿等还原"变成了"直接调出成品"。想做 3D 特效？直接做一版看效果，不用先评估工期。</p>
         </div>
 
@@ -1570,17 +1839,91 @@ body {
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">05 — VISUAL EFFECTS</div>
-      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">9 个特效的技术实现</h2>
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">视觉特效与交互实现</h2>
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，滚出屏幕自动暂停，不浪费性能。</p>
       <div class="fx-grid scroll-fade-in" style="--delay:0.3s">
-        <div class="fx-card"><h4>3D 城市天际线</h4><div class="fx-tech">3D 渲染 — 237 行</div><p>100 栋建筑随机生长 + 300 个粒子旋涡 + 60 条往复光线。鼠标可拖拽旋转。</p></div>
-        <div class="fx-card"><h4>粒子变形</h4><div class="fx-tech">3D 粒子系统 — 280 行</div><p>5000 个粒子在 5 种 3D 模型间流畅变形，每个粒子有独立的延迟和运动轨迹，支持拖拽。</p></div>
-        <div class="fx-card"><h4>线框立方体视差</h4><div class="fx-tech">画布绘制 — 344 行</div><p>手写 3D 透视引擎，4 层色差叠加 + 十字星标记，跟随手风琴联动切换 3 种模式。</p></div>
-        <div class="fx-card"><h4>点阵动画</h4><div class="fx-tech">画布绘制 — 242 行</div><p>蓝色染色点阵，涟漪扩散 + 放大镜效果，鼠标悬停有平滑跟随。</p></div>
-        <div class="fx-card"><h4>3D 地球</h4><div class="fx-tech">3D 渲染 + 地理数据 — 325 行</div><p>约 16000 个点组成地球，16 座城市 + 24 条飞行弧线，手动补充台湾、海南等小岛。</p></div>
-        <div class="fx-card"><h4>数据隧道</h4><div class="fx-tech">3D 渲染 — 136 行</div><p>80 条曲线构成隧道，94 个发光信号沿线穿梭，随机分配轨道。</p></div>
-        <div class="fx-card"><h4>底部光谱动画</h4><div class="fx-tech">纯样式实现 — 9 条渐变列</div><p>9 条色彩柱体异步波浪起伏，柔和模糊，营造科技感收尾。</p></div>
-        <div class="fx-card"><h4>统计数字动画</h4><div class="fx-tech">滚动触发 — 自动播放</div><p>数字从 0 跑到目标值，配合淡入上移，滚动到位自动开始。</p></div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V7l4-4h10l4 4v14H3z"/><path d="M7 21v-7h4v7"/><path d="M14 10h3v4h-3z"/></svg></span>
+          <h4>3D 算力中心</h4>
+          <div class="fx-tech">3D 渲染 — 237 行</div>
+          <p>模拟数据中心机房场景，柱状结构随机生长 + 数据粒子穿梭 + 光线往复流动。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><circle cx="12" cy="5" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="12" cy="19" r="1"/><circle cx="5" cy="12" r="1"/><path d="M12 7v3M14 12h3M12 14v3M10 12H7"/></svg></span>
+          <h4>粒子变形</h4>
+          <div class="fx-tech">3D 粒子系统 — 280 行</div>
+          <p>5000 个粒子在 5 种 3D 模型间流畅变形，每个粒子有独立的延迟和运动轨迹，支持拖拽。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05"/><path d="M12 22.08V12"/></svg></span>
+          <h4>线框立方体视差</h4>
+          <div class="fx-tech">画布绘制 — 344 行</div>
+          <p>手写 3D 透视引擎，4 层色差叠加 + 十字星标记，跟随手风琴联动切换 3 种模式。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="1.5"/><circle cx="12" cy="6" r="1.5"/><circle cx="18" cy="6" r="1.5"/><circle cx="6" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="18" cy="12" r="1.5"/><circle cx="6" cy="18" r="1.5"/><circle cx="12" cy="18" r="1.5"/><circle cx="18" cy="18" r="1.5"/></svg></span>
+          <h4>点阵动画</h4>
+          <div class="fx-tech">画布绘制 — 242 行</div>
+          <p>蓝色染色点阵，涟漪扩散 + 放大镜效果，鼠标悬停有平滑跟随。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span>
+          <h4>3D 地球</h4>
+          <div class="fx-tech">3D 渲染 + 地理数据 — 325 行</div>
+          <p>约 16000 个点组成地球，16 座城市 + 24 条飞行弧线，手动补充台湾、海南等小岛。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+          <h4>数据隧道</h4>
+          <div class="fx-tech">3D 渲染 — 136 行</div>
+          <p>80 条曲线构成隧道，94 个发光信号沿线穿梭，随机分配轨道。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg></span>
+          <h4>统计数字动画</h4>
+          <div class="fx-tech">滚动触发 — 自动播放</div>
+          <p>数字从 0 跑到目标值，配合淡入上移，滚动到位自动开始。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 15l-2 5L9 9l11 4-5 2z"/><path d="M18.5 18.5L14.5 14.5"/></svg></span>
+          <h4>全局交互设计</h4>
+          <div class="fx-tech">hover + 拖拽 + 滚动联动</div>
+          <p>平台标签页 hover 展开联动粒子变形，3D 场景支持鼠标拖拽旋转，球体随鼠标推开粒子，所有动效滚动到位才启动、离屏自动暂停。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
+        <div class="fx-card">
+          <span class="fx-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h16"/><path d="M4 6h16"/><path d="M4 18h10"/><path d="M17 15l3 3-3 3"/></svg></span>
+          <h4>滚动驱动的分层入场</h4>
+          <div class="fx-tech">滚动触发 — 逐层渐入</div>
+          <p>每个模块的标题、描述、内容按顺序依次淡入上移，滚动到哪播到哪，营造阅读节奏感。</p>
+          <div class="fx-shine"></div>
+          <div class="fx-bg"><div class="fx-tiles"><div class="fx-tile fx-tile-1"></div><div class="fx-tile fx-tile-2"></div><div class="fx-tile fx-tile-3"></div><div class="fx-tile fx-tile-4"></div><div class="fx-tile fx-tile-5"></div><div class="fx-tile fx-tile-6"></div><div class="fx-tile fx-tile-7"></div><div class="fx-tile fx-tile-8"></div><div class="fx-tile fx-tile-9"></div><div class="fx-tile fx-tile-10"></div></div><div class="fx-line fx-line-1"></div><div class="fx-line fx-line-2"></div><div class="fx-line fx-line-3"></div></div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1595,20 +1938,24 @@ body {
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">每一个"回退"都是快速实验和理性判断。</p>
       <div class="scroll-fade-in" style="--delay:0.3s; border: 1px solid var(--white-1);">
         <div class="challenge-row">
-          <div class="challenge-cell problem"><div class="challenge-label">Problem</div><h4>地球上台湾消失</h4><p>低精度 TopoJSON + 大 step，台湾没有陆地点。step=1 有 65k 点太卡。</p></div>
-          <div class="challenge-cell solution"><div class="challenge-label">Solution</div><h4>高精度 + 手动补点</h4><p>countries-50m.json + step=2（~16k）+ 手动补台湾/海南/斯里兰卡。</p></div>
+          <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>地球上台湾消失</h4><p>低精度地理数据 + 大采样间距，台湾太窄被跳过。加密采样又导致 65k 个点，直接卡死。</p></div>
+          <div class="challenge-divider"></div>
+          <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>高精度 + 手动补点</h4><p>保持大间距（性能好）+ 高精度地图数据 + 手动为台湾、海南等小岛补充坐标点。</p></div>
         </div>
         <div class="challenge-row">
-          <div class="challenge-cell problem"><div class="challenge-label">Problem</div><h4>点阵 SVG 性能崩溃</h4><p>数千 rect 用 CSS Transform 缩放，浏览器重排卡顿。</p></div>
-          <div class="challenge-cell solution"><div class="challenge-label">Solution</div><h4>Canvas + 涟漪算法</h4><p>DOMParser 提取坐标 → Canvas 逐帧。涟漪 12px/帧 + smoothstep 放大镜。</p></div>
+          <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>点阵动画性能崩溃</h4><p>数千个元素用样式缩放，浏览器重排卡顿严重。</p></div>
+          <div class="challenge-divider"></div>
+          <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>改用画布逐帧绘制</h4><p>提取坐标后用画布逐帧渲染，涟漪扩散 + 放大镜效果流畅运行。</p></div>
         </div>
         <div class="challenge-row">
-          <div class="challenge-cell problem"><div class="challenge-label">Problem</div><h4>Core Value 暗色失败</h4><p>立方体和文本在暗色背景上对比度不好。</p></div>
-          <div class="challenge-cell solution"><div class="challenge-label">Solution</div><h4>4 分钟果断回退</h4><p>提交后立即还原，CLAUDE.md 记录"确认保持白色"。</p></div>
+          <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>暗色背景对比度差</h4><p>线框和文本在暗色背景上都糊成一团，看不清。</p></div>
+          <div class="challenge-divider"></div>
+          <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>4 分钟果断回退</h4><p>看一眼就知道不行，立刻还原白色背景。试错成本低就直接试。</p></div>
         </div>
         <div class="challenge-row">
-          <div class="challenge-cell problem"><div class="challenge-label">Problem</div><h4>Cosmic Spectrum 喧宾夺主</h4><p>GSAP 全屏滚动光谱完全抢走注意力。</p></div>
-          <div class="challenge-cell solution"><div class="challenge-label">Solution</div><h4>大胆砍掉</h4><p>display:none 观察 → 确认不需要 → 彻底删除 + 移除 GSAP CDN。</p></div>
+          <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>某个模块风格不统一</h4><p>做出来的效果太抢眼，和整体页面风格不和谐。</p></div>
+          <div class="challenge-divider"></div>
+          <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>大胆砍掉</h4><p>先隐藏观察 → 确认不需要 → 彻底删除。不纠结沉没成本。</p></div>
         </div>
       </div>
     </div>
@@ -1625,8 +1972,9 @@ body {
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
         从 Figma 导出的完整设计系统——颜色、字体、间距，全部转为 CSS 变量，零偏差。
       </p>
-      <div class="scroll-fade-in" style="--delay:0.3s">
-        <div class="token-group">
+      <div class="bento-tokens scroll-fade-in" style="--delay:0.3s">
+        <!-- 左上：颜色系统 -->
+        <div class="bento-cell bento-colors">
           <div class="token-label">Blue Scale — 10 级品牌色梯度</div>
           <div class="color-row">
             <div class="color-swatch" style="background:#f0f5ff"><span class="sw-val">#f0f5ff</span></div>
@@ -1640,9 +1988,7 @@ body {
             <div class="color-swatch" style="background:#0f188c"><span class="sw-val">#0f188c</span></div>
             <div class="color-swatch" style="background:#0a0d66"><span class="sw-val">#0a0d66</span></div>
           </div>
-        </div>
-        <div class="token-group">
-          <div class="token-label">Gray Scale — 11 级中性色</div>
+          <div class="token-sublabel">Gray Scale — 11 级中性色</div>
           <div class="color-row">
             <div class="color-swatch" style="background:#f8fafc"><span class="sw-val">#f8fafc</span></div>
             <div class="color-swatch" style="background:#f1f5f9"><span class="sw-val">#f1f5f9</span></div>
@@ -1656,9 +2002,7 @@ body {
             <div class="color-swatch" style="background:#090e1a"><span class="sw-val">#090e1a</span></div>
             <div class="color-swatch" style="background:#060a10"><span class="sw-val">#060a10</span></div>
           </div>
-        </div>
-        <div class="token-group">
-          <div class="token-label">White Alpha Scale — 深色背景上的 10 级透明度</div>
+          <div class="token-sublabel">White Alpha — 深色背景透明度</div>
           <div class="white-alpha-bg color-row">
             <div class="color-swatch" style="background:rgba(255,255,255,0.08)"><span class="sw-val">8%</span></div>
             <div class="color-swatch" style="background:rgba(255,255,255,0.10)"><span class="sw-val">10%</span></div>
@@ -1672,21 +2016,23 @@ body {
             <div class="color-swatch" style="background:#ffffff"><span class="sw-val">100%</span></div>
           </div>
         </div>
-        <div class="token-group">
-          <div class="token-label">Typography Scale — JetBrains Mono</div>
+        <!-- 右上：字体系统 -->
+        <div class="bento-cell bento-type">
+          <div class="token-label">Typography — JetBrains Mono</div>
           <div class="type-scale">
             <div class="type-row"><span class="type-size">72px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:36px;font-weight:500">Heading 0</span></div>
             <div class="type-row"><span class="type-size">48px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:28px;font-weight:500">Heading 1</span></div>
             <div class="type-row"><span class="type-size">40px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:24px;font-weight:500">Heading 2</span></div>
             <div class="type-row"><span class="type-size">32px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:20px;font-weight:500">Heading 3</span></div>
             <div class="type-row"><span class="type-size">20px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:18px;font-weight:500">Heading 5</span></div>
-            <div class="type-row"><span class="type-size">16px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:16px;font-weight:500">Heading 6 / Body Large</span></div>
-            <div class="type-row"><span class="type-size">14px</span><span class="type-weight">300</span><span class="type-sample" style="font-size:14px;font-weight:300">Body — 全站默认正文</span></div>
-            <div class="type-row"><span class="type-size">12px</span><span class="type-weight">300</span><span class="type-sample" style="font-size:12px;font-weight:300">Small — 标签、注释、辅助文字</span></div>
+            <div class="type-row"><span class="type-size">16px</span><span class="type-weight">500</span><span class="type-sample" style="font-size:16px;font-weight:500">Body Large</span></div>
+            <div class="type-row"><span class="type-size">14px</span><span class="type-weight">300</span><span class="type-sample" style="font-size:14px;font-weight:300">正文默认</span></div>
+            <div class="type-row"><span class="type-size">12px</span><span class="type-weight">300</span><span class="type-sample" style="font-size:12px;font-weight:300">标签 / 注释</span></div>
           </div>
         </div>
-        <div class="token-group">
-          <div class="token-label">Spacing System — 4px 基础倍数</div>
+        <!-- 底部左：间距系统 -->
+        <div class="bento-cell bento-spacing">
+          <div class="token-label">Spacing — 4px 基础倍数</div>
           <div class="spacing-row">
             <div><div class="spacing-block" style="width:4px;height:4px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">4</div></div>
             <div><div class="spacing-block" style="width:8px;height:8px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">8</div></div>
@@ -1700,60 +2046,14 @@ body {
             <div><div class="spacing-block" style="width:72px;height:72px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">120</div></div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ 08: EFFECT SHOWCASE (dark) ═══════ -->
-<section class="section-dark">
-  <div class="container">
-    <div class="section-inner">
-      <div class="section-num scroll-fade-in">09 — EFFECT SHOWCASE</div>
-      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">最终效果实拍</h2>
-      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">1440×900 视口下截取的实际运行画面。</p>
-      <div class="shot-grid scroll-fade-in" style="--delay:0.3s">
-        <div class="shot-card">
-          <img src="./screenshots/01-hero-3d-city-skyline.png" alt="Hero 3D城市天际线" loading="lazy">
-          <div class="shot-info">
-            <div class="shot-name">Hero — 3D 城市天际线</div>
-            <div class="shot-tech">Three.js r86 · 100 建筑 + 300 粒子 + 60 光线</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="./screenshots/02-particle-morph-ai-platform.png" alt="粒子变形 AI 平台" loading="lazy">
-          <div class="shot-info">
-            <div class="shot-name">粒子变形 — AI 开发平台</div>
-            <div class="shot-tech">Three.js · 5000 粒子 · 5 种 OBJ 模型变形</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="./screenshots/04-data-tunnel.png" alt="数据隧道" loading="lazy">
-          <div class="shot-info">
-            <div class="shot-name">数据隧道 — 信号流动画</div>
-            <div class="shot-tech">Three.js · 80 余弦曲线 + 94 发光信号</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="./screenshots/06-3d-globe-detail.png" alt="3D 地球" loading="lazy">
-          <div class="shot-info">
-            <div class="shot-name">3D 地球 — 全球基础设施</div>
-            <div class="shot-tech">Three.js + TopoJSON · 16k 点 + 16 城市 + 24 飞行弧线</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="./screenshots/03-particle-morph-canvas-detail.png" alt="粒子变形细节" loading="lazy">
-          <div class="shot-info">
-            <div class="shot-name">粒子变形 — 近距离细节</div>
-            <div class="shot-tech">Float32Array 手动插值 · 级联延迟 + 多 easing</div>
-          </div>
-        </div>
-        <div class="shot-card">
-          <img src="./screenshots/05-3d-globe-section-top.png" alt="全球基础设施" loading="lazy">
-          <div class="shot-info">
-            <div class="shot-name">统计数字 + 地球入场</div>
-            <div class="shot-tech">IntersectionObserver · 2000ms cubic ease-out 计数</div>
-          </div>
+        <!-- 底部右：组件尺寸 -->
+        <div class="bento-cell bento-sizes">
+          <div class="token-label">Component Sizes — 组件尺寸</div>
+          <ul class="sz-list">
+            <li class="sz-item"><span class="sz-value">480px</span><span class="sz-desc">弹窗宽度</span><span class="sz-tag">Modal</span></li>
+            <li class="sz-item"><span class="sz-value">320px</span><span class="sz-desc">侧边栏宽度</span><span class="sz-tag">Sidebar</span></li>
+            <li class="sz-item"><span class="sz-value">48px</span><span class="sz-desc">按钮高度</span><span class="sz-tag">Button</span></li>
+          </ul>
         </div>
       </div>
     </div>
@@ -1769,38 +2069,40 @@ body {
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
         设计师交付 5 个 OBJ 模型（7-15 万顶点），需要预处理到 5000 点才能实时变形渲染。
       </p>
+      <img src="assets/pipeline-bg.webp" alt="" class="scroll-fade-in" style="--delay:0.25s;width:100%;height:200px;object-fit:cover;border-radius:4px;margin-bottom:32px;display:block;">
       <div class="pipeline scroll-fade-in" style="--delay:0.3s">
         <div class="pipe-step">
+          <span class="pipe-num">01</span>
           <div class="pipe-icon"><i class="ri-box-3-line"></i></div>
           <h4>原始 OBJ</h4>
           <p>10-20MB<br>7-15 万顶点</p>
         </div>
-        <div class="pipe-arrow"><i class="ri-arrow-right-s-line"></i></div>
         <div class="pipe-step">
+          <span class="pipe-num">02</span>
           <div class="pipe-icon"><i class="ri-scan-line"></i></div>
           <h4>提取顶点</h4>
           <p>解析 v x y z<br>过滤非顶点行</p>
         </div>
-        <div class="pipe-arrow"><i class="ri-arrow-right-s-line"></i></div>
         <div class="pipe-step">
+          <span class="pipe-num">03</span>
           <div class="pipe-icon"><i class="ri-focus-3-line"></i></div>
           <h4>居中原点</h4>
           <p>计算包围盒<br>平移到 (0,0,0)</p>
         </div>
-        <div class="pipe-arrow"><i class="ri-arrow-right-s-line"></i></div>
         <div class="pipe-step">
+          <span class="pipe-num">04</span>
           <div class="pipe-icon"><i class="ri-compasses-2-line"></i></div>
           <h4>归一化</h4>
           <p>缩放到半径 1.8<br>统一尺度</p>
         </div>
-        <div class="pipe-arrow"><i class="ri-arrow-right-s-line"></i></div>
         <div class="pipe-step">
+          <span class="pipe-num">05</span>
           <div class="pipe-icon"><i class="ri-filter-3-line"></i></div>
           <h4>降采样</h4>
           <p>均匀采样<br>到 5000 点</p>
         </div>
-        <div class="pipe-arrow"><i class="ri-arrow-right-s-line"></i></div>
         <div class="pipe-step">
+          <span class="pipe-num">06</span>
           <div class="pipe-icon"><i class="ri-braces-line"></i></div>
           <h4>JSON 导出</h4>
           <p>flat Float array<br>4 位小数精度</p>
@@ -1816,9 +2118,9 @@ body {
           <div class="pipe-big" style="color:var(--primary)">108<span class="unit">KB</span></div>
           <div class="pipe-label">处理后 JSON</div>
         </div>
-        <div class="pipe-vs" style="color:var(--orange);">=</div>
+        <div class="pipe-vs" style="color:var(--primary);">=</div>
         <div style="text-align:center">
-          <div class="pipe-big" style="color:#059669">99.5<span class="unit">%</span></div>
+          <div class="pipe-big" style="color:var(--primary)">99.5<span class="unit">%</span></div>
           <div class="pipe-label">体积压缩率</div>
         </div>
       </div>
@@ -1826,96 +2128,76 @@ body {
   </div>
 </section>
 
-<!-- ═══════ 10: AI COLLABORATION (dark) ═══════ -->
+<!-- ═══════ 10: LESSONS LEARNED ═══════ -->
 <section class="section-dark">
   <div class="container">
     <div class="section-inner">
-      <div class="section-num scroll-fade-in">11 — AI COLLABORATION</div>
-      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">人机协作开发模式</h2>
-      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
-        这个项目从第一行代码到最终部署，全程由人类开发者与 Claude AI 协作完成。CLAUDE.md 是"AI 的规范手册"。
-      </p>
-      <div class="collab-grid scroll-fade-in" style="--delay:0.3s">
-        <div class="collab-card">
-          <div class="collab-role">AI 负责</div>
-          <h4>代码生成与算法实现</h4>
-          <p>所有 Three.js 特效代码、Canvas 2D 矩阵运算、TopoJSON 地球渲染、粒子变形插值算法——由 Claude 生成初始实现。</p>
-        </div>
-        <div class="collab-card">
-          <div class="collab-role">人类负责</div>
-          <h4>视觉判断与品质把控</h4>
-          <p>效果好不好看、动画速度是否舒服、颜色搭配对不对、模型变形是否自然——这些审美决策全部由人类拍板。</p>
-        </div>
-        <div class="collab-card">
-          <div class="collab-role">协作模式</div>
-          <h4>快速迭代 · 即时反馈</h4>
-          <p>数据隧道 8 次参数微调、点阵动画 7 次迭代、地球特效 5 次重写。人类说"不好"，AI 立刻改——平均 2 分钟一轮。</p>
-        </div>
-        <div class="collab-card">
-          <div class="collab-role">知识沉淀</div>
-          <h4>CLAUDE.md — AI 的规范手册</h4>
-          <p>132 行的项目规范文件，记录每个技术约束、设计决策和踩坑经验。确保 AI 不会重复犯错，也是项目知识的永久存档。</p>
-        </div>
-      </div>
-      <div class="collab-stats scroll-fade-in" style="--delay:0.4s">
-        <div class="collab-stat-item"><div class="cs-num">96</div><div class="cs-label">Git Commits</div></div>
-        <div class="collab-stat-item"><div class="cs-num">~30</div><div class="cs-label">迭代轮次</div></div>
-        <div class="collab-stat-item"><div class="cs-num">132</div><div class="cs-label">CLAUDE.md 行数</div></div>
-        <div class="collab-stat-item"><div class="cs-num">2</div><div class="cs-label">核心开发天数</div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ 11: LESSONS LEARNED (light) ═══════ -->
-<section class="section-dark">
-  <div class="container">
-    <div class="section-inner">
-      <div class="section-num scroll-fade-in">12 — LESSONS LEARNED</div>
+      <div class="section-num scroll-fade-in">11 — LESSONS LEARNED</div>
       <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">复盘与收获</h2>
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
-        一个设计师，用 AI 把脑子里的特效落地成代码。这条路上踩过的坑和想明白的事。
+        86 次提交，2 天核心开发，平均 2 分钟一轮迭代。这条路上想明白的事。
       </p>
-      <div class="lesson-list scroll-fade-in" style="--delay:0.3s">
-        <div class="lesson-item">
-          <div class="lesson-num">01</div>
-          <div class="lesson-body">
-            <h4>设计师最大的痛：看得到，做不出</h4>
-            <p>脑子里清楚想要 5000 粒子变形、地球飞线、数据隧道的效果，Figma 里也画得出概念稿——但打开编辑器就卡住了。Three.js 文档看不懂，矩阵运算写不来。AI 之前，这些特效只能等开发排期，等到的还不一定是你想要的。</p>
-          </div>
+    </div>
+  </div>
+</section>
+<div class="lesson-scroll">
+  <div class="lesson-vh" id="lessonScroll">
+    <div class="lesson-sticky">
+      <div class="lesson-inner">
+        <!-- 4条虚线背景 -->
+        <div class="lesson-borders">
+          <div class="lesson-border-line"></div>
+          <div class="lesson-border-line"></div>
+          <div class="lesson-border-line"></div>
+          <div class="lesson-border-line last"></div>
         </div>
-        <div class="lesson-item">
-          <div class="lesson-num">02</div>
-          <div class="lesson-body">
-            <h4>AI 让"不好看，再改"成为可能</h4>
-            <p>以前改一个特效参数要提需求、排期、联调。现在是：看一眼→"粒子太稀了"→2 分钟后新版本出来→"颜色偏了"→再 2 分钟。数据隧道 8 轮微调、点阵动画 7 次迭代——这种密度的打磨，以前根本不可能。</p>
-          </div>
+
+        <!-- 顶部四阶段 -->
+        <div class="lesson-phases">
+          <div class="lesson-phase-item"><span class="phase-num">01</span>认知突破</div>
+          <div class="lesson-phase-item"><span class="phase-num">02</span>快速迭代</div>
+          <div class="lesson-phase-item"><span class="phase-num">03</span>品味把控</div>
+          <div class="lesson-phase-item"><span class="phase-num">04</span>落地交付</div>
         </div>
-        <div class="lesson-item">
-          <div class="lesson-num">03</div>
-          <div class="lesson-body">
-            <h4>审美判断是人不可替代的价值</h4>
-            <p>AI 能写出 Three.js 代码，但它不知道"这个动画看着不舒服"。Core Value 暗色背景 4 分钟回退、Cosmic Spectrum 果断砍掉——这些决策只有设计师能做。代码可以生成，品味不行。</p>
+
+        <!-- 卡片列表 -->
+        <div class="lesson-list" id="lessonList">
+          <div class="lesson-item" data-lesson="0">
+            <div class="lesson-card"><div>看得到，做不出</div><div class="lesson-card-num">01</div></div>
+            <div class="lesson-tags">
+              <div class="lesson-tag">审美先行</div>
+              <div class="lesson-tag">执行断层</div>
+            </div>
           </div>
-        </div>
-        <div class="lesson-item">
-          <div class="lesson-num">04</div>
-          <div class="lesson-body">
-            <h4>不需要懂代码，但必须懂体验</h4>
-            <p>不懂代码怎么实现，但知道怎么做出来效果好、性能好。高级审美和交互直觉才是驱动 AI 输出高质量结果的真正引擎——你要能精准描述"哪里不对"，AI 才知道往哪改。</p>
+          <div class="lesson-item" data-lesson="1">
+            <div class="lesson-card"><div>截图说"不对"，2分钟出新版</div><div class="lesson-card-num">02</div></div>
+            <div class="lesson-tags">
+              <div class="lesson-tag">截图驱动</div>
+              <div class="lesson-tag">高密度打磨</div>
+              <div class="lesson-tag">果断回退</div>
+            </div>
           </div>
-        </div>
-        <div class="lesson-item">
-          <div class="lesson-num">05</div>
-          <div class="lesson-body">
-            <h4>2 天做完不是重点，一个人做完才是</h4>
-            <p>以前这种项目：设计 → 开发 → 联调 → 改需求 → 返工，最少两周。现在设计师自己闭环——从 Figma 令牌到 Three.js 粒子，从构思到上线，中间没有任何沟通损耗。</p>
+          <div class="lesson-item" data-lesson="2">
+            <div class="lesson-card"><div>代码可以生成，品味不行</div><div class="lesson-card-num">03</div></div>
+            <div class="lesson-tags">
+              <div class="lesson-tag">审美判断</div>
+              <div class="lesson-tag">规范约束</div>
+              <div class="lesson-tag">踩坑沉淀</div>
+            </div>
+          </div>
+          <div class="lesson-item" data-lesson="3">
+            <div class="lesson-card"><div>做完不等于上线</div><div class="lesson-card-num">04</div></div>
+            <div class="lesson-tags">
+              <div class="lesson-tag">工程化改造</div>
+              <div class="lesson-tag">技术栈选型</div>
+              <div class="lesson-tag">前端协作</div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</div>
 
 <!-- ═══════ RESULT (dark) ═══════ -->
 <section class="section-dark">
@@ -1923,25 +2205,21 @@ body {
     <div class="section-inner result-inner">
       <div class="section-num">FINAL RESULT</div>
       <h2 class="section-title-dark" style="margin-bottom: 16px;">从一张空白页到<br>9 个视觉特效的云平台官网</h2>
-      <p class="section-desc-dark" style="text-align:center; margin:0 auto 40px;">96 次提交，2 天核心开发，4000 行代码，1.3MB 总体积。</p>
-      <a href="https://xyz-cloud-site.vercel.app" target="_blank" class="result-url">xyz-cloud-site.vercel.app <span class="arrow">↗</span></a>
+      <p class="section-desc-dark" style="text-align:center; margin:0 auto 40px;">86 次提交，2 天核心开发，4000 行代码。交付前端团队做工程化改造后上线。</p>
+      <a href="https://xyz-cloud-site.pages.dev" target="_blank" class="result-url">xyz-cloud-site.pages.dev <span class="arrow">↗</span></a>
     </div>
   </div>
 </section>
 
-<!-- ═══════ FOOTER ═══════ -->
-<footer class="footer">
-  <div class="footer-spectrum">
-    <div class="col"></div><div class="col"></div><div class="col"></div>
-    <div class="col"></div><div class="col"></div><div class="col"></div>
-    <div class="col"></div><div class="col"></div><div class="col"></div>
+<!-- ═══════ ASCII HANDS ═══════ -->
+<section class="ascii-hands-section" style="position:relative;overflow:hidden;background:var(--dark);height:500px;display:flex;align-items:center;justify-content:center;">
+  <canvas id="asciiHandLeft" style="position:absolute;left:0;top:0;width:50%;height:100%;"></canvas>
+  <canvas id="asciiHandRight" style="position:absolute;right:0;top:0;width:50%;height:100%;"></canvas>
+  <div style="position:relative;z-index:2;text-align:center;">
+    <a href="https://fui-datacenter-dashboard.pages.dev/fui-globe-v7" target="_blank" style="display:inline-block;padding:14px 40px;font-size:14px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:#000;background:var(--primary);border:none;cursor:pointer;text-decoration:none;transition:background 0.3s,transform 0.3s;">其他设计探索</a>
   </div>
-  <div class="container">
-    <div class="footer-inner">
-      <p class="footer-text">XYZ Cloud Development Case Study · 2026</p>
-    </div>
-  </div>
-</footer>
+</section>
+
 
 </div>
 
@@ -1973,6 +2251,54 @@ body {
       }
     });
   });
+
+  // ── 复盘卡片：sticky scroll + 向右位移 + 灰→白变色（axisworks style）──
+  var lessonScroll = document.getElementById('lessonScroll');
+  var lessonItems = document.querySelectorAll('.lesson-item');
+  if (lessonScroll && lessonItems.length) {
+    var n = lessonItems.length;
+    // 每张卡片的目标右移百分比（基于容器宽度）
+    var offsets = [0, 25, 50, 70];
+
+    // 所有卡片默认在左侧同一位置，灰色
+    lessonItems.forEach(function(item) {
+      gsap.set(item, { marginLeft: '0%' });
+    });
+
+    var lessonTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: lessonScroll,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5,
+        onUpdate: function(self) {
+          var prog = self.progress;
+          var activeIdx = Math.min(Math.floor(prog * n + 0.5), n - 1);
+          lessonItems.forEach(function(item, idx) {
+            var card = item.querySelector('.lesson-card');
+            var tags = item.querySelectorAll('.lesson-tag');
+            if (idx <= activeIdx) {
+              card.classList.add('lit');
+              tags.forEach(function(t) { t.classList.add('lit'); });
+            } else {
+              card.classList.remove('lit');
+              tags.forEach(function(t) { t.classList.remove('lit'); });
+            }
+          });
+        }
+      }
+    });
+
+    // 逐个卡片向右滑动到阶梯位置
+    lessonItems.forEach(function(item, j) {
+      var segStart = j / n;
+      var segEnd = (j + 0.7) / n;
+      lessonTl.to(item,
+        { marginLeft: offsets[j] + '%', ease: 'power2.out', duration: segEnd - segStart },
+        segStart
+      );
+    });
+  }
 
   // ── 树状图：进入视口后逐级绘入 ──
   var treeDiagram = document.getElementById('treeDiagram');
@@ -2090,6 +2416,7 @@ body {
 
   // ══════════════════════════════════════
   // BACKGROUND — slow warp-speed particle tunnel (Canvas 2D)
+  // 使用 IntersectionObserver 离屏暂停
   // ══════════════════════════════════════
   (function() {
     var container = document.getElementById('particleBg');
@@ -2103,7 +2430,8 @@ body {
     var NUM = 200;
     var BASE_R = 0.5;
     var FL = 500;
-    var SPEED = 0.3;  // very slow drift
+    var SPEED = 0.3;
+    var running = true;
 
     var W, H, cx, cy;
     var dpr = Math.min(window.devicePixelRatio, 2);
@@ -2132,7 +2460,8 @@ body {
       particles.push(p);
     }
 
-    (function loop() {
+    function loop() {
+      if (!running) return;
       requestAnimationFrame(loop);
 
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -2171,7 +2500,17 @@ body {
         ctx.closePath();
       }
       ctx.fill();
-    })();
+    }
+
+    // 背景粒子：可见才跑
+    var bgObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting && !running) { running = true; loop(); }
+        else if (!e.isIntersecting) { running = false; }
+      });
+    }, { threshold: 0 });
+    bgObs.observe(container);
+    loop();
   })();
 
   // ══════════════════════════════════════
@@ -2188,7 +2527,7 @@ body {
     const FILL_FADE_DURATION = 1000;
     const LINE_SPAWN_INTERVAL = 400;
     const MAX_ACTIVE_LINES = 14;
-    const LINE_COLOR = '#6B89FF';
+    const LINE_COLOR = '#e8ee5a';
     const LINE_WIDTH = 2;
     const LINE_SPEED_MIN = 2.5;
     const LINE_SPEED_MAX = 5.0;
@@ -2196,7 +2535,7 @@ body {
     const TURN_SEGMENTS_MAX = 6;
     const SEG_LENGTH_MIN = 1;
     const SEG_LENGTH_MAX = 4;
-    const FILL_COLOR = 'rgba(107, 137, 255, 0.10)';
+    const FILL_COLOR = 'rgba(232, 238, 90, 0.10)';
 
     let width, height, cols, rows;
     let filledCells = [], nextFilled = [];
@@ -2362,7 +2701,22 @@ body {
     lastFillTime = performance.now();
     lastLineSpawn = performance.now();
     draw.lastTime = 0;
-    requestAnimationFrame(draw);
+    var gridRunning = true;
+    function gridLoop(now) {
+      if (!gridRunning) return;
+      draw(now);
+      requestAnimationFrame(gridLoop);
+    }
+
+    // Hero 网格：可见才跑
+    var gridObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting && !gridRunning) { gridRunning = true; gridLoop(performance.now()); }
+        else if (!e.isIntersecting) { gridRunning = false; }
+      });
+    }, { threshold: 0 });
+    gridObs.observe(canvas.parentElement);
+    requestAnimationFrame(gridLoop);
     window.addEventListener('resize', resize);
   })();
 
@@ -2628,9 +2982,19 @@ float snoise(vec3 v){
     mesh.scale.set(0.6, 0.6, 0.6);
     material.opacity = 0;
 
-    // ── Animate ──
+    // ── Animate（离屏暂停）──
     let smoothMorph = 0;
+    let sphereRunning = true;
+    const sphereObs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting && !sphereRunning) { sphereRunning = true; animate(); }
+        else if (!e.isIntersecting) { sphereRunning = false; }
+      });
+    }, { threshold: 0 });
+    sphereObs.observe(container);
+
     (function animate() {
+      if (!sphereRunning) return;
       requestAnimationFrame(animate);
       const now = performance.now();
       const time = now * 0.001;
@@ -2890,16 +3254,16 @@ float snoise(vec3 v){
         const outerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40);
         outerGlow.addColorStop(0, 'rgba(255,255,255,0.9)');
         outerGlow.addColorStop(0.3, 'rgba(200,220,255,0.4)');
-        outerGlow.addColorStop(0.6, 'rgba(67,98,255,0.15)');
-        outerGlow.addColorStop(1, 'rgba(67,98,255,0)');
+        outerGlow.addColorStop(0.6, 'rgba(200,206,50,0.15)');
+        outerGlow.addColorStop(1, 'rgba(200,206,50,0)');
         ctx.globalAlpha = masterOpacity;
         ctx.fillStyle = outerGlow;
         ctx.beginPath(); ctx.arc(cx, cy, 40, 0, Math.PI * 2); ctx.fill();
 
         const coreGlow = ctx.createRadialGradient(cx - 3, cy - 3, 0, cx, cy, 14);
         coreGlow.addColorStop(0, '#ffffff');
-        coreGlow.addColorStop(0.5, '#c8e0ff');
-        coreGlow.addColorStop(1, '#4362ff');
+        coreGlow.addColorStop(0.5, '#f0f4a0');
+        coreGlow.addColorStop(1, '#c5ca30');
         ctx.globalAlpha = masterOpacity;
         ctx.fillStyle = coreGlow;
         ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2); ctx.fill();
@@ -3006,48 +3370,62 @@ float snoise(vec3 v){
 
 })();
 
-/* ═══════ DOT MATRIX CANVAS DEMO ═══════ */
+/* ═══════ DOT MATRIX CANVAS DEMO（懒加载+离屏暂停）═══════ */
 (function(){
   var dotCanvas = document.getElementById('demoDotCanvas');
-  if (dotCanvas) {
-    var dctx = dotCanvas.getContext('2d');
-    var dw, dh, dots = [];
-    function initDots() {
-      dw = dotCanvas.offsetWidth; dh = dotCanvas.offsetHeight;
-      dotCanvas.width = dw * 2; dotCanvas.height = dh * 2;
-      dctx.scale(2, 2);
-      dots = [];
-      var step = 8;
-      for (var y = 4; y < dh; y += step) {
-        for (var x = 4; x < dw; x += step) {
-          dots.push({ x: x, y: y, o: 0.1 + Math.random() * 0.3 });
-        }
+  if (!dotCanvas) return;
+
+  var dctx, dw, dh, dots = [];
+  var dotRunning = false, dotInited = false;
+  var mouseX = -100, mouseY = -100;
+
+  function initDots() {
+    dctx = dotCanvas.getContext('2d');
+    dw = dotCanvas.offsetWidth; dh = dotCanvas.offsetHeight;
+    dotCanvas.width = dw * 2; dotCanvas.height = dh * 2;
+    dctx.scale(2, 2);
+    dots = [];
+    var step = 8;
+    for (var y = 4; y < dh; y += step) {
+      for (var x = 4; x < dw; x += step) {
+        dots.push({ x: x, y: y, o: 0.1 + Math.random() * 0.3 });
       }
     }
-    initDots();
-
-    var mouseX = -100, mouseY = -100;
     dotCanvas.addEventListener('mousemove', function(e) {
       var r = dotCanvas.getBoundingClientRect();
       mouseX = e.clientX - r.left; mouseY = e.clientY - r.top;
     });
     dotCanvas.addEventListener('mouseleave', function() { mouseX = -100; mouseY = -100; });
-
-    function drawDots() {
-      dctx.clearRect(0, 0, dw, dh);
-      for (var i = 0; i < dots.length; i++) {
-        var d = dots[i];
-        var dx = d.x - mouseX, dy = d.y - mouseY;
-        var dist = Math.sqrt(dx * dx + dy * dy);
-        var o = dist < 60 ? 0.8 : d.o;
-        var s = dist < 60 ? 3 : 2;
-        dctx.fillStyle = dist < 60 ? 'rgba(107,137,255,' + o + ')' : 'rgba(255,255,255,' + o + ')';
-        dctx.fillRect(d.x - s/2, d.y - s/2, s, s);
-      }
-      requestAnimationFrame(drawDots);
-    }
-    drawDots();
+    dotInited = true;
   }
+
+  function drawDots() {
+    if (!dotRunning) return;
+    dctx.clearRect(0, 0, dw, dh);
+    for (var i = 0; i < dots.length; i++) {
+      var d = dots[i];
+      var dx = d.x - mouseX, dy = d.y - mouseY;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      var o = dist < 60 ? 0.8 : d.o;
+      var s = dist < 60 ? 3 : 2;
+      dctx.fillStyle = dist < 60 ? 'rgba(232,238,90,' + o + ')' : 'rgba(255,255,255,' + o + ')';
+      dctx.fillRect(d.x - s/2, d.y - s/2, s, s);
+    }
+    requestAnimationFrame(drawDots);
+  }
+
+  // 滚到才初始化，离屏暂停
+  var dotObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        if (!dotInited) initDots();
+        if (!dotRunning) { dotRunning = true; drawDots(); }
+      } else {
+        dotRunning = false;
+      }
+    });
+  }, { threshold: 0 });
+  dotObs.observe(dotCanvas);
 })();
 
 /* ═══════ TEXT SCRAMBLE EFFECT ═══════ */
@@ -3110,6 +3488,155 @@ float snoise(vec3 v){
 
   var grid = document.querySelector('.input-grid');
   if (grid) observer.observe(grid);
+})();
+
+// ═══════ ASCII HANDS ═══════
+(function() {
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789(){}[]<>;:,._-+=!@#$%^&*|/\\"\`~?';
+  var fontSize = 10;
+  var lineHeight = 12;
+  var color = [232, 238, 90]; // yellow-green accent
+
+  function drawHand(offCanvas, w, h, mirror) {
+    var ctx = offCanvas.getContext('2d');
+    offCanvas.width = w;
+    offCanvas.height = h;
+    ctx.clearRect(0, 0, w, h);
+
+    ctx.save();
+    if (mirror) {
+      ctx.translate(w, 0);
+      ctx.scale(-1, 1);
+    }
+
+    // Draw a reaching hand silhouette
+    var cx = w * 0.5, cy = h * 0.5;
+    var s = Math.min(w, h) * 0.4;
+    ctx.fillStyle = '#fff';
+    ctx.beginPath();
+
+    // Palm
+    ctx.ellipse(cx, cy + s * 0.15, s * 0.35, s * 0.45, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Fingers
+    var fingers = [
+      { x: -0.22, y: -0.35, w: 0.08, h: 0.35, angle: -0.15 },
+      { x: -0.08, y: -0.48, w: 0.075, h: 0.4, angle: -0.05 },
+      { x: 0.07, y: -0.5, w: 0.075, h: 0.42, angle: 0.03 },
+      { x: 0.21, y: -0.44, w: 0.07, h: 0.36, angle: 0.12 },
+      { x: -0.38, y: -0.05, w: 0.07, h: 0.28, angle: -0.6 }  // thumb
+    ];
+
+    fingers.forEach(function(f) {
+      ctx.save();
+      ctx.translate(cx + f.x * s, cy + f.y * s);
+      ctx.rotate(f.angle);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, f.w * s, f.h * s, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    });
+
+    // Wrist
+    ctx.beginPath();
+    ctx.ellipse(cx, cy + s * 0.65, s * 0.25, s * 0.2, 0, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Forearm
+    ctx.fillRect(cx - s * 0.25, cy + s * 0.6, s * 0.5, s * 0.5);
+
+    ctx.restore();
+    return ctx;
+  }
+
+  function initAsciiHand(canvasId, mirror) {
+    var canvas = document.getElementById(canvasId);
+    if (!canvas) return;
+
+    var ctx = canvas.getContext('2d');
+    var dpr = window.devicePixelRatio || 1;
+    var rect = canvas.getBoundingClientRect();
+    var w = rect.width;
+    var h = rect.height;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    ctx.scale(dpr, dpr);
+
+    // Create offscreen hand
+    var offCanvas = document.createElement('canvas');
+    var offCtx = drawHand(offCanvas, w, h, mirror);
+
+    // Sample hand pixels
+    var imgData = offCtx.getImageData(0, 0, w, h).data;
+    var cols = Math.floor(w / (fontSize * 0.6));
+    var rows = Math.floor(h / lineHeight);
+    var cellW = w / cols;
+    var cellH = h / rows;
+
+    // Build grid
+    var grid = [];
+    for (var r = 0; r < rows; r++) {
+      for (var c = 0; c < cols; c++) {
+        var px = Math.floor(c * cellW + cellW / 2);
+        var py = Math.floor(r * cellH + cellH / 2);
+        var idx = (py * w + px) * 4;
+        var brightness = imgData[idx]; // R channel (white = 255)
+        if (brightness > 30) {
+          grid.push({
+            col: c, row: r,
+            brightness: brightness / 255,
+            char: chars[Math.floor(Math.random() * chars.length)],
+            flickerRate: Math.random() * 0.08 + 0.02
+          });
+        }
+      }
+    }
+
+    // Animation
+    var running = false;
+    var frameCount = 0;
+
+    function render() {
+      if (!running) return;
+      frameCount++;
+      ctx.clearRect(0, 0, w, h);
+      ctx.font = fontSize + 'px monospace';
+      ctx.textBaseline = 'middle';
+
+      for (var i = 0; i < grid.length; i++) {
+        var cell = grid[i];
+        // Random character flicker
+        if (Math.random() < cell.flickerRate) {
+          cell.char = chars[Math.floor(Math.random() * chars.length)];
+        }
+
+        var alpha = cell.brightness * (0.6 + Math.sin(frameCount * 0.03 + i * 0.1) * 0.15);
+        alpha = Math.max(0.1, Math.min(1, alpha));
+
+        ctx.fillStyle = 'rgba(' + color[0] + ',' + color[1] + ',' + color[2] + ',' + alpha.toFixed(2) + ')';
+        ctx.fillText(cell.char, cell.col * cellW, cell.row * cellH + cellH / 2);
+      }
+
+      requestAnimationFrame(render);
+    }
+
+    // IntersectionObserver — only animate when visible
+    var obs = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting && !running) {
+          running = true;
+          render();
+        } else if (!e.isIntersecting) {
+          running = false;
+        }
+      });
+    }, { threshold: 0 });
+    obs.observe(canvas);
+  }
+
+  initAsciiHand('asciiHandLeft', false);
+  initAsciiHand('asciiHandRight', true);
 })();
 
 </script>
