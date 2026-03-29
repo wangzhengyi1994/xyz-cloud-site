@@ -9,9 +9,9 @@
 <link href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.min.css" rel="stylesheet">
 <style>
 :root {
-  --primary: #4362ff;
-  --primary-hover: #6b89ff;
-  --dark: #090e1a;
+  --primary: #6B89FF;
+  --primary-hover: #8BA4FF;
+  --dark: #000000;
   --orange: #ff8400;
   --white-1: rgba(255,255,255,0.08);
   --white-3: rgba(255,255,255,0.20);
@@ -29,8 +29,8 @@
 html { scroll-behavior: smooth; }
 
 body {
-  background: #fff;
-  color: var(--text-dark);
+  background: var(--dark);
+  color: rgba(255,255,255,0.8);
   font-family: var(--font);
   font-weight: 300;
   line-height: 1.7;
@@ -43,85 +43,43 @@ body {
 /* ═══════ LAYOUT — XYZ Cloud pattern ═══════ */
 .container { max-width: 1460px; margin: 0 auto; padding: 0 20px; }
 
-.section-dark { background: var(--dark); color: #fff; }
-.section-light { background: #fff; color: var(--text-dark); }
+.section-dark { background: transparent; color: #fff; position: relative; z-index: 1; }
+.section-light { background: transparent; color: #fff; }
 
-.section-dark .section-inner {
-  border-left: 1px solid var(--white-1);
-  border-right: 1px solid var(--white-1);
-  border-bottom: 1px solid var(--white-1);
-  padding: 80px 16px;
-  max-width: 1460px;
-  margin: 0 auto;
-  position: relative;
-}
-
+/* ═══ Waterfall layout ═══ */
+.section-dark .section-inner,
 .section-light .section-inner {
-  border-left: 1px solid var(--border-light);
-  border-right: 1px solid var(--border-light);
-  border-bottom: 1px solid var(--border-light);
-  padding: 80px 16px;
-  max-width: 1460px;
+  padding: 120px 48px 80px;
+  max-width: none;
   margin: 0 auto;
   position: relative;
 }
 
-/* Cross markers — XYZ Cloud signature */
-.section-inner::before,
-.section-inner::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  width: 11px;
-  height: 11px;
-  z-index: 2;
-  pointer-events: none;
-}
-.section-inner::before { left: -6px; }
-.section-inner::after { right: -6px; }
-
-.section-dark .section-inner::before,
-.section-dark .section-inner::after {
-  background:
-    linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)) center / 1px 100% no-repeat,
-    linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.5)) center / 100% 1px no-repeat;
-}
-
-.section-light .section-inner::before,
-.section-light .section-inner::after {
-  background:
-    linear-gradient(var(--text-dark), var(--text-dark)) center / 1px 100% no-repeat,
-    linear-gradient(var(--text-dark), var(--text-dark)) center / 100% 1px no-repeat;
-}
-
-/* Scroll fade-in */
-.scroll-fade-in {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  transition-delay: var(--delay, 0s);
-}
-.scroll-fade-in.visible { opacity: 1; transform: translateY(0); }
-
-/* Section titles */
-.section-title-dark { font-size: 48px; font-weight: 500; line-height: 56px; color: #fff; margin-bottom: 80px; }
-.section-title-light { font-size: 48px; font-weight: 500; line-height: 56px; color: var(--text-dark); margin-bottom: 80px; }
-.section-num { font-size: 11px; color: var(--primary); letter-spacing: 3px; margin-bottom: 16px; }
-.section-desc-dark { font-size: 14px; font-weight: 300; line-height: 22px; color: var(--white-8); max-width: 640px; margin-bottom: 48px; }
-.section-desc-light { font-size: 14px; font-weight: 300; line-height: 22px; color: var(--text-secondary); max-width: 640px; margin-bottom: 48px; }
+/* Section titles — compact for PPT slides, vw-scaled */
+.section-title-dark { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 12px; }
+.section-title-light { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 12px; }
+.section-num { font-size: 14px; color: var(--primary); letter-spacing: 3px; margin-bottom: 8px; }
+.section-desc-dark { font-size: 18px; font-weight: 300; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
+.section-desc-light { font-size: 18px; font-weight: 300; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
 .section-row { display: flex; gap: 80px; align-items: flex-start; }
+
+/* Content blocks fill remaining PPT slide space */
+.page-content > section .section-inner:not(.result-inner) > :nth-child(n+4) {
+  flex: 1;
+  min-height: 0;
+}
 
 /* ═══════ IMMERSIVE SCROLL LAYOUT (nextUI exact) ═══════ */
 .immersive { position: relative; width: 100%; }
 .immersive__canvas {
   position: sticky; top: 0; height: 100vh; width: 100%;
-  background: #010101; overflow: hidden; z-index: 1;
+  background: transparent; overflow: hidden; z-index: 1;
 }
 .immersive__content {
   position: relative; z-index: 4; margin-top: -100vh;
   pointer-events: none;
 }
-.hero-scroll-spacer { height: 100vh; }
+.hero-scroll-spacer { height: 60vh; }
 
 /* ═══════ HERO ═══════ */
 .hero {
@@ -136,7 +94,7 @@ body {
 
 /* Logo centered on sphere (nextUI exact) */
 .hero-logo {
-  position: absolute; top: 50%; left: 50%;
+  position: absolute; top: 58%; left: 50%;
   transform: translate(-50%, -50%);
   width: 300px; height: 300px;
   z-index: 3; pointer-events: none;
@@ -152,11 +110,11 @@ body {
   position: absolute; inset: 0; z-index: 1;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.18) 1px, transparent 1px);
   background-size: 80px 80px;
-  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 0%, transparent 18%, rgba(0,0,0,0.3) 35%, rgba(0,0,0,0.6) 55%, black 80%, rgba(0,0,0,0.2) 95%, transparent 100%);
+  mask-image: radial-gradient(ellipse 90% 90% at 50% 50%, transparent 0%, transparent 18%, rgba(0,0,0,0.3) 35%, rgba(0,0,0,0.6) 55%, black 80%, rgba(0,0,0,0.2) 95%, transparent 100%);
 }
 
 /* Canvas flowing lines layer */
@@ -171,6 +129,22 @@ body {
   pointer-events: none;
 }
 
+/* Canvas 2D wireframe overlay */
+.hero-wireframe {
+  position: absolute;
+  z-index: 3;
+  pointer-events: auto;
+  left: 50%;
+  top: calc(50% + 7vh); /* align with sphere center (y=-0.6 in Three.js) */
+  transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+}
+.hero-wireframe canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
 /* Noise texture overlay — frosted grain */
 .hero-noise {
   position: absolute; inset: 0;
@@ -178,7 +152,7 @@ body {
   object-fit: cover;
   z-index: 3;
   pointer-events: none;
-  opacity: 0.35;
+  opacity: 0.8;
   mix-blend-mode: screen;
 }
 
@@ -203,7 +177,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 120px 20px 60px;
+  padding: 120px 20px 24px;
   pointer-events: none;
 }
 
@@ -214,17 +188,17 @@ body {
   font-size: 14px; font-weight: 300; letter-spacing: 4px;
   text-transform: uppercase; color: rgba(255,255,255,0.45);
   margin-bottom: 24px;
-  opacity: 0; animation: heroUp 1s ease forwards 0.3s;
+  opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
 }
 
 .hero-title {
-  font-size: 80px; font-weight: 700; line-height: 1.1; color: #fff;
+  font-size: 64px; font-weight: 700; line-height: 1.1; color: #fff; white-space: nowrap;
   margin-bottom: 20px;
   letter-spacing: -0.02em;
-  opacity: 0; animation: heroUp 1s ease forwards 0.5s;
+  opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.0s;
 }
 .hero-title .accent {
-  background: linear-gradient(135deg, #ff8400, #ffb347);
+  background: linear-gradient(135deg, #6B89FF, #8BA4FF);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   background-clip: text;
 }
@@ -233,108 +207,115 @@ body {
   font-size: 18px; font-weight: 300; line-height: 30px;
   color: rgba(255,255,255,0.80);
   letter-spacing: 0.02em;
-  opacity: 0; animation: heroUp 1s ease forwards 0.7s;
+  opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s;
 }
 
 @keyframes heroUp {
-  from { opacity: 0; transform: translateY(24px); }
+  from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Hero stats bar */
+/* Hero stats bar — hidden initially, revealed on scroll after AI disperses */
 .hero-stats {
   display: flex; justify-content: center;
-  opacity: 0; animation: heroUp 1s ease forwards 0.9s;
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  z-index: 6;
+}
+.hero-stats.visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .hero-stat {
-  padding: 24px 48px;
+  width: 200px;
   text-align: center;
-  transition: background 0.3s;
+  flex-shrink: 0;
 }
-.hero-stat:hover { background: rgba(67,98,255,0.04); }
 
-.hero-stat-num { font-size: 40px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 8px; }
-.hero-stat-num .unit { font-size: 16px; font-weight: 300; color: var(--primary); }
-.hero-stat-label { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.5); letter-spacing: 1px; text-transform: uppercase; }
+.hero-stat-num { font-size: 56px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 12px; white-space: nowrap; }
+.hero-stat-num .unit { font-size: 18px; font-weight: 300; color: #fff; }
+.hero-stat-label {
+  font-size: 16px; font-weight: 500; color: #fff;
+  letter-spacing: 2px;
+  white-space: nowrap;
+  opacity: 0; transform: translateY(6px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.hero-stat-label.typing {
+  opacity: 1; transform: translateY(0);
+}
 
 /* ═══════ INPUT SECTION (left-right layout) ═══════ */
-.input-layout {
+/* 3×2 card grid */
+.input-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0;
-  border: 1px solid var(--border-light);
-}
-
-/* Left: item list */
-.input-list { border-right: 1px solid var(--border-light); }
-
-.input-item {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border-light);
-  cursor: pointer;
-  transition: all 0.3s;
-  position: relative;
-}
-.input-item:last-child { border-bottom: none; }
-.input-item::before {
-  content: ''; position: absolute; left: 0; top: 0;
-  width: 2px; height: 0; background: var(--primary);
-  transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.input-item:hover::before,
-.input-item.active::before { height: 100%; }
-.input-item:hover,
-.input-item.active { background: rgba(67, 98, 255, 0.03); }
-
-.input-item-head {
-  display: flex; align-items: baseline; gap: 12px; margin-bottom: 6px;
-}
-.input-item-num {
-  font-size: 11px; font-weight: 500; color: var(--primary);
-  letter-spacing: 1px; flex-shrink: 0;
-}
-.input-item h4 {
-  font-size: 15px; font-weight: 500; color: var(--text-dark);
-  line-height: 1.4;
-}
-.input-item p {
-  font-size: 12px; font-weight: 300; line-height: 18px;
-  color: var(--text-dim); padding-left: 32px;
-}
-.input-item code {
-  font-family: var(--font-code); font-size: 11px;
-  color: var(--primary); background: rgba(67, 98, 255, 0.08);
-  padding: 1px 4px;
-}
-
-/* Right: visual demo panel */
-.input-demo {
-  position: relative;
-  min-height: 480px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: min-content;
+  gap: 14px;
   overflow: hidden;
-  background: #fafbfd;
 }
 
-.input-demo-panel {
-  position: absolute; inset: 0;
-  padding: 32px;
-  opacity: 0;
-  transform: translateY(12px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  pointer-events: none;
-  display: flex; flex-direction: column; justify-content: center;
+.input-card {
+  background: #1f1f1f;
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 0;
+  padding: 20px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.input-demo-panel.active {
-  opacity: 1; transform: translateY(0);
-  pointer-events: auto;
+
+.input-card-head {
+  display: flex; align-items: center;
+}
+.input-card-label {
+  font-size: 18px; font-weight: 500;
+  color: var(--white-8);
+  letter-spacing: 1px;
+}
+
+.input-card-demo {
+  height: 210px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #000000;
+  border-radius: 4px;
+  padding: 8px 14px;
+  order: 3;
+  overflow: hidden;
+}
+
+.input-card-desc {
+  border-bottom: 1px solid var(--white-1);
+  padding-bottom: 10px;
+  order: 2;
+  height: calc(14px * 1.7 * 2);
+  overflow: hidden;
+}
+.input-card-head { order: 1; }
+.input-card-desc p {
+  font-size: 14px; font-weight: 400; line-height: 1.7;
+  color: var(--white-7); margin: 0;
+}
+.input-card-desc strong {
+  color: var(--white-8); font-weight: 500;
+}
+.input-card-desc code {
+  font-family: var(--font-code); font-size: 11px;
+  color: var(--primary); background: rgba(107, 137, 255, 0.08);
+  padding: 1px 4px; border-radius: 3px;
 }
 
 /* Demo: color swatches */
 .demo-colors { display: flex; flex-direction: column; gap: 12px; }
 .demo-color-row { display: flex; gap: 4px; align-items: center; }
 .demo-color-row span {
-  font-size: 10px; color: var(--text-dim); width: 48px;
+  font-size: 10px; color: var(--white-5); width: 48px;
   flex-shrink: 0; letter-spacing: 0.5px;
 }
 .demo-swatch {
@@ -343,37 +324,37 @@ body {
 }
 .demo-swatch:hover { transform: scaleY(1.3); }
 .demo-color-label {
-  font-size: 9px; color: var(--text-dim);
+  font-size: 9px; color: var(--white-5);
   text-align: center; margin-top: 2px;
 }
 
 /* Demo: font specimen */
 .demo-font { display: flex; flex-direction: column; gap: 20px; }
 .demo-font-sample {
-  border-bottom: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--white-1);
   padding-bottom: 16px;
 }
 .demo-font-name {
-  font-size: 11px; color: var(--text-dim); letter-spacing: 1px;
+  font-size: 11px; color: var(--white-5); letter-spacing: 1px;
   margin-bottom: 8px; text-transform: uppercase;
 }
 .demo-font-preview {
-  font-size: 28px; color: var(--text-dark); line-height: 1.3;
+  font-size: 28px; color: var(--white-8); line-height: 1.3;
 }
 .demo-font-weights {
   display: flex; gap: 24px; margin-top: 8px;
 }
 .demo-font-weights span {
-  font-size: 13px; color: var(--text-secondary);
+  font-size: 13px; color: var(--white-5);
 }
 
 /* Demo: file tree */
 .demo-tree {
   font-family: var(--font-code); font-size: 12px;
-  color: var(--text-secondary); line-height: 2;
+  color: var(--white-5); line-height: 2;
 }
 .demo-tree .t-dir { color: var(--primary); font-weight: 500; }
-.demo-tree .t-size { color: var(--text-dim); font-size: 11px; margin-left: 8px; }
+.demo-tree .t-size { color: var(--white-3); font-size: 11px; margin-left: 8px; }
 .demo-tree .t-indent { padding-left: 20px; }
 .demo-tree .t-highlight {
   background: rgba(67, 98, 255, 0.06);
@@ -382,15 +363,15 @@ body {
 
 /* Demo: dot matrix preview */
 .demo-dots-canvas {
-  width: 100%; height: 200px;
-  border: 1px solid var(--border-light);
+  width: 100%; height: 160px;
+  border: 1px solid var(--white-1);
   border-radius: 2px;
 }
 .demo-dots-info {
-  margin-top: 12px; font-size: 11px; color: var(--text-dim);
+  margin-top: 12px; font-size: 11px; color: var(--white-5);
   display: flex; gap: 24px;
 }
-.demo-dots-info strong { color: var(--text-dark); font-weight: 500; }
+.demo-dots-info strong { color: var(--white-8); font-weight: 500; }
 
 /* Demo: page structure */
 .demo-structure {
@@ -400,18 +381,18 @@ body {
 .demo-block {
   padding: 10px 8px; text-align: center;
   font-size: 10px; font-weight: 300;
-  border: 1px solid var(--border-light);
-  color: var(--text-dim);
+  border: 1px solid var(--white-1);
+  color: var(--white-5);
   transition: all 0.2s;
   border-radius: 2px;
 }
 .demo-block:hover { border-color: var(--primary); color: var(--primary); }
-.demo-block.wide { grid-column: span 4; background: rgba(67,98,255,0.04); }
+.demo-block.wide { grid-column: span 4; background: rgba(107,137,255,0.04); }
 .demo-block.half { grid-column: span 2; }
 
 /* Demo: code snippet */
 .demo-code {
-  background: var(--dark); border-radius: 4px;
+  background: #1a1e2e; border-radius: 4px;
   padding: 20px; overflow: hidden;
 }
 .demo-code-bar {
@@ -431,65 +412,205 @@ body {
 .demo-code .hl-comment { color: rgba(255,255,255,0.25); font-style: italic; }
 
 /* ═══════ STACK GRID (dark bg — hatched like Engineers) ═══════ */
-.stack-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--white-1); }
+/* ═══════ Tree Diagram (Ithaca style) ═══════ */
+.td { display: flex; align-items: center; padding: 0; overflow-x: auto; flex: 1; min-height: 0; }
 
-.stack-cell {
-  padding: 32px 24px;
-  border-bottom: 1px solid var(--white-1);
-  border-left: 1px solid var(--white-1);
-  transition: all 0.3s;
+/* Root title */
+.td-root {
+  font-size: 42px; font-weight: 400; color: #fff;
+  letter-spacing: 3px; white-space: nowrap; flex-shrink: 0;
+  line-height: 1.2;
 }
-.stack-cell:nth-child(3n+1) { border-left: none; }
-.stack-cell:nth-last-child(-n+3) { border-bottom: none; }
-.stack-cell.hatched {
-  background: repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 8px);
+
+/* Horizontal connector line */
+.td-line {
+  width: 154px; height: 1px; flex-shrink: 0;
+  background: rgba(255,255,255,0.18);
+  position: relative;
 }
-.stack-cell:hover { background: rgba(67, 98, 255, 0.05); }
-.stack-cell h4 { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 6px; }
-.stack-cell p { font-size: 12px; font-weight: 300; color: var(--white-5); line-height: 18px; }
+.td-line::before, .td-line::after {
+  content: ''; position: absolute;
+  width: 5px; height: 5px; border-radius: 50%;
+  background: rgba(255,255,255,0.35);
+  top: 50%; transform: translateY(-50%);
+}
+.td-line::before { left: -2px; }
+.td-line::after { right: -2px; }
+
+/* SVG curly brace — hidden, replaced by CSS */
+.td-brace { display: none; }
+
+/* CSS curly brace — Ithaca style */
+.td-cbrace {
+  width: 16px; flex-shrink: 0;
+  align-self: stretch;
+  position: relative;
+  margin: 0 2px;
+}
+/* Top arm */
+.td-cbrace::before {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 50%;
+  right: 0; width: 10px;
+  border-left: 1.5px solid rgba(255,255,255,0.55);
+  border-top: 1.5px solid rgba(255,255,255,0.55);
+  border-top-left-radius: 8px;
+}
+/* Bottom arm */
+.td-cbrace::after {
+  content: '';
+  position: absolute;
+  top: 50%; bottom: 0;
+  right: 0; width: 10px;
+  border-left: 1.5px solid rgba(255,255,255,0.55);
+  border-bottom: 1.5px solid rgba(255,255,255,0.55);
+  border-bottom-left-radius: 8px;
+}
+/* Tip dot at midpoint */
+.td-cbrace-tip {
+  position: absolute;
+  left: -1px; top: 50%;
+  width: 4px; height: 4px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Root brace: align to center of first/last branch */
+.td > .td-cbrace {
+  margin-top: 4%;
+  margin-bottom: 4%;
+}
+
+/* Vertical group of branches */
+.td-group {
+  display: flex; flex-direction: column;
+  gap: 48px; flex-shrink: 0;
+}
+
+/* One branch row */
+.td-branch {
+  display: flex; align-items: center; gap: 0;
+}
+
+/* Category label */
+.td-cat {
+  font-size: 26px; font-weight: 400;
+  color: #fff; white-space: nowrap;
+  flex-shrink: 0; min-width: 86px;
+  letter-spacing: 1px;
+  margin: 0 36px;
+}
+
+/* Leaf nodes column */
+.td-leaves {
+  display: flex; flex-direction: column;
+  gap: 2px; flex-shrink: 0;
+  margin-left: 28px;
+}
+.td-leaf {
+  font-size: 18px; font-weight: 400;
+  color: var(--white-8); white-space: nowrap;
+  line-height: 2;
+  padding: 2px 10px;
+  margin: 0 -10px;
+  border-radius: 0;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.td-leaf:hover {
+  background: #4362ff;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(67, 98, 255, 0.4);
+}
+.td-leaf:hover em {
+  color: #fff;
+}
+.td-leaf em { font-style: normal; color: var(--white-5); }
+.td-leaf code {
+  font-family: var(--font-code); font-size: 14px;
+  color: var(--primary); background: rgba(107,137,255,0.1);
+  padding: 1px 6px; border-radius: 3px;
+}
+
+/* Tree entrance handled by GSAP */
 
 /* ═══════ AI BOUNDARY (light bg) ═══════ */
-.boundary-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
-  background: var(--border-light);
-  border: 1px solid var(--border-light);
+/* Good Fella style: left list + right video */
+.bd-layout {
+  display: flex;
+  gap: 58px;
+  flex: 1;
+  min-height: 0;
 }
-
-.boundary-card {
-  background: #fff;
-  padding: 0;
-  overflow: hidden;
-  transition: all 0.4s;
+.bd-list {
+  flex: 0 0 38%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
-.boundary-card:hover { background: #fafbfd; }
-
-.boundary-visual {
-  height: 200px;
+.bd-item {
+  padding: 17px 0;
+  border-top: 1px solid var(--white-1);
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  opacity: 0.35;
+}
+.bd-item:last-child { border-bottom: 1px solid var(--white-1); }
+.bd-item.active { opacity: 1; }
+.bd-item-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.bd-num {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--white-4);
+  flex-shrink: 0;
+}
+.bd-item.active .bd-num { color: var(--primary); }
+.bd-title {
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--white-5);
+  margin: 0;
+  line-height: 1.3;
+  transition: color 0.3s ease;
+}
+.bd-item.active .bd-title { color: #fff; }
+.bd-desc {
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.7;
+  color: var(--white-4);
+  margin: 7px 0 0 28px;
+  transition: color 0.3s ease;
+}
+.bd-item.active .bd-desc {
+  color: var(--white-6);
+}
+.bd-video-wrap {
+  flex: 1 1 55%;
   position: relative;
+  border-radius: 8px;
   overflow: hidden;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--dark);
+  min-height: 0;
+  aspect-ratio: 16 / 9;
+  align-self: center;
 }
-
-.boundary-text {
-  padding: 24px;
+.bd-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.5s ease;
 }
-.boundary-tag {
-  display: inline-block;
-  font-size: 10px; font-weight: 500;
-  letter-spacing: 2px; text-transform: uppercase;
-  color: #fff; background: var(--primary);
-  padding: 3px 8px; margin-bottom: 12px;
-}
-.boundary-tag.orange { background: var(--orange); }
-.boundary-card h4 {
-  font-size: 16px; font-weight: 500;
-  color: var(--text-dark); margin-bottom: 8px;
-  line-height: 1.4;
-}
-.boundary-card p {
-  font-size: 12px; font-weight: 300;
-  line-height: 18px; color: var(--text-dim);
+.bd-video.active {
+  opacity: 1;
 }
 
 /* 2.5D isometric mini demo */
@@ -545,8 +666,8 @@ body {
 }
 .wire-face {
   position: absolute; width: 100px; height: 100px;
-  border: 1px solid rgba(67,98,255,0.5);
-  background: rgba(67,98,255,0.03);
+  border: 1px solid rgba(107,137,255,0.5);
+  background: rgba(107,137,255,0.03);
 }
 .wire-face:nth-child(1) { transform: translateZ(50px); }
 .wire-face:nth-child(2) { transform: translateZ(-50px); }
@@ -583,86 +704,145 @@ body {
   letter-spacing: 2px; text-transform: uppercase;
 }
 
-/* ═══════ TIMELINE (light bg) ═══════ */
-.timeline { position: relative; }
-
-.timeline::before {
-  content: ''; position: absolute;
-  left: 31px; top: 0; bottom: 0;
-  width: 1px; background: var(--border-light);
+/* ═══════ TIMELINE — Glow Scrollbar (reference copy) ═══════ */
+.timeline {
+  position: relative;
+  padding-left: 28px;
 }
 
+/* 发光滚动条 — 4px竖线 + radial-gradient蓝色发光 */
+.tl-scrollbar {
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background-color: rgba(255,255,255,0.1);
+  background-image: radial-gradient(
+    circle at 50% var(--tl-glow-y, -10%),
+    rgb(112, 153, 255) 0%,
+    rgba(56, 106, 249, 0.79) 10px,
+    rgba(10, 76, 242, 0.53) 20px,
+    rgba(255, 255, 255, 0) 40px
+  );
+}
+
+/* 左边框发光反射 */
+.timeline::before,
 .timeline::after {
-  content: ''; position: absolute;
-  left: 28px; top: 0;
-  width: 7px; height: 60px;
-  background: linear-gradient(to bottom, transparent, var(--primary), transparent);
-  border-radius: 3px;
-  animation: signalDown 4s linear infinite;
-  z-index: 1;
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  background: linear-gradient(180deg,
+    rgba(10,76,242,0) 0%, rgba(10,76,242,0.75) 38%,
+    rgb(77,127,255) 51%, rgba(10,76,242,0.75) 63%,
+    rgba(10,76,242,0) 100%
+  );
+  background-repeat: no-repeat;
+  background-position-y: var(--tl-reflect-y, -10%);
+  pointer-events: none;
+}
+.timeline::before {
+  width: 1px;
+  background-size: 1px 150px;
+  filter: blur(1px);
+}
+.timeline::after {
+  width: 10px;
+  background-size: 10px 150px;
+  filter: blur(10px);
 }
 
-@keyframes signalDown {
-  0% { top: -60px; opacity: 0; }
-  5% { opacity: 1; }
-  95% { opacity: 1; }
-  100% { top: 100%; opacity: 0; }
+/* Phase: 正常流式布局，默认暗淡 */
+.tl-phase {
+  position: relative;
+  padding-bottom: 16px;
+  opacity: 0.1;
+  transform: translateY(10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
-
-.tl-phase { position: relative; padding-left: 80px; padding-bottom: 56px; }
 .tl-phase:last-child { padding-bottom: 0; }
+.tl-phase.active {
+  opacity: 1;
+  transform: translateY(0);
+}
 
+/* ── Header: ■ 01  Title  (all inline) ── */
+.tl-header {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 12px;
+}
+
+/* Accent square — inline, hidden by default */
 .tl-dot {
-  position: absolute; left: 16px; top: 0;
-  width: 31px; height: 31px; border-radius: 50%;
-  background: #fff;
-  border: 1px solid var(--border-light);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 500; color: var(--text-dim);
-  z-index: 2; transition: all 0.5s ease;
+  width: 11px; height: 11px; flex-shrink: 0;
+  background: transparent;
+  border: none; border-radius: 0;
+  position: static; /* NOT absolute */
+  font-size: 0;
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-dot.lit {
-  border-color: var(--primary); color: var(--primary);
-  box-shadow: 0 0 16px rgba(67, 98, 255, 0.2);
-}
-.tl-dot.lit::after {
-  content: ''; position: absolute; inset: -4px; border-radius: 50%;
-  border: 1px solid rgba(67, 98, 255, 0.15);
-  animation: pulse 2s ease-in-out infinite;
-}
+.tl-phase.active .tl-dot { background: #ff6b4a; }
+.tl-dot.lit { border-color: transparent; color: transparent; box-shadow: none; }
+.tl-dot.lit::after { display: none; }
 
-@keyframes pulse {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0; }
+/* Step number */
+.tl-step-num {
+  font-size: 13px; font-weight: 400;
+  color: rgba(255,255,255,0.15);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
+.tl-phase.active .tl-step-num { color: rgba(255,255,255,0.4); }
 
-.tl-header { display: flex; align-items: baseline; gap: 16px; margin-bottom: 12px; }
-.tl-title { font-size: 20px; font-weight: 500; color: var(--text-dark); }
-.tl-date { font-size: 11px; font-weight: 300; color: var(--text-dim); letter-spacing: 1px; }
-.tl-desc { font-size: 14px; font-weight: 300; line-height: 22px; color: var(--text-secondary); margin-bottom: 16px; max-width: 720px; }
+/* Title */
+.tl-title {
+  font-size: 20px; font-weight: 600;
+  color: rgba(255,255,255,0.15);
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tl-phase.active .tl-title { color: #fff; }
 
-.commits { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+/* Date — after title */
+.tl-date {
+  font-size: 11px; font-weight: 300;
+  color: rgba(255,255,255,0.08);
+  letter-spacing: 1px;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tl-phase.active .tl-date { color: rgba(255,255,255,0.25); }
+
+/* Description */
+.tl-desc {
+  font-size: 13px; font-weight: 300; line-height: 20px;
+  color: rgba(255,255,255,0.12);
+  margin-bottom: 8px; max-width: 720px;
+  padding-left: 23px;
+  transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tl-phase.active .tl-desc { color: var(--white-5); }
+
+/* Commits: dimmed by default */
+.commits { list-style: none; display: flex; flex-direction: column; gap: 4px; opacity: 0.2; padding-left: 23px; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1); }
+.tl-phase.active .commits { opacity: 1; }
 .commits li {
-  font-size: 11px; font-weight: 300; color: var(--text-dim);
+  font-size: 11px; font-weight: 300; color: var(--white-5);
   padding: 6px 12px;
-  border-left: 2px solid var(--border-light);
+  border-left: 2px solid var(--white-1);
   transition: all 0.3s; cursor: default;
 }
-.commits li:hover { border-left-color: var(--primary); background: rgba(67, 98, 255, 0.04); color: var(--text-secondary); }
+.commits li:hover { border-left-color: var(--primary); background: rgba(255,255,255,0.06); color: var(--white-8); }
 
 .hash { color: var(--primary); margin-right: 8px; }
 .tag { display: inline-block; padding: 0px 5px; font-size: 9px; font-weight: 500; letter-spacing: 0.5px; margin-right: 6px; text-transform: uppercase; }
-.tag-feat { background: rgba(67, 98, 255, 0.1); color: var(--primary); }
+.tag-feat { background: rgba(107, 137, 255, 0.1); color: var(--primary); }
 .tag-fix { background: rgba(255, 132, 0, 0.1); color: var(--orange); }
 .tag-perf { background: rgba(52, 211, 153, 0.1); color: #059669; }
 .tag-style { background: rgba(139, 92, 246, 0.1); color: #7c3aed; }
-.tag-revert { background: rgba(0, 0, 0, 0.05); color: var(--text-dim); }
+.tag-revert { background: rgba(255, 255, 255, 0.05); color: var(--white-5); }
 
 /* ═══════ FX GRID (dark bg) ═══════ */
-.fx-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--white-1); counter-reset: fx; }
+.fx-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--white-1); counter-reset: fx; flex: 1; min-height: 0; overflow: hidden; }
 
 .fx-card {
-  padding: 32px; border-bottom: 1px solid var(--white-1); border-right: 1px solid var(--white-1);
+  padding: 20px 24px; border-bottom: 1px solid var(--white-1); border-right: 1px solid var(--white-1);
   counter-increment: fx; position: relative; overflow: hidden; transition: all 0.4s;
 }
 .fx-card:nth-child(2n) { border-right: none; }
@@ -675,18 +855,18 @@ body {
   font-size: 48px; font-weight: 500; color: var(--white-1); line-height: 1;
   transition: color 0.4s;
 }
-.fx-card:hover::before { color: rgba(67, 98, 255, 0.15); }
-.fx-card:hover { background: rgba(67, 98, 255, 0.02); }
+.fx-card:hover::before { color: rgba(255,255,255,0.15); }
+.fx-card:hover { background: rgba(255,255,255,0.04); }
 
 .fx-card h4 { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 6px; }
 .fx-tech { font-size: 11px; color: var(--primary); margin-bottom: 10px; letter-spacing: 0.5px; }
 .fx-card p { font-size: 13px; font-weight: 300; line-height: 20px; color: var(--white-5); max-width: 480px; }
 
 /* ═══════ CHALLENGES (light bg) ═══════ */
-.challenge-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--border-light); }
+.challenge-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--white-1); }
 .challenge-row:last-child { border-bottom: none; }
 
-.challenge-cell { padding: 32px; border-right: 1px solid var(--border-light); position: relative; }
+.challenge-cell { padding: 20px 24px; border-right: 1px solid var(--white-1); position: relative; }
 .challenge-cell:last-child { border-right: none; }
 
 .challenge-cell::before {
@@ -697,11 +877,11 @@ body {
 .challenge-cell.problem::before { background: var(--orange); }
 .challenge-cell.solution::before { background: #059669; }
 
-.challenge-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+.challenge-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; color: var(--white-5); }
 .problem .challenge-label { color: var(--orange); }
 .solution .challenge-label { color: #059669; }
-.challenge-cell h4 { font-size: 15px; font-weight: 500; color: var(--text-dark); margin-bottom: 10px; }
-.challenge-cell p { font-size: 13px; font-weight: 300; line-height: 20px; color: var(--text-dim); }
+.challenge-cell h4 { font-size: 15px; font-weight: 500; color: var(--white-8); margin-bottom: 10px; }
+.challenge-cell p { font-size: 13px; font-weight: 300; line-height: 20px; color: var(--white-5); }
 
 /* ═══════ ARCH BOX (dark bg) ═══════ */
 .arch-box {
@@ -719,16 +899,16 @@ body {
 .arch-box .comment { color: #48566a; }
 
 /* ═══════ RESULT CTA (dark bg) ═══════ */
-.result-inner { text-align: center; padding: 120px 16px !important; }
+.result-inner { text-align: center; padding: 48px 16px !important; justify-content: center; align-items: center; }
 
 .result-url {
   display: inline-flex; align-items: center; gap: 8px;
-  background: #fff; color: var(--primary);
+  background: rgba(255,255,255,0.1); color: var(--primary);
   font-size: 16px; font-family: var(--font); font-weight: 300;
   padding: 0 24px 0 16px; height: 40px;
   border: none; text-decoration: none; transition: all 0.2s; cursor: pointer;
 }
-.result-url:hover { background: #f0f0f0; }
+.result-url:hover { background: rgba(255,255,255,0.15); }
 .result-url .arrow { display: inline-block; transform: rotate(-45deg); font-size: 14px; }
 
 /* ═══════ FOOTER — spectrum (XYZ Cloud exact) ═══════ */
@@ -743,15 +923,15 @@ body {
   flex: 1; height: 100%; will-change: transform, opacity;
   animation: specFloat 6s ease-in-out infinite alternate;
 }
-.footer-spectrum .col:nth-child(1) { background: linear-gradient(180deg, #1d2cb3, #0a0d66); animation-duration: 5.8s; }
-.footer-spectrum .col:nth-child(2) { background: linear-gradient(180deg, #2e44d9, #1d2cb3); animation-duration: 6.4s; animation-delay: -0.8s; }
-.footer-spectrum .col:nth-child(3) { background: linear-gradient(180deg, #4362ff, #2e44d9); animation-duration: 5.5s; animation-delay: -1.6s; }
-.footer-spectrum .col:nth-child(4) { background: linear-gradient(180deg, #6b89ff, #4362ff); animation-duration: 6.8s; animation-delay: -2.4s; }
-.footer-spectrum .col:nth-child(5) { background: linear-gradient(180deg, #4362ff, #6b89ff); animation-duration: 7.2s; animation-delay: -3s; }
-.footer-spectrum .col:nth-child(6) { background: linear-gradient(180deg, #2e44d9, #4362ff); animation-duration: 6.6s; animation-delay: -2.2s; }
-.footer-spectrum .col:nth-child(7) { background: linear-gradient(180deg, #1d2cb3, #2e44d9); animation-duration: 5.6s; animation-delay: -1.4s; }
-.footer-spectrum .col:nth-child(8) { background: linear-gradient(180deg, #0a0d66, #1d2cb3); animation-duration: 6.2s; animation-delay: -0.6s; }
-.footer-spectrum .col:nth-child(9) { background: linear-gradient(180deg, #060a10, #0a0d66); animation-duration: 5.9s; animation-delay: -0.2s; }
+.footer-spectrum .col:nth-child(1) { background: linear-gradient(180deg, #2e44d9, #1d2cb3); animation-duration: 5.8s; }
+.footer-spectrum .col:nth-child(2) { background: linear-gradient(180deg, #4362ff, #2e44d9); animation-duration: 6.4s; animation-delay: -0.8s; }
+.footer-spectrum .col:nth-child(3) { background: linear-gradient(180deg, #6B89FF, #4362ff); animation-duration: 5.5s; animation-delay: -1.6s; }
+.footer-spectrum .col:nth-child(4) { background: linear-gradient(180deg, #8BA4FF, #6B89FF); animation-duration: 6.8s; animation-delay: -2.4s; }
+.footer-spectrum .col:nth-child(5) { background: linear-gradient(180deg, #6B89FF, #8BA4FF); animation-duration: 7.2s; animation-delay: -3s; }
+.footer-spectrum .col:nth-child(6) { background: linear-gradient(180deg, #4362ff, #6B89FF); animation-duration: 6.6s; animation-delay: -2.2s; }
+.footer-spectrum .col:nth-child(7) { background: linear-gradient(180deg, #2e44d9, #4362ff); animation-duration: 5.6s; animation-delay: -1.4s; }
+.footer-spectrum .col:nth-child(8) { background: linear-gradient(180deg, #1d2cb3, #2e44d9); animation-duration: 6.2s; animation-delay: -0.6s; }
+.footer-spectrum .col:nth-child(9) { background: linear-gradient(180deg, #0a0d66, #1d2cb3); animation-duration: 5.9s; animation-delay: -0.2s; }
 
 @keyframes specFloat {
   0% { transform: translateY(8%) scaleY(1.05); opacity: 0.7; }
@@ -764,8 +944,8 @@ body {
 .footer-text { font-size: 11px; font-weight: 300; color: var(--white-5); letter-spacing: 2px; text-transform: uppercase; }
 
 /* ═══════ PARTICLE BG (nextUI exact — Three.js 800 particles + 50 accent stars) ═══════ */
-.particle-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 3; mix-blend-mode: screen; }
-.page-content { position: relative; z-index: 1; }
+.particle-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 2; }
+.page-content { position: relative; z-index: 3; }
 
 /* ═══════ GLITCH (disabled) ═══════ */
 
@@ -775,7 +955,7 @@ body {
 /* ═══════ DESIGN TOKENS VIZ (light bg) ═══════ */
 .token-group { margin-bottom: 48px; }
 .token-group:last-child { margin-bottom: 0; }
-.token-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 12px; }
+.token-label { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--white-5); margin-bottom: 12px; }
 
 .color-row { display: flex; gap: 0; border-radius: 2px; overflow: hidden; }
 .color-swatch {
@@ -785,7 +965,7 @@ body {
 .color-swatch:hover { transform: scaleY(1.4); z-index: 1; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
 .color-swatch .sw-val {
   position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
-  font-size: 9px; color: var(--text-dim); white-space: nowrap;
+  font-size: 9px; color: var(--white-5); white-space: nowrap;
   opacity: 0; transition: opacity 0.3s; pointer-events: none;
 }
 .color-swatch:hover .sw-val { opacity: 1; }
@@ -796,29 +976,29 @@ body {
 }
 .white-alpha-bg .color-swatch .sw-val { color: var(--white-5); }
 
-.type-scale { border: 1px solid var(--border-light); }
+.type-scale { border: 1px solid var(--white-1); }
 .type-row {
   display: flex; align-items: baseline; gap: 24px;
-  padding: 10px 16px; border-bottom: 1px solid var(--border-light);
+  padding: 10px 16px; border-bottom: 1px solid var(--white-1);
 }
 .type-row:last-child { border-bottom: none; }
 .type-size { font-size: 10px; color: var(--primary); min-width: 52px; font-weight: 500; }
-.type-weight { font-size: 10px; color: var(--text-dim); min-width: 32px; }
-.type-sample { color: var(--text-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.type-weight { font-size: 10px; color: var(--white-3); min-width: 32px; }
+.type-sample { color: var(--white-8); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 .spacing-row { display: flex; gap: 6px; align-items: flex-end; flex-wrap: wrap; }
 .spacing-block {
-  background: rgba(67,98,255,0.08); border: 1px solid rgba(67,98,255,0.15);
+  background: rgba(107,137,255,0.08); border: 1px solid rgba(107,137,255,0.15);
   position: relative; transition: background 0.3s;
 }
-.spacing-block:hover { background: rgba(67,98,255,0.2); }
+.spacing-block:hover { background: rgba(255,255,255,0.12); }
 .spacing-block .sp-val {
   position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
-  font-size: 8px; color: var(--text-dim); white-space: nowrap;
+  font-size: 8px; color: var(--white-5); white-space: nowrap;
 }
 
 /* ═══════ SCREENSHOT SHOWCASE (dark bg) ═══════ */
-.shot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; border: 1px solid var(--white-1); }
+.shot-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px; border: 1px solid var(--white-1); flex: 1; min-height: 0; overflow: hidden; }
 .shot-card {
   position: relative; overflow: hidden; background: #000; aspect-ratio: 16/10;
 }
@@ -837,34 +1017,34 @@ body {
 .shot-card .shot-tech { font-size: 10px; color: var(--primary); margin-top: 4px; letter-spacing: 0.5px; }
 
 /* ═══════ PIPELINE (light bg) ═══════ */
-.pipeline { display: flex; align-items: stretch; gap: 0; border: 1px solid var(--border-light); }
+.pipeline { display: flex; align-items: stretch; gap: 0; border: 1px solid var(--white-1); }
 .pipe-step {
   flex: 1; text-align: center; padding: 28px 12px;
-  border-right: 1px solid var(--border-light); transition: all 0.3s;
+  border-right: 1px solid var(--white-1); transition: all 0.3s;
   display: flex; flex-direction: column; justify-content: center; align-items: center;
 }
 .pipe-step:last-child { border-right: none; }
-.pipe-step:hover { background: rgba(67,98,255,0.03); }
+.pipe-step:hover { background: rgba(255,255,255,0.06); }
 .pipe-step .pipe-icon { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
-.pipe-step h4 { font-size: 13px; font-weight: 500; color: var(--text-dark); margin-bottom: 4px; }
-.pipe-step p { font-size: 10px; font-weight: 300; color: var(--text-dim); line-height: 15px; }
+.pipe-step h4 { font-size: 13px; font-weight: 500; color: var(--white-8); margin-bottom: 4px; }
+.pipe-step p { font-size: 10px; font-weight: 300; color: var(--white-5); line-height: 15px; }
 .pipe-arrow { display: none; }
 
 .pipe-compare {
   display: flex; align-items: center; justify-content: center; gap: 48px;
-  margin-top: 48px; border: 1px solid var(--border-light); padding: 32px;
+  margin-top: 48px; border: 1px solid var(--white-1); padding: 32px;
 }
-.pipe-big { font-size: 40px; font-weight: 500; color: var(--text-dark); line-height: 1; }
-.pipe-big .unit { font-size: 14px; font-weight: 300; color: var(--text-dim); }
-.pipe-label { font-size: 10px; color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+.pipe-big { font-size: 40px; font-weight: 500; color: var(--white-8); line-height: 1; }
+.pipe-big .unit { font-size: 14px; font-weight: 300; color: var(--white-5); }
+.pipe-label { font-size: 10px; color: var(--white-5); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
 .pipe-vs { font-size: 24px; color: var(--primary); font-weight: 300; }
 
 /* ═══════ AI COLLAB (dark bg) ═══════ */
-.collab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.collab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; flex: 1; min-height: 0; overflow: hidden; }
 .collab-card {
   padding: 32px; border: 1px solid var(--white-1); transition: all 0.4s;
 }
-.collab-card:hover { background: rgba(67,98,255,0.03); border-color: rgba(67,98,255,0.15); }
+.collab-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
 .collab-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
 .collab-card h4 { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 8px; }
 .collab-card p { font-size: 13px; font-weight: 300; color: var(--white-5); line-height: 20px; }
@@ -878,50 +1058,50 @@ body {
 .collab-stat-item .cs-label { font-size: 9px; color: var(--white-5); letter-spacing: 1px; text-transform: uppercase; }
 
 /* ═══════ LESSONS (light bg) ═══════ */
-.lesson-list { border: 1px solid var(--border-light); }
+.lesson-list { border: 1px solid var(--white-1); flex: 1; min-height: 0; overflow: hidden; }
 .lesson-item {
-  padding: 28px 24px; border-bottom: 1px solid var(--border-light);
+  padding: 28px 24px; border-bottom: 1px solid var(--white-1);
   display: flex; gap: 20px; align-items: flex-start; transition: background 0.3s;
 }
 .lesson-item:last-child { border-bottom: none; }
-.lesson-item:hover { background: rgba(67,98,255,0.02); }
+.lesson-item:hover { background: rgba(255,255,255,0.05); }
 .lesson-num { font-size: 28px; font-weight: 500; color: var(--primary); line-height: 1; min-width: 40px; }
-.lesson-body h4 { font-size: 15px; font-weight: 500; color: var(--text-dark); margin-bottom: 6px; }
-.lesson-body p { font-size: 13px; font-weight: 300; color: var(--text-dim); line-height: 20px; }
+.lesson-body h4 { font-size: 15px; font-weight: 500; color: var(--white-8); margin-bottom: 6px; }
+.lesson-body p { font-size: 13px; font-weight: 300; color: var(--white-5); line-height: 20px; }
 
 /* ═══════ RESPONSIVE ═══════ */
 @media (max-width: 1200px) {
   .section-title-dark, .section-title-light { font-size: 32px; line-height: 40px; }
   .section-row { flex-direction: column; }
   .input-layout { grid-template-columns: 1fr 1fr; }
-  .stack-grid { grid-template-columns: 1fr 1fr; }
-  .boundary-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .td { transform: scale(0.7); transform-origin: left center; }
+  .bd-layout { gap: 40px; }
   .fx-grid { grid-template-columns: 1fr; }
   .fx-card:nth-child(2n) { border-right: 1px solid var(--white-1); }
   .challenge-row { grid-template-columns: 1fr; }
-  .challenge-cell { border-right: none; border-bottom: 1px solid var(--border-light); }
+  .challenge-cell { border-right: none; border-bottom: 1px solid var(--white-1); }
   .challenge-cell:last-child { border-bottom: none; }
   .hero-stats { flex-wrap: wrap; }
   .hero-stat { flex: 1 1 auto; min-width: 120px; padding: 16px 24px; }
   .hero { min-height: 600px; }
   .hero-title { font-size: 56px; }
-  .shot-grid { grid-template-columns: 1fr; }
+  .shot-grid { grid-template-columns: 1fr 1fr; }
   .collab-grid { grid-template-columns: 1fr; }
   .pipe-compare { flex-wrap: wrap; gap: 24px; }
 }
 
 @media (max-width: 800px) {
-  .section-title-dark, .section-title-light { font-size: 24px; line-height: 32px; margin-bottom: 40px; }
-  .section-dark .section-inner, .section-light .section-inner { padding: 40px 16px; }
-  .input-layout, .stack-grid { grid-template-columns: 1fr; }
-  .input-list { border-right: none; border-bottom: 1px solid var(--border-light); }
+  .section-title-dark, .section-title-light { font-size: 24px; line-height: 32px; margin-bottom: 12px; }
+  .section-dark .section-inner, .section-light .section-inner { padding: 60px 16px 40px; }
+  .input-layout { grid-template-columns: 1fr; }
+  .td { transform: scale(0.45); transform-origin: left center; }
+  .input-list { border-right: none; border-bottom: 1px solid var(--white-1); }
   .input-demo { min-height: 360px; }
-  .boundary-grid { grid-template-columns: 1fr; }
-  .tl-phase { padding-left: 56px; }
-  .tl-dot { left: 8px; width: 24px; height: 24px; font-size: 9px; }
-  .timeline::before { left: 19px; }
-  .timeline::after { left: 16px; }
+  .bd-layout { flex-direction: column; }
+  .tl-title { font-size: 20px; }
+  .tl-dot { width: 8px; height: 8px; }
   .tl-date { display: none; }
+  .tl-desc, .commits { padding-left: 0; }
   .hero { min-height: 520px; padding-top: 100px; }
   .hero-title { font-size: 36px; }
   .hero-sub { font-size: 15px; line-height: 24px; }
@@ -935,9 +1115,18 @@ body {
   .collab-stats { flex-wrap: wrap; }
   .collab-stat-item { min-width: 50%; }
 }
+
+.global-noise {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1;
+  opacity: 0.07;
+  mix-blend-mode: overlay;
+  object-fit: cover;
+}
 </style>
 </head>
 <body>
+<img src="noise.png" alt="" class="global-noise">
 
 <div class="particle-bg" id="particleBg"></div>
 
@@ -951,37 +1140,43 @@ body {
     <div class="hero-sphere-canvas" id="heroSphere"></div>
     <img src="noise.png" alt="" class="hero-noise" id="heroNoise">
     <img src="stain.png" alt="" class="hero-stain" id="heroStain">
-    <img src="logo.svg" alt="" class="hero-logo" id="heroLogoImg">
-    <canvas class="hero-logo-particles" id="heroLogoCanvas"></canvas>
+    <!-- Canvas 2D wireframe (XYZ Cloud exact copy) -->
+    <div class="hero-wireframe" id="heroWireframe"></div>
+    <div class="hero-stats" id="heroStats">
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="96">0</span><span class="unit"> 次</span></div>
+        <div class="hero-stat-label">Git 提交</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="9">0</span><span class="unit"> 个</span></div>
+        <div class="hero-stat-label">视觉特效</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="7">0</span><span class="unit"> 个</span></div>
+        <div class="hero-stat-label">功能模块</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="12">0</span><span class="unit"> 条</span></div>
+        <div class="hero-stat-label">设计约束</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="2">0</span><span class="unit"> 天</span></div>
+        <div class="hero-stat-label">核心开发</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num">~<span class="counter" data-target="4000">0</span></div>
+        <div class="hero-stat-label">行代码</div>
+      </div>
+    </div>
   </div>
   <div class="immersive__content">
     <section class="hero">
       <div class="hero-content">
         <div class="hero-top">
           <p class="hero-label">Development Case Study · 2026</p>
-          <h1 class="hero-title">设计产品如何<br>去掉 <span class="accent">AI 味儿</span></h1>
-          <p class="hero-sub">一个设计师 + AI 的官网开发全记录<br>用规范化设计流程，让 AI 输出达到专业标准</p>
+          <h1 class="hero-title">设计产品如何去掉 <span class="accent">AI 味儿</span></h1>
         </div>
-        <div class="hero-bottom">
-          <div class="hero-stats">
-            <div class="hero-stat">
-              <div class="hero-stat-num"><span class="counter" data-target="96">0</span></div>
-              <div class="hero-stat-label">次提交</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-num"><span class="counter" data-target="9">0</span><span class="unit"> 个</span></div>
-              <div class="hero-stat-label">视觉特效</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-num"><span class="counter" data-target="2">0</span><span class="unit"> 天</span></div>
-              <div class="hero-stat-label">核心开发</div>
-            </div>
-            <div class="hero-stat">
-              <div class="hero-stat-num">~<span class="counter" data-target="4000">0</span></div>
-              <div class="hero-stat-label">行代码</div>
-            </div>
-          </div>
-        </div>
+        <div class="hero-bottom"></div>
       </div>
     </section>
     <div class="hero-scroll-spacer"></div>
@@ -989,69 +1184,27 @@ body {
 </div>
 
 <!-- ═══════ 01: INPUTS (light) ═══════ -->
-<section class="section-light">
+<section class="section-dark">
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">01 — INPUT MATERIALS</div>
-      <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">项目开始前，我拿到了什么</h2>
-      <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">
-        XYZ Cloud 是一个 AI 云计算平台的海外营销官网。设计师和产品经理提供了以下规范和素材。
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">我给 AI 准备了什么</h2>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
+        在让 AI 写第一行代码之前，我作为设计师准备了这些规范和素材，作为它的输入约束。
       </p>
-      <div class="input-layout scroll-fade-in" style="--delay:0.3s">
-        <!-- Left: item list -->
-        <div class="input-list">
-          <div class="input-item active" data-demo="0">
-            <div class="input-item-head">
-              <span class="input-item-num">01</span>
-              <h4>Figma 设计令牌</h4>
-            </div>
-            <p>品牌蓝 10 级梯度（<code>#4362ff</code>）、灰色 11 级、白色透明度 10 级，全部导出 CSS 变量</p>
-          </div>
-          <div class="input-item" data-demo="1">
-            <div class="input-item-head">
-              <span class="input-item-num">02</span>
-              <h4>字体规范</h4>
-            </div>
-            <p>UI <code>JetBrains Mono</code> + 代码 <code>Courier Prime</code>，均为 SIL OFL 开源免费商用，12 档字号，字重仅 300 / 500</p>
-          </div>
-          <div class="input-item" data-demo="2">
-            <div class="input-item-head">
-              <span class="input-item-num">03</span>
-              <h4>OBJ 3D 模型</h4>
-            </div>
-            <p>5 个模型，原始 10-20MB / 7-15 万顶点，降采样到 5000 点导出 JSON</p>
-          </div>
-          <div class="input-item" data-demo="3">
-            <div class="input-item-head">
-              <span class="input-item-num">04</span>
-              <h4>点阵 SVG</h4>
-            </div>
-            <p><code>dot-matrix.svg</code> 1915×924px，数千个 rect 元素</p>
-          </div>
-          <div class="input-item" data-demo="4">
-            <div class="input-item-head">
-              <span class="input-item-num">05</span>
-              <h4>页面结构与文案</h4>
-            </div>
-            <p>12 个区块，双语 EN/CN，Hero 到 Footer 完整信息架构</p>
-          </div>
-          <div class="input-item" data-demo="5">
-            <div class="input-item-head">
-              <span class="input-item-num">06</span>
-              <h4>技术约束</h4>
-            </div>
-            <p><code>Three.js r86</code> 不可升级，单文件 <code>index.html</code>，无构建工具</p>
-          </div>
-        </div>
+      <!-- 3×2 card grid -->
+      <div class="input-grid scroll-fade-in" style="--delay:0.3s">
 
-        <!-- Right: visual demos -->
-        <div class="input-demo">
-          <!-- Panel 0: Color swatches -->
-          <div class="input-demo-panel active" data-panel="0">
+        <!-- Card 1: Figma 设计令牌 -->
+        <div class="input-card">
+          <div class="input-card-head">
+            <span class="input-card-label">FIGMA 设计令牌 ▸</span>
+          </div>
+          <div class="input-card-demo">
             <div class="demo-colors">
               <div class="demo-color-row">
                 <span>Blue</span>
-                <div style="display:flex;gap:3px;flex:1">
+                <div style="display:flex;gap:2px;flex:1">
                   <div class="demo-swatch" style="background:#f0f5ff"></div>
                   <div class="demo-swatch" style="background:#d6e0ff"></div>
                   <div class="demo-swatch" style="background:#adbfff"></div>
@@ -1066,173 +1219,141 @@ body {
               </div>
               <div class="demo-color-row">
                 <span>Gray</span>
-                <div style="display:flex;gap:3px;flex:1">
+                <div style="display:flex;gap:2px;flex:1">
                   <div class="demo-swatch" style="background:#f8fafc"></div>
-                  <div class="demo-swatch" style="background:#f1f5f9"></div>
                   <div class="demo-swatch" style="background:#e1e7ef"></div>
-                  <div class="demo-swatch" style="background:#c4cdd8"></div>
                   <div class="demo-swatch" style="background:#94a3b8"></div>
                   <div class="demo-swatch" style="background:#64748b"></div>
-                  <div class="demo-swatch" style="background:#48566a"></div>
                   <div class="demo-swatch" style="background:#334155"></div>
                   <div class="demo-swatch" style="background:#1e293b"></div>
-                  <div class="demo-swatch" style="background:#0f172a"></div>
                   <div class="demo-swatch" style="background:#090e1a"></div>
                 </div>
               </div>
               <div class="demo-color-row">
                 <span>White α</span>
-                <div style="display:flex;gap:3px;flex:1;background:#090e1a;padding:4px;border-radius:2px">
+                <div style="display:flex;gap:2px;flex:1;background:#090e1a;padding:3px;border-radius:2px">
                   <div class="demo-swatch" style="background:rgba(255,255,255,0.08)"></div>
-                  <div class="demo-swatch" style="background:rgba(255,255,255,0.12)"></div>
                   <div class="demo-swatch" style="background:rgba(255,255,255,0.20)"></div>
-                  <div class="demo-swatch" style="background:rgba(255,255,255,0.30)"></div>
                   <div class="demo-swatch" style="background:rgba(255,255,255,0.40)"></div>
-                  <div class="demo-swatch" style="background:rgba(255,255,255,0.50)"></div>
                   <div class="demo-swatch" style="background:rgba(255,255,255,0.60)"></div>
-                  <div class="demo-swatch" style="background:rgba(255,255,255,0.70)"></div>
                   <div class="demo-swatch" style="background:rgba(255,255,255,0.80)"></div>
                   <div class="demo-swatch" style="background:rgba(255,255,255,1)"></div>
                 </div>
               </div>
-              <div style="margin-top:16px">
-                <div class="demo-code">
-                  <div class="demo-code-bar"><div class="demo-code-dot"></div><div class="demo-code-dot"></div><div class="demo-code-dot"></div></div>
-                  <pre><span class="hl-comment">/* Design Tokens → CSS Variables */</span>
-<span class="hl-key">--primary:</span>      <span class="hl-val">#4362ff</span>;
-<span class="hl-key">--dark:</span>         <span class="hl-val">#090e1a</span>;
-<span class="hl-key">--white-5:</span>      <span class="hl-val">rgba(255,255,255,0.40)</span>;
-<span class="hl-key">--spacing-sm:</span>   <span class="hl-val">8px</span>;
-<span class="hl-key">--spacing-lg:</span>   <span class="hl-val">48px</span>;</pre>
-                </div>
-              </div>
             </div>
           </div>
+          <div class="input-card-desc">
+            <p>在 Figma 里定好 <strong>每一个颜色</strong></p>
+            <p>不让 AI 自由发挥配色</p>
+          </div>
+        </div>
 
-          <!-- Panel 1: Font specimen -->
-          <div class="input-demo-panel" data-panel="1">
+        <!-- Card 2: 字体规范 -->
+        <div class="input-card">
+          <div class="input-card-head">
+            <span class="input-card-label">字体规范 ▸</span>
+          </div>
+          <div class="input-card-demo">
             <div class="demo-font">
               <div class="demo-font-sample">
-                <div class="demo-font-name">JetBrains Mono — UI Font · SIL OFL · 免费商用</div>
-                <div class="demo-font-preview" style="font-family:'JetBrains Mono',monospace;font-weight:500">
-                  Aa Bb Cc 01 23
-                </div>
+                <div class="demo-font-name">JetBrains Mono — UI Font</div>
+                <div class="demo-font-preview" style="font-family:'JetBrains Mono',monospace;font-weight:500">Aa Bb Cc 01 23</div>
                 <div class="demo-font-weights">
                   <span style="font-weight:300">Light 300</span>
                   <span style="font-weight:500">Medium 500</span>
                 </div>
               </div>
-              <div class="demo-font-sample">
-                <div class="demo-font-name">Courier Prime — Code Font · SIL OFL · 免费商用</div>
-                <div class="demo-font-preview" style="font-family:'Courier Prime',monospace;font-weight:700">
-                  Aa Bb Cc 01 23
-                </div>
-                <div class="demo-font-weights">
-                  <span style="font-family:'Courier Prime',monospace;font-weight:400">Regular 400</span>
-                  <span style="font-family:'Courier Prime',monospace;font-weight:700">Bold 700</span>
-                </div>
-              </div>
-              <div style="display:flex;gap:16px;flex-wrap:wrap;margin-top:8px">
-                <span style="font-size:11px;color:var(--text-dim)">11px</span>
-                <span style="font-size:13px;color:var(--text-dim)">13px</span>
-                <span style="font-size:14px;color:var(--text-secondary)">14px</span>
-                <span style="font-size:16px;color:var(--text-secondary)">16px</span>
-                <span style="font-size:20px;color:var(--text-dark)">20px</span>
-                <span style="font-size:28px;color:var(--text-dark)">28px</span>
-                <span style="font-size:40px;color:var(--text-dark);font-weight:500">48</span>
+              <div class="demo-font-sample" style="border:none;padding-bottom:0">
+                <div class="demo-font-name">Courier Prime — Code Font</div>
+                <div class="demo-font-preview" style="font-family:'Courier Prime',monospace;font-weight:700">Aa Bb Cc 01 23</div>
               </div>
             </div>
           </div>
-
-          <!-- Panel 2: 3D models file tree -->
-          <div class="input-demo-panel" data-panel="2">
-            <div class="demo-tree">
-              <div class="t-dir">models/</div>
-              <div class="t-indent t-highlight">access-control.json <span class="t-size">108KB · 5000 vertices</span></div>
-              <div class="t-indent">cloud-computing.json <span class="t-size">109KB · 5000 vertices</span></div>
-              <div class="t-indent">cloud-hosting.json <span class="t-size">108KB · 5000 vertices</span></div>
-              <div class="t-indent">server.json <span class="t-size">108KB · 5000 vertices</span></div>
-              <div class="t-indent">virtual-machine.json <span class="t-size">109KB · 5000 vertices</span></div>
-            </div>
-            <div style="margin-top:24px">
-              <div class="demo-code">
-                <div class="demo-code-bar"><div class="demo-code-dot"></div><div class="demo-code-dot"></div><div class="demo-code-dot"></div></div>
-                <pre><span class="hl-comment">// OBJ → JSON pipeline</span>
-<span class="hl-key">原始:</span>  <span class="hl-val">15万顶点 · 20MB</span>
-        ↓ 提取 v x y z
-        ↓ 居中 + 归一化 (r=1.8)
-        ↓ 降采样 → 5000 点
-<span class="hl-key">输出:</span>  <span class="hl-val">{"vertices":[x,y,z,...]}</span></pre>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel 3: Dot matrix -->
-          <div class="input-demo-panel" data-panel="3">
-            <canvas class="demo-dots-canvas" id="demoDotCanvas"></canvas>
-            <div class="demo-dots-info">
-              <span><strong>1915</strong> × <strong>924</strong>px</span>
-              <span><strong>543</strong>KB SVG</span>
-              <span>数千个 <strong>&lt;rect&gt;</strong></span>
-            </div>
-            <div style="margin-top:20px">
-              <div class="demo-code">
-                <div class="demo-code-bar"><div class="demo-code-dot"></div><div class="demo-code-dot"></div><div class="demo-code-dot"></div></div>
-                <pre><span class="hl-comment">&lt;!-- dot-matrix.svg 结构 --&gt;</span>
-&lt;svg viewBox="0 0 1915 924"&gt;
-  &lt;rect x="12" y="8" width="4" height="4"/&gt;
-  &lt;rect x="20" y="8" width="4" height="4"/&gt;
-  <span class="hl-comment">&lt;!-- × 数千个点 ... --&gt;</span>
-&lt;/svg&gt;</pre>
-              </div>
-            </div>
-          </div>
-
-          <!-- Panel 4: Page structure -->
-          <div class="input-demo-panel" data-panel="4">
-            <div class="demo-structure">
-              <div class="demo-block wide" style="background:rgba(67,98,255,0.08);border-color:var(--primary)">Hero · 3D 天际线</div>
-              <div class="demo-block wide">Core Value · 手风琴 + 立方体</div>
-              <div class="demo-block wide">AI Platform · 5 Tab 粒子变形</div>
-              <div class="demo-block half">Brand Story · 点阵</div>
-              <div class="demo-block half">Stats · 计数器</div>
-              <div class="demo-block wide">Global Infra · 3D 地球</div>
-              <div class="demo-block half">Data Tunnel · 隧道</div>
-              <div class="demo-block half">CTA · 光谱</div>
-              <div class="demo-block wide">Footer</div>
-            </div>
-            <div style="margin-top:20px;display:flex;gap:16px;font-size:11px;color:var(--text-dim)">
-              <span>12 个区块</span>
-              <span>9 个视觉特效</span>
-              <span>EN / CN 双语</span>
-            </div>
-          </div>
-
-          <!-- Panel 5: Tech constraints -->
-          <div class="input-demo-panel" data-panel="5">
-            <div class="demo-code" style="background:#090e1a">
-              <div class="demo-code-bar"><div class="demo-code-dot"></div><div class="demo-code-dot"></div><div class="demo-code-dot"></div></div>
-              <pre><span class="hl-comment">// 技术约束清单</span>
-
-<span class="hl-key">runtime:</span>     <span class="hl-val">Three.js r86</span>  <span class="hl-comment">// 不可升级</span>
-<span class="hl-key">arch:</span>        <span class="hl-val">单文件 index.html</span>
-<span class="hl-key">build:</span>       <span class="hl-val">无</span>  <span class="hl-comment">// no webpack/vite/npm</span>
-<span class="hl-key">animation:</span>   <span class="hl-val">TweenMax (local)</span>
-<span class="hl-key">geo-data:</span>    <span class="hl-val">topojson countries-50m</span>
-<span class="hl-key">code-size:</span>   <span class="hl-val">~4000 行 HTML/CSS/JS</span></pre>
-            </div>
-            <div style="margin-top:20px">
-              <div class="demo-tree">
-                <div class="t-dir">xyz-cloud-site/</div>
-                <div class="t-indent t-highlight">index.html <span class="t-size">~4000 行 · 所有代码</span></div>
-                <div class="t-indent">three.min.js <span class="t-size">517KB</span></div>
-                <div class="t-indent">TweenMax.min.js</div>
-                <div class="t-indent">dot-matrix.svg <span class="t-size">543KB</span></div>
-                <div class="t-indent t-dir">models/ <span class="t-size">5 × JSON</span></div>
-              </div>
-            </div>
+          <div class="input-card-desc">
+            <p>字体、字号、字重 <strong>全部指定</strong></p>
+            <p>AI 只能用我选好的搭配</p>
           </div>
         </div>
+
+        <!-- Card 3: OBJ 3D 模型 -->
+        <div class="input-card">
+          <div class="input-card-head">
+            <span class="input-card-label">OBJ 3D 模型 ▸</span>
+          </div>
+          <div class="input-card-demo">
+            <div class="demo-tree">
+              <div class="t-dir">models/</div>
+              <div class="t-indent t-highlight">access-control.json <span class="t-size">108KB</span></div>
+              <div class="t-indent">cloud-computing.json <span class="t-size">109KB</span></div>
+              <div class="t-indent">cloud-hosting.json <span class="t-size">108KB</span></div>
+              <div class="t-indent">server.json <span class="t-size">108KB</span></div>
+              <div class="t-indent">virtual-machine.json <span class="t-size">109KB</span></div>
+            </div>
+          </div>
+          <div class="input-card-desc">
+            <p>找好 3D 模型素材，<strong>直接丢给 AI</strong></p>
+            <p>我不管怎么处理，出效果就行</p>
+          </div>
+        </div>
+
+        <!-- Card 4: 点阵 SVG -->
+        <div class="input-card">
+          <div class="input-card-head">
+            <span class="input-card-label">点阵 SVG ▸</span>
+          </div>
+          <div class="input-card-demo">
+            <canvas class="demo-dots-canvas" id="demoDotCanvas"></canvas>
+          </div>
+          <div class="input-card-desc">
+            <p>平时收藏的 <strong>视觉素材</strong>，直接用</p>
+            <p>点阵、纹理、粒子效果都是积累</p>
+          </div>
+        </div>
+
+        <!-- Card 5: 页面结构与文案 -->
+        <div class="input-card">
+          <div class="input-card-head">
+            <span class="input-card-label">页面结构与文案 ▸</span>
+          </div>
+          <div class="input-card-demo">
+            <div class="demo-structure">
+              <div class="demo-block wide" style="background:rgba(107,137,255,0.08);border-color:var(--primary)">Hero · 3D 天际线</div>
+              <div class="demo-block wide">AI Platform · 粒子变形</div>
+              <div class="demo-block half">Brand Story</div>
+              <div class="demo-block half">Stats</div>
+              <div class="demo-block wide">Global Infra · 3D 地球</div>
+              <div class="demo-block wide">Footer</div>
+            </div>
+          </div>
+          <div class="input-card-desc">
+            <p>用设计思维 <strong>规划好每个区块</strong></p>
+            <p>哪里放什么特效，我说了算</p>
+          </div>
+        </div>
+
+        <!-- Card 6: 积累的源码 -->
+        <div class="input-card">
+          <div class="input-card-head">
+            <span class="input-card-label">积累的源码 ▸</span>
+          </div>
+          <div class="input-card-demo">
+            <div class="demo-code">
+              <div class="demo-code-bar"><div class="demo-code-dot"></div><div class="demo-code-dot"></div><div class="demo-code-dot"></div></div>
+              <pre><span class="hl-key">~/Desktop/网站源码/</span>
+  <span class="hl-val">├── SaaS-landing/</span>
+  <span class="hl-val">├── agency-portfolio/</span>
+  <span class="hl-val">├── startup-dark/</span>
+  <span class="hl-val">├── 3d-product-showcase/</span>
+  <span class="hl-val">└── crypto-dashboard/</span>
+<span class="hl-comment">  … 30+ 套精选模板</span></pre>
+            </div>
+          </div>
+          <div class="input-card-desc">
+            <p>看到好的网站就 <strong>存下源码</strong></p>
+            <p>让 AI 照着这些参考来实现</p>
+          </div>
+        </div>
+
       </div>
     </div>
   </div>
@@ -1242,103 +1363,143 @@ body {
 <section class="section-dark">
   <div class="container">
     <div class="section-inner">
-      <div class="section-num scroll-fade-in">02 — DESIGN CONSTRAINTS</div>
-      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">给 AI 立的规矩</h2>
-      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
-        AI 不缺能力，缺的是约束。没有规范的 AI 输出就是"AI 味儿"——以下 6 条规则让它老实干活。
+      <div class="section-num" style="opacity:0">02 — DESIGN CONSTRAINTS</div>
+      <h2 class="section-title-dark" style="opacity:0">给 AI 立的规矩</h2>
+      <p class="section-desc-dark" style="opacity:0">
+        AI 不缺能力，缺的是约束。没有规范的 AI 输出就是"AI 味儿"——以下规则让它老实干活。
       </p>
-      <div class="stack-grid scroll-fade-in" style="--delay:0.3s">
-        <div class="stack-cell hatched"><h4>只用令牌，禁止硬编码</h4><p>所有颜色、间距、字号必须引用 CSS 变量，写死 <code style="color:var(--primary);background:rgba(67,98,255,0.15);padding:1px 4px;font-size:12px">#4362ff</code> 直接打回</p></div>
-        <div class="stack-cell"><h4>字重只有两档</h4><p>300 和 500，不允许出现 400 / 600 / 700。AI 最爱加粗，一律驳回</p></div>
-        <div class="stack-cell hatched"><h4>间距走 4px 网格</h4><p>8 / 16 / 24 / 32 / 48 / 80，禁止出现 15px、30px 这种"差不多"的值</p></div>
-        <div class="stack-cell"><h4>深色背景文字层级</h4><p>标题 ≥ white-8，正文 white-5，辅助 white-3。AI 默认全白，必须分层</p></div>
-        <div class="stack-cell hatched"><h4>动效要有物理感</h4><p>cubic-bezier 曲线，非 linear。入场 0.6s ease，hover 0.3s。禁止弹跳、果冻等花哨动画</p></div>
-        <div class="stack-cell"><h4>一个文件，零依赖</h4><p>不许引入 UI 框架、不许拆文件、不许 npm install。约束反而逼出更干净的代码</p></div>
+      <div class="td" id="treeDiagram">
+
+        <!-- Root -->
+        <div class="td-root" data-td>设计师的规矩</div>
+
+        <!-- Root connector -->
+        <div class="td-line" data-td></div>
+        <div class="td-cbrace" data-td><div class="td-cbrace-tip"></div></div>
+
+        <!-- L1: 4 categories -->
+        <div class="td-group">
+
+          <!-- 色彩规范 -->
+          <div class="td-branch">
+            <div class="td-cat" data-td>色彩规范</div>
+            <div class="td-line" data-td></div>
+            <div class="td-cbrace" data-td><div class="td-cbrace-tip"></div></div>
+            <div class="td-leaves" data-td>
+              <div class="td-leaf">只用 Figma 导出的色板，禁止自由配色</div>
+              <div class="td-leaf">主色 / 灰阶 / 透明度三套体系</div>
+              <div class="td-leaf">深色背景文字必须分层级，不能全白</div>
+              <div class="td-leaf">渐变、阴影全部指定，不许 AI 自己编</div>
+            </div>
+          </div>
+
+          <!-- 品牌调性 -->
+          <div class="td-branch">
+            <div class="td-cat" data-td>品牌调性</div>
+            <div class="td-line" data-td></div>
+            <div class="td-cbrace" data-td><div class="td-cbrace-tip"></div></div>
+            <div class="td-leaves" data-td>
+              <div class="td-leaf">科技感但不冰冷，要有高级质感</div>
+              <div class="td-leaf">字体只用两款，绝不多加</div>
+              <div class="td-leaf"><em>间距严格对齐 4px 网格</em></div>
+            </div>
+          </div>
+
+          <!-- 动效体验 -->
+          <div class="td-branch">
+            <div class="td-cat" data-td>动效体验</div>
+            <div class="td-line" data-td></div>
+            <div class="td-cbrace" data-td><div class="td-cbrace-tip"></div></div>
+            <div class="td-leaves" data-td>
+              <div class="td-leaf">动画要丝滑、有呼吸感，不要匀速</div>
+              <div class="td-leaf">入场缓进缓出，hover 干脆利落</div>
+              <div class="td-leaf">禁止弹跳、果冻、闪烁等廉价效果</div>
+            </div>
+          </div>
+
+          <!-- 视觉还原 -->
+          <div class="td-branch">
+            <div class="td-cat" data-td>视觉还原</div>
+            <div class="td-line" data-td></div>
+            <div class="td-cbrace" data-td><div class="td-cbrace-tip"></div></div>
+            <div class="td-leaves" data-td>
+              <div class="td-leaf">必须像素级还原 Figma 设计稿</div>
+              <div class="td-leaf">参考网站的效果要一比一复刻</div>
+              <div class="td-leaf">做不到就给我截图，我来判断差在哪</div>
+            </div>
+          </div>
+
+        </div>
+
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════ 03: AI BOUNDARY (light) ═══════ -->
-<section class="section-light">
+<section class="section-dark">
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">03 — AI BOUNDARY</div>
-      <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">AI 目前还做不到的事</h2>
-      <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">AI 目前还做不到的事</h2>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s;margin-bottom:32px">
         AI 能写代码、能排版，但这些领域仍然需要设计师的判断力和专业工具。<br>不知道这些边界在哪——恰恰说明你还没到能判断的水平。
       </p>
-      <div class="boundary-grid scroll-fade-in" style="--delay:0.3s">
-
-        <div class="boundary-card">
-          <div class="boundary-visual">
-            <div class="iso-scene" style="perspective:800px">
-              <div class="iso-block"><div class="iso-face top"></div><div class="iso-face front"></div><div class="iso-face right"></div></div>
-              <div class="iso-block"><div class="iso-face top"></div><div class="iso-face front"></div><div class="iso-face right"></div></div>
-              <div class="iso-block"><div class="iso-face top"></div><div class="iso-face front"></div><div class="iso-face right"></div></div>
-              <div class="iso-block"><div class="iso-face top"></div><div class="iso-face front"></div><div class="iso-face right"></div></div>
-            </div>
+      <div class="bd-layout scroll-fade-in" style="--delay:0.3s">
+        <div class="bd-list">
+          <div class="bd-item active" data-bd="0">
+            <div class="bd-item-head"><span class="bd-num">01</span><h4 class="bd-title">抽象概念图与可编辑素材</h4></div>
+            <p class="bd-desc">AI 能生图能生视频，但抽象概念的视觉表达永远"差点意思"。更致命的是输出全是死图——没有图层、没有矢量路径、没法二次编辑，设计师拿到手还得全部重做。</p>
           </div>
-          <div class="boundary-text">
-            <span class="boundary-tag">视觉设计</span>
-            <h4>2.5D 等距风格插画</h4>
-            <p>AI 生成的等距图透视永远"差一点"——角度不统一、光影不一致、细节经不起放大。这类风格图仍然依赖手工绘制和严格的透视网格。</p>
+          <div class="bd-item" data-bd="1">
+            <div class="bd-item-head"><span class="bd-num">02</span><h4 class="bd-title">精确三维模型</h4></div>
+            <p class="bd-desc">品牌级 3D 资产需要精确拓扑、干净布线、正确 UV。AI 生成的模型面数爆炸、布线混乱，导入引擎后根本没法用。</p>
           </div>
-        </div>
-
-        <div class="boundary-card">
-          <div class="boundary-visual">
-            <div class="wireframe-cube" style="transform-style:preserve-3d">
-              <div class="wire-face"></div><div class="wire-face"></div>
-              <div class="wire-face"></div><div class="wire-face"></div>
-              <div class="wire-face"></div><div class="wire-face"></div>
-            </div>
+          <div class="bd-item" data-bd="2">
+            <div class="bd-item-head"><span class="bd-num">03</span><h4 class="bd-title">精细交互动效</h4></div>
+            <p class="bd-desc">按钮按下有弹性、角色跟随鼠标转头、加载动画带物理回弹——这类有"手感"的精细动效要用 Rive 手工调出来，AI 做不出这种活的、有温度的交互体验。</p>
           </div>
-          <div class="boundary-text">
-            <span class="boundary-tag">3D 建模</span>
-            <h4>精确三维模型</h4>
-            <p>品牌级 3D 资产需要精确拓扑、干净布线、正确 UV。AI 生成的模型面数爆炸、布线混乱，导入引擎后根本没法用。</p>
+          <div class="bd-item" data-bd="3">
+            <div class="bd-item-head"><span class="bd-num">04</span><h4 class="bd-title">视觉品质的最终裁判</h4></div>
+            <p class="bd-desc">间距差 1px、透明度差 5%、字重粗了一档——AI 觉得"差不多"，设计师一眼看出不对。"能用"和"好看"之间的差距，每一轮都要截图对比、反复微调，这个判断力 AI 没有。</p>
+          </div>
+          <div class="bd-item" data-bd="4">
+            <div class="bd-item-head"><span class="bd-num">05</span><h4 class="bd-title">动效节奏编排</h4></div>
+            <p class="bd-desc">10 个元素依次入场，谁先谁后、间隔多少毫秒才"舒服"——AI 调不出这种韵律感。快了像赶场，慢了像卡顿，节奏全靠设计师的体感。</p>
+          </div>
+          <div class="bd-item" data-bd="5">
+            <div class="bd-item-head"><span class="bd-num">06</span><h4 class="bd-title">灵感采集与审美筛选</h4></div>
+            <p class="bd-desc">AI 不会自己逛 Awwwards、Dribbble 挑出"这个效果牛逼"的参考。设计师日常积累的审美眼界和素材库，才是让 AI 产出不 generic 的关键输入。</p>
           </div>
         </div>
-
-        <div class="boundary-card">
-          <div class="boundary-visual">
-            <div class="rive-demo">
-              <div class="rive-bars">
-                <div class="rive-bar"></div><div class="rive-bar"></div>
-                <div class="rive-bar"></div><div class="rive-bar"></div>
-                <div class="rive-bar"></div><div class="rive-bar"></div>
-                <div class="rive-bar"></div>
-              </div>
-              <div class="rive-label">Rive Runtime</div>
-            </div>
-          </div>
-          <div class="boundary-text">
-            <span class="boundary-tag orange">交互动效</span>
-            <h4>状态驱动的复杂动效</h4>
-            <p>Lottie 只能播放线性时间轴。真正的交互动效——响应输入、切换状态、物理反馈——我们用 Rive 做，AI 写不出这种状态机逻辑。</p>
-          </div>
+        <div class="bd-video-wrap">
+          <video class="bd-video active" src="assets/boundary-1.mp4" muted loop playsinline autoplay></video>
+          <video class="bd-video" src="assets/boundary-2.mp4" muted loop playsinline></video>
+          <video class="bd-video" src="assets/boundary-3.mp4" muted loop playsinline></video>
+          <video class="bd-video" src="assets/boundary-4.mp4" muted loop playsinline></video>
+          <video class="bd-video" src="assets/boundary-5.mp4" muted loop playsinline></video>
+          <video class="bd-video" src="assets/boundary-6.mp4" muted loop playsinline></video>
         </div>
-
       </div>
     </div>
   </div>
 </section>
 
 <!-- ═══════ 04: TIMELINE (light) ═══════ -->
-<section class="section-light">
+<section class="section-dark" id="timelineSection">
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">04 — DEVELOPMENT TIMELINE</div>
-      <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">逐步落地的完整过程</h2>
-      <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">逐步落地的完整过程</h2>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
         按 Git 提交记录还原的真实开发时间线。
       </p>
       <div class="timeline scroll-fade-in" style="--delay:0.3s">
+        <div class="tl-scrollbar"></div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">1</div>
-          <div class="tl-header"><div class="tl-title">基础框架 + 设计令牌</div><div class="tl-date">3月3日 15:23</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">01</span><div class="tl-title">基础框架 + 设计令牌</div><div class="tl-date">3月3日 15:23</div></div>
           <p class="tl-desc">创建 index.html，搭建 12 个 Section 骨架，注入 Figma 设计令牌。第一个可见页面 3 分钟完成。</p>
           <ul class="commits">
             <li><span class="hash">8f136c9</span><span class="tag tag-feat">feat</span>Initial commit with EN/CN toggle</li>
@@ -1347,8 +1508,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">2</div>
-          <div class="tl-header"><div class="tl-title">Hero 3D 城市天际线</div><div class="tl-date">3月3日 15:36</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">02</span><div class="tl-title">Hero 3D 城市天际线</div><div class="tl-date">3月3日 15:36</div></div>
           <p class="tl-desc">第一个 Three.js 特效。100 栋建筑 + 300 粒子旋涡 + 60 条光线。移动端减半 + 禁用阴影。</p>
           <ul class="commits">
             <li><span class="hash">23a9f11</span><span class="tag tag-feat">feat</span>Three.js animated cube grid</li>
@@ -1358,8 +1519,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">3</div>
-          <div class="tl-header"><div class="tl-title">粒子变形特效</div><div class="tl-date">3月3日 15:50</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">03</span><div class="tl-title">粒子变形特效</div><div class="tl-date">3月3日 15:50</div></div>
           <p class="tl-desc">5000 粒子在 5 种几何形状间变形（球→方→锥→菱→环）。修复任意 Tab 跳转。</p>
           <ul class="commits">
             <li><span class="hash">4be8381</span><span class="tag tag-feat">feat</span>Particle morphing effect</li>
@@ -1368,8 +1529,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">4</div>
-          <div class="tl-header"><div class="tl-title">点阵动画——7 次迭代</div><div class="tl-date">3月3日 16:10—16:35</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">04</span><div class="tl-title">点阵动画——7 次迭代</div><div class="tl-date">3月3日 16:10—16:35</div></div>
           <p class="tl-desc">SVG 方案失败改 Canvas，6 次尺寸调整，最终加涟漪 + 放大镜 + 12% 蓝色染色。</p>
           <ul class="commits">
             <li><span class="hash">69b1994</span><span class="tag tag-perf">perf</span>SVG → Canvas renderer</li>
@@ -1379,8 +1540,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">5</div>
-          <div class="tl-header"><div class="tl-title">Footer 光谱 + Cosmic Spectrum</div><div class="tl-date">3月3日 16:50—17:40</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">05</span><div class="tl-title">Footer 光谱 + Cosmic Spectrum</div><div class="tl-date">3月3日 16:50—17:40</div></div>
           <p class="tl-desc">Footer CSS 光谱动画。Cosmic Spectrum 全屏实验 8 次改造后因太抢眼被砍。</p>
           <ul class="commits">
             <li><span class="hash">69dff03</span><span class="tag tag-feat">feat</span>Spectrum gradient footer</li>
@@ -1389,8 +1550,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">6</div>
-          <div class="tl-header"><div class="tl-title">数据隧道——8 次微调</div><div class="tl-date">3月3日 17:42—18:03</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">06</span><div class="tl-title">数据隧道——8 次微调</div><div class="tl-date">3月3日 17:42—18:03</div></div>
           <p class="tl-desc">80 条线 + 94 个发光信号。连续 8 次调参直到填满容器。</p>
           <ul class="commits">
             <li><span class="hash">1af7f11</span><span class="tag tag-feat">feat</span>Data Tunnel effect</li>
@@ -1399,8 +1560,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">7</div>
-          <div class="tl-header"><div class="tl-title">3D 地球——最难的特效</div><div class="tl-date">3月3日—4日</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">07</span><div class="tl-title">3D 地球——最难的特效</div><div class="tl-date">3月3日—4日</div></div>
           <p class="tl-desc">跨两天、5 次重写。台湾显示难题：最终 50m 高精度 + step=2 + 手动补岛屿。</p>
           <ul class="commits">
             <li><span class="hash">3d72504</span><span class="tag tag-feat">feat</span>16 cities, 24 arcs, drag rotation</li>
@@ -1410,8 +1571,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">8</div>
-          <div class="tl-header"><div class="tl-title">立方体视差 + 装饰</div><div class="tl-date">3月3日 19:11—19:40</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">08</span><div class="tl-title">立方体视差 + 装饰</div><div class="tl-date">3月3日 19:11—19:40</div></div>
           <p class="tl-desc">Canvas 2D 手写 3D 矩阵 + 透视 fov=800。色差效果 + 十字角标 + 45° 斜线纹理。</p>
           <ul class="commits">
             <li><span class="hash">ffe2ebb</span><span class="tag tag-feat">feat</span>3D cube parallax</li>
@@ -1420,8 +1581,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">9</div>
-          <div class="tl-header"><div class="tl-title">UI 打磨 + 响应式</div><div class="tl-date">3月3日 21:53—23:14</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">09</span><div class="tl-title">UI 打磨 + 响应式</div><div class="tl-date">3月3日 21:53—23:14</div></div>
           <p class="tl-desc">Figma Logo、全站滚动淡入、Hero 标题 4 次字号调整、移动端适配。</p>
           <ul class="commits">
             <li><span class="hash">01a493e</span><span class="tag tag-feat">feat</span>Scroll fade-in all sections</li>
@@ -1430,8 +1591,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">10</div>
-          <div class="tl-header"><div class="tl-title">深度优化 + 决策回退</div><div class="tl-date">3月4日</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">10</span><div class="tl-title">深度优化 + 决策回退</div><div class="tl-date">3月4日</div></div>
           <p class="tl-desc">Core Value 改暗色→4分钟还原。粒子升级级联动效 + OBJ 模型。Tab 改 hover 触发。</p>
           <ul class="commits">
             <li><span class="hash">eaa4c4d</span><span class="tag tag-revert">revert</span>4 分钟后还原白色</li>
@@ -1440,8 +1601,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot lit">11</div>
-          <div class="tl-header"><div class="tl-title">React 重写 + 多页面</div><div class="tl-date">3月16日—18日</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">11</span><div class="tl-title">React 重写 + 多页面</div><div class="tl-date">3月16日—18日</div></div>
           <p class="tl-desc">React 重写，新增 CCI/ECS/HPT 产品页。品牌改名 Alayance Cloud。全端适配。</p>
           <ul class="commits">
             <li><span class="hash">4bdc977</span><span class="tag tag-feat">feat</span>React rewrite + product pages</li>
@@ -1450,8 +1611,8 @@ body {
         </div>
 
         <div class="tl-phase">
-          <div class="tl-dot">12</div>
-          <div class="tl-header"><div class="tl-title">收尾与部署</div><div class="tl-date">3月19日—25日</div></div>
+          <div class="tl-dot"></div>
+          <div class="tl-header"><span class="tl-step-num">12</span><div class="tl-title">收尾与部署</div><div class="tl-date">3月19日—25日</div></div>
           <p class="tl-desc">清理旧品牌引用，部署 Vercel 上线。</p>
           <ul class="commits">
             <li><span class="hash">f67032a</span><span class="tag tag-feat">feat</span>Update footer, remove old refs</li>
@@ -1486,13 +1647,13 @@ body {
 </section>
 
 <!-- ═══════ 05: CHALLENGES (light) ═══════ -->
-<section class="section-light">
+<section class="section-dark">
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">06 — CHALLENGES & DECISIONS</div>
-      <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">踩坑与决策</h2>
-      <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">每一个"回退"都是快速实验和理性判断。</p>
-      <div class="scroll-fade-in" style="--delay:0.3s; border: 1px solid var(--border-light);">
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">踩坑与决策</h2>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">每一个"回退"都是快速实验和理性判断。</p>
+      <div class="scroll-fade-in" style="--delay:0.3s; border: 1px solid var(--white-1);">
         <div class="challenge-row">
           <div class="challenge-cell problem"><div class="challenge-label">Problem</div><h4>地球上台湾消失</h4><p>低精度 TopoJSON + 大 step，台湾没有陆地点。step=1 有 65k 点太卡。</p></div>
           <div class="challenge-cell solution"><div class="challenge-label">Solution</div><h4>高精度 + 手动补点</h4><p>countries-50m.json + step=2（~16k）+ 手动补台湾/海南/斯里兰卡。</p></div>
@@ -1539,12 +1700,12 @@ body {
 </section>
 
 <!-- ═══════ 07: DESIGN TOKENS (light) ═══════ -->
-<section class="section-light">
+<section class="section-dark">
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">08 — DESIGN TOKENS</div>
-      <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">Figma 设计令牌系统</h2>
-      <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">Figma 设计令牌系统</h2>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
         从 Figma 导出的完整设计系统——颜色、字体、间距，全部转为 CSS 变量，零偏差。
       </p>
       <div class="scroll-fade-in" style="--delay:0.3s">
@@ -1610,16 +1771,16 @@ body {
         <div class="token-group">
           <div class="token-label">Spacing System — 4px 基础倍数</div>
           <div class="spacing-row">
-            <div><div class="spacing-block" style="width:4px;height:4px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">4</div></div>
-            <div><div class="spacing-block" style="width:8px;height:8px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">8</div></div>
-            <div><div class="spacing-block" style="width:12px;height:12px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">12</div></div>
-            <div><div class="spacing-block" style="width:16px;height:16px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">16</div></div>
-            <div><div class="spacing-block" style="width:20px;height:20px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">20</div></div>
-            <div><div class="spacing-block" style="width:24px;height:24px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">24</div></div>
-            <div><div class="spacing-block" style="width:32px;height:32px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">32</div></div>
-            <div><div class="spacing-block" style="width:40px;height:40px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">40</div></div>
-            <div><div class="spacing-block" style="width:56px;height:56px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">80</div></div>
-            <div><div class="spacing-block" style="width:72px;height:72px"></div><div class="sp-val" style="font-size:8px;color:var(--text-dim);text-align:center;margin-top:4px">120</div></div>
+            <div><div class="spacing-block" style="width:4px;height:4px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">4</div></div>
+            <div><div class="spacing-block" style="width:8px;height:8px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">8</div></div>
+            <div><div class="spacing-block" style="width:12px;height:12px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">12</div></div>
+            <div><div class="spacing-block" style="width:16px;height:16px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">16</div></div>
+            <div><div class="spacing-block" style="width:20px;height:20px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">20</div></div>
+            <div><div class="spacing-block" style="width:24px;height:24px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">24</div></div>
+            <div><div class="spacing-block" style="width:32px;height:32px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">32</div></div>
+            <div><div class="spacing-block" style="width:40px;height:40px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">40</div></div>
+            <div><div class="spacing-block" style="width:56px;height:56px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">80</div></div>
+            <div><div class="spacing-block" style="width:72px;height:72px"></div><div class="sp-val" style="font-size:8px;color:var(--white-5);text-align:center;margin-top:4px">120</div></div>
           </div>
         </div>
       </div>
@@ -1683,12 +1844,12 @@ body {
 </section>
 
 <!-- ═══════ 09: OBJ PIPELINE (light) ═══════ -->
-<section class="section-light">
+<section class="section-dark">
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">10 — OBJ PREPROCESSING PIPELINE</div>
-      <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">3D 模型预处理流水线</h2>
-      <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">3D 模型预处理流水线</h2>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
         设计师交付 5 个 OBJ 模型（7-15 万顶点），需要预处理到 5000 点才能实时变形渲染。
       </p>
       <div class="pipeline scroll-fade-in" style="--delay:0.3s">
@@ -1790,12 +1951,12 @@ body {
 </section>
 
 <!-- ═══════ 11: LESSONS LEARNED (light) ═══════ -->
-<section class="section-light">
+<section class="section-dark">
   <div class="container">
     <div class="section-inner">
       <div class="section-num scroll-fade-in">12 — LESSONS LEARNED</div>
-      <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">复盘与收获</h2>
-      <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">复盘与收获</h2>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
         一个设计师，用 AI 把脑子里的特效落地成代码。这条路上踩过的坑和想明白的事。
       </p>
       <div class="lesson-list scroll-fade-in" style="--delay:0.3s">
@@ -1869,195 +2030,212 @@ body {
 
 <!-- ═══════ SCRIPTS ═══════ -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script>
 (function() {
   'use strict';
 
-  // ── Scroll fade-in ──
-  const fadeObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); } });
-  }, { threshold: 0.1 });
-  document.querySelectorAll('.scroll-fade-in').forEach(el => fadeObs.observe(el));
-
-  // ── Counter animation ──
-  const counters = document.querySelectorAll('.counter');
-  let done = false;
-  const cObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting && !done) {
-        done = true;
-        counters.forEach(c => {
-          const target = parseInt(c.dataset.target), dur = 2000, start = performance.now();
-          (function up(now) {
-            const t = Math.min((now - start) / dur, 1);
-            c.textContent = Math.round((1 - Math.pow(1 - t, 3)) * target);
-            if (t < 1) requestAnimationFrame(up);
-          })(start);
-        });
-        cObs.disconnect();
-      }
-    });
-  }, { threshold: 0.3 });
-  counters.forEach(c => cObs.observe(c));
-
-  // ── Timeline dots ──
-  const dotObs = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('lit'); });
-  }, { threshold: 0.5 });
-  document.querySelectorAll('.tl-dot').forEach(d => dotObs.observe(d));
+  gsap.registerPlugin(ScrollTrigger);
 
   // ══════════════════════════════════════
-  // BACKGROUND PARTICLES (nextUI exact copy — 800 particles + 50 accent stars, Three.js)
+  // GSAP SCROLL ANIMATIONS
+  // ══════════════════════════════════════
+
+  // ── 所有 .scroll-fade-in：进入视口时播放一次 ──
+  gsap.utils.toArray('.scroll-fade-in').forEach(function(el) {
+    gsap.from(el, {
+      y: 30, opacity: 0,
+      duration: 0.7,
+      ease: 'power2.out',
+      delay: parseFloat(el.style.getPropertyValue('--delay') || 0),
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 85%',
+        toggleActions: 'play none none none',
+      }
+    });
+  });
+
+  // ── 树状图：进入视口后逐级绘入 ──
+  var treeDiagram = document.getElementById('treeDiagram');
+  if (treeDiagram) {
+    var treeSection = treeDiagram.closest('.section-dark');
+    var tdItems = treeDiagram.querySelectorAll('[data-td]');
+
+    // 标题也纳入动画
+    var titleEls = treeSection.querySelectorAll('.section-num, .section-title-dark, .section-desc-dark');
+
+    var tdTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: treeSection,
+        start: 'top 95%',
+        toggleActions: 'play none none none',
+      }
+    });
+
+    // 标题依次入场
+    titleEls.forEach(function(el, i) {
+      tdTl.fromTo(el, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: 'power2.out' }, i * 0.15);
+    });
+
+    // 树状图逐项绘入
+    tdItems.forEach(function(el, i) {
+      var from = { opacity: 0 };
+      var to = { opacity: 1, duration: 0.4, ease: 'power2.out' };
+
+      if (el.classList.contains('td-line')) {
+        from.scaleX = 0; to.scaleX = 1;
+        gsap.set(el, { transformOrigin: 'left center' });
+      } else if (el.tagName === 'svg') {
+        from.scaleY = 0; to.scaleY = 1;
+        gsap.set(el, { transformOrigin: 'center' });
+      } else {
+        from.x = -15; to.x = 0;
+      }
+
+      tdTl.fromTo(el, from, to, 0.6 + i * 0.08);
+    });
+  }
+
+  // (PPT snap removed — waterfall scroll)
+
+  // ── Boundary: Good Fella style list + video switch ──
+  (function() {
+    var items = document.querySelectorAll('.bd-item');
+    var videos = document.querySelectorAll('.bd-video');
+    if (!items.length || !videos.length) return;
+    // Play first video
+    videos[0].play();
+    items.forEach(function(item) {
+      item.addEventListener('mouseenter', function() {
+        var idx = parseInt(item.getAttribute('data-bd'));
+        items.forEach(function(it) { it.classList.remove('active'); });
+        videos.forEach(function(v) { v.classList.remove('active'); v.pause(); });
+        item.classList.add('active');
+        videos[idx].classList.add('active');
+        videos[idx].play();
+      });
+    });
+  })();
+
+  // ── Counter animation — triggered by scroll after AI logo disperses ──
+  // (Driven from heroScrollProgress in the scroll handler below)
+
+  // ── Timeline 发光滚动条 (scroll-driven, reference copy) ──
+  var tlContainer = document.querySelector('.timeline');
+  var tlPhases = document.querySelectorAll('.tl-phase');
+
+  if (tlContainer && tlPhases.length) {
+    // 发光点 + 反射跟随滚动从上到下
+    gsap.fromTo(tlContainer,
+      { '--tl-glow-y': '-10%', '--tl-reflect-y': '-22%' },
+      {
+        '--tl-glow-y': '105%', '--tl-reflect-y': '115%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: tlContainer,
+          scrub: 0.3,
+          start: 'top 80%',
+          end: 'bottom 20%',
+        }
+      }
+    );
+
+    // 每个phase进入视口时高亮（toggleClass自动管理）
+    tlPhases.forEach(function(phase) {
+      ScrollTrigger.create({
+        trigger: phase,
+        start: 'top 85%',
+        end: 'bottom 10%',
+        toggleClass: 'active',
+      });
+    });
+  }
+
+  // ══════════════════════════════════════
+  // BACKGROUND — slow warp-speed particle tunnel (Canvas 2D)
   // ══════════════════════════════════════
   (function() {
-    const container = document.getElementById('particleBg');
-    if (!container || typeof THREE === 'undefined') return;
+    var container = document.getElementById('particleBg');
+    if (!container) return;
 
-    const BG_COUNT = 800;
-    const STAR_COUNT = 50;
-    let width = window.innerWidth, height = window.innerHeight;
+    var canvas = document.createElement('canvas');
+    var ctx = canvas.getContext('2d');
+    container.appendChild(canvas);
+    canvas.style.cssText = 'width:100%;height:100%;';
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, width / height, 0.1, 1000);
-    camera.position.z = 20;
+    var NUM = 200;
+    var BASE_R = 0.5;
+    var FL = 500;
+    var SPEED = 0.3;  // very slow drift
 
-    const renderer = new THREE.WebGLRenderer({ antialias: false, alpha: true });
-    renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.setClearColor(0x000000, 0);
-    container.appendChild(renderer.domElement);
+    var W, H, cx, cy;
+    var dpr = Math.min(window.devicePixelRatio, 2);
 
-    // Circular particle texture (radial gradient)
-    const texSize = 64;
-    const texCanvas = document.createElement('canvas');
-    texCanvas.width = texCanvas.height = texSize;
-    const tCtx = texCanvas.getContext('2d');
-    const half = texSize / 2;
-    const grad = tCtx.createRadialGradient(half, half, 0, half, half, half);
-    grad.addColorStop(0, 'rgba(255,255,255,1)');
-    grad.addColorStop(0.3, 'rgba(255,255,255,0.8)');
-    grad.addColorStop(0.7, 'rgba(255,255,255,0.15)');
-    grad.addColorStop(1, 'rgba(255,255,255,0)');
-    tCtx.fillStyle = grad;
-    tCtx.fillRect(0, 0, texSize, texSize);
-    const circleTexture = new THREE.CanvasTexture(texCanvas);
-
-    // Palette (exact nextUI)
-    const bgPalette = [
-      [0.85,0.82,0.75],[0.6,0.65,0.85],[0.85,0.6,0.35],[0.4,0.5,0.75],
-      [0.8,0.55,0.3],[0.92,0.92,0.95],[0.5,0.6,0.9],[0.9,0.7,0.4]
-    ];
-    const starPalette = [
-      [1.0,0.75,0.35],[0.5,0.7,1.0],[1.0,0.5,0.25],[0.7,0.85,1.0],[0.95,0.85,0.6]
-    ];
-
-    const spreadX = 45, spreadY = 30, spreadZ = 25;
-
-    // Main particles
-    const geo = new THREE.BufferGeometry();
-    const positions = new Float32Array(BG_COUNT * 3);
-    const colors = new Float32Array(BG_COUNT * 3);
-    const velocities = new Float32Array(BG_COUNT * 3);
-    const phases = new Float32Array(BG_COUNT);
-
-    for (let i = 0; i < BG_COUNT; i++) {
-      const i3 = i * 3;
-      positions[i3] = (Math.random() - 0.5) * spreadX;
-      positions[i3+1] = (Math.random() - 0.5) * spreadY;
-      positions[i3+2] = (Math.random() - 0.5) * spreadZ - 5;
-      velocities[i3] = (Math.random() - 0.5) * 0.004;
-      velocities[i3+1] = (Math.random() - 0.5) * 0.003;
-      velocities[i3+2] = (Math.random() - 0.5) * 0.001;
-      phases[i] = Math.random() * Math.PI * 2;
-      const c = bgPalette[Math.floor(Math.random() * bgPalette.length)];
-      colors[i3] = c[0]; colors[i3+1] = c[1]; colors[i3+2] = c[2];
+    function resize() {
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      cx = W * 0.5; cy = H * 0.5;
     }
-    geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+    resize();
+    window.addEventListener('resize', resize);
 
-    const mat = new THREE.PointsMaterial({
-      size: 0.1, map: circleTexture, vertexColors: true,
-      transparent: true, opacity: 0.75,
-      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-    });
-    const particles = new THREE.Points(geo, mat);
-    scene.add(particles);
-
-    // Accent stars
-    const starGeo = new THREE.BufferGeometry();
-    const starPos = new Float32Array(STAR_COUNT * 3);
-    const starCol = new Float32Array(STAR_COUNT * 3);
-    const starPhases = new Float32Array(STAR_COUNT);
-
-    for (let i = 0; i < STAR_COUNT; i++) {
-      const i3 = i * 3;
-      starPos[i3] = (Math.random() - 0.5) * spreadX;
-      starPos[i3+1] = (Math.random() - 0.5) * spreadY;
-      starPos[i3+2] = (Math.random() - 0.5) * 15 - 2;
-      starPhases[i] = Math.random() * Math.PI * 2;
-      const c = starPalette[Math.floor(Math.random() * starPalette.length)];
-      starCol[i3] = c[0]; starCol[i3+1] = c[1]; starCol[i3+2] = c[2];
+    function Particle() { this.x = 0; this.y = 0; this.z = 0; this.pz = 0; }
+    function resetP(p) {
+      p.x = Math.random() * W;
+      p.y = Math.random() * H;
+      p.z = Math.random() * 1500 + 500;
+      p.pz = p.z;
+      return p;
     }
-    starGeo.setAttribute('position', new THREE.BufferAttribute(starPos, 3));
-    starGeo.setAttribute('color', new THREE.BufferAttribute(starCol, 3));
 
-    const starMat = new THREE.PointsMaterial({
-      size: 0.22, map: circleTexture, vertexColors: true,
-      transparent: true, opacity: 0.5,
-      blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true
-    });
-    const stars = new THREE.Points(starGeo, starMat);
-    scene.add(stars);
+    var particles = [];
+    for (var i = 0; i < NUM; i++) {
+      var p = resetP(new Particle());
+      p.z -= 500 * Math.random();
+      particles.push(p);
+    }
 
-    let mouseX = 0, mouseY = 0, scrollY = 0;
-    window.addEventListener('mousemove', e => {
-      mouseX = (e.clientX / width - 0.5) * 2;
-      mouseY = (e.clientY / height - 0.5) * 2;
-    }, { passive: true });
-    window.addEventListener('scroll', () => { scrollY = window.scrollY; }, { passive: true });
-    window.addEventListener('resize', () => {
-      width = window.innerWidth; height = window.innerHeight;
-      camera.aspect = width / height;
-      camera.updateProjectionMatrix();
-      renderer.setSize(width, height);
-    });
+    (function loop() {
+      requestAnimationFrame(loop);
 
-    (function animate() {
-      requestAnimationFrame(animate);
-      const time = performance.now() * 0.001;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
 
-      for (let i = 0; i < BG_COUNT; i++) {
-        const i3 = i * 3;
-        positions[i3] += velocities[i3] + Math.sin(time * 0.3 + phases[i]) * 0.0012;
-        positions[i3+1] += velocities[i3+1] + Math.cos(time * 0.2 + phases[i] * 1.3) * 0.001;
-        positions[i3+2] += velocities[i3+2];
-        if (positions[i3] > spreadX/2) positions[i3] = -spreadX/2;
-        if (positions[i3] < -spreadX/2) positions[i3] = spreadX/2;
-        if (positions[i3+1] > spreadY/2) positions[i3+1] = -spreadY/2;
-        if (positions[i3+1] < -spreadY/2) positions[i3+1] = spreadY/2;
-        if (positions[i3+2] > spreadZ/2) positions[i3+2] = -spreadZ/2;
-        if (positions[i3+2] < -spreadZ/2) positions[i3+2] = spreadZ/2;
+      ctx.fillStyle = 'rgba(255,255,255,0.6)';
+      ctx.beginPath();
+
+      for (var i = 0; i < NUM; i++) {
+        var p = particles[i];
+        p.pz = p.z;
+        p.z -= SPEED;
+
+        if (p.z <= 0) { resetP(p); continue; }
+
+        var rx = p.x - cx, ry = p.y - cy;
+
+        var f  = FL / p.z;
+        var x  = cx + rx * f;
+        var y  = cy + ry * f;
+        var r  = BASE_R * f;
+
+        var pf = FL / p.pz;
+        var px = cx + rx * pf;
+        var py = cy + ry * pf;
+        var pr = BASE_R * pf;
+
+        var a  = Math.atan2(py - y, px - x);
+        var a1 = a + Math.PI * 0.5;
+        var a2 = a - Math.PI * 0.5;
+
+        ctx.moveTo(px + pr * Math.cos(a1), py + pr * Math.sin(a1));
+        ctx.arc(px, py, pr, a1, a2, true);
+        ctx.lineTo(x + r * Math.cos(a2), y + r * Math.sin(a2));
+        ctx.arc(x, y, r, a2, a1, true);
+        ctx.closePath();
       }
-      geo.attributes.position.needsUpdate = true;
-
-      for (let i = 0; i < STAR_COUNT; i++) {
-        const i3 = i * 3;
-        starPos[i3] += Math.sin(time * 0.15 + starPhases[i]) * 0.002;
-        starPos[i3+1] += Math.cos(time * 0.12 + starPhases[i] * 0.7) * 0.0015;
-      }
-      starGeo.attributes.position.needsUpdate = true;
-      starMat.opacity = 0.4 + Math.sin(time * 0.4) * 0.1;
-
-      particles.rotation.y += (mouseX * 0.06 - particles.rotation.y) * 0.015;
-      particles.rotation.x += (-mouseY * 0.04 - particles.rotation.x) * 0.015;
-      stars.rotation.y = particles.rotation.y * 0.5;
-      stars.rotation.x = particles.rotation.x * 0.5;
-
-      const scrollOffset = scrollY * 0.0015;
-      particles.position.y = -scrollOffset;
-      stars.position.y = -scrollOffset * 0.4;
-
-      renderer.render(scene, camera);
+      ctx.fill();
     })();
   })();
 
@@ -2070,20 +2248,20 @@ body {
     const ctx = canvas.getContext('2d');
 
     const GRID_SIZE = 80;
-    const FILL_RATIO = 0.11;
+    const FILL_RATIO = 0.06;
     const FILL_REFRESH_INTERVAL = 10000;
     const FILL_FADE_DURATION = 1000;
     const LINE_SPAWN_INTERVAL = 400;
-    const MAX_ACTIVE_LINES = 8;
-    const LINE_COLOR = '#4362ff';
-    const LINE_WIDTH = 1.5;
-    const LINE_SPEED_MIN = 1.5;
-    const LINE_SPEED_MAX = 3.5;
+    const MAX_ACTIVE_LINES = 14;
+    const LINE_COLOR = '#6B89FF';
+    const LINE_WIDTH = 2;
+    const LINE_SPEED_MIN = 2.5;
+    const LINE_SPEED_MAX = 5.0;
     const TURN_SEGMENTS_MIN = 3;
     const TURN_SEGMENTS_MAX = 6;
     const SEG_LENGTH_MIN = 1;
     const SEG_LENGTH_MAX = 4;
-    const FILL_COLOR = 'rgba(255, 255, 255, 0.06)';
+    const FILL_COLOR = 'rgba(107, 137, 255, 0.10)';
 
     let width, height, cols, rows;
     let filledCells = [], nextFilled = [];
@@ -2164,9 +2342,15 @@ body {
     const leak2 = { x: 0.82, y: 0.72 };
     function radialAlpha(x, y) {
       const cx = width / 2, cy = height / 2;
-      const dx = (x - cx) / (width * 0.35), dy = (y - cy) / (height * 0.35);
+      const dx = (x - cx) / (width * 0.55), dy = (y - cy) / (height * 0.55);
       const d = Math.sqrt(dx * dx + dy * dy);
-      let a = Math.max(0, 1 - d);
+      // Center dark (sphere area), ring visible, edge fades
+      let a;
+      if (d < 0.35) {
+        a = d * 0.15; // nearly invisible at center
+      } else {
+        a = Math.max(0.05, 0.8 - (d - 0.35) * 1.2);
+      }
       const nx = x / width, ny = y / height;
       const d1 = Math.sqrt((nx - leak1.x) ** 2 + (ny - leak1.y) ** 2);
       const d2 = Math.sqrt((nx - leak2.x) ** 2 + (ny - leak2.y) ** 2);
@@ -2324,8 +2508,8 @@ float snoise(vec3 v){
   return 105.0*dot(m*m,vec4(dot(p0,x0),dot(p1,x1),dot(p2,x2),dot(p3,x3)));
 }`;
 
-    // ── IcosahedronGeometry(1, 72) → ~51k vertices as particles ──
-    const geometry = new THREE.IcosahedronGeometry(1, 72);
+    // ── IcosahedronGeometry(1, 48) → ~23k vertices (from 72/51k for perf) ──
+    const geometry = new THREE.IcosahedronGeometry(1, 48);
     const vertexCount = geometry.attributes.position.count;
 
     // Per-particle random seed for scatter noise
@@ -2338,7 +2522,7 @@ float snoise(vec3 v){
     const material = new THREE.PointsMaterial({
       map: dotTexture,
       blending: THREE.AdditiveBlending,
-      color: 0x8DA8FF,
+      color: 0x6B89FF,
       depthTest: false,
       transparent: true,
       opacity: 0.55,
@@ -2429,6 +2613,9 @@ float snoise(vec3 v){
           float baseSize = mix(particleSizeMin, particleSizeMax, 0.5 + n);
           float densityScale = 0.3 + vEdgeBrightness * 0.7;
           float sphereSize = baseSize * densityScale;
+          // Rim: outermost particles slightly bigger
+          float rimBoost = smoothstep(0.85, 1.0, vEdgeBrightness);
+          sphereSize *= (1.0 + rimBoost * 1.5);
           float s = mix(sphereSize, galaxySize, smoothstep(0.1, 0.4, morphProgress));
         `
       );
@@ -2454,10 +2641,11 @@ float snoise(vec3 v){
           if (vRandDiscard < discardThreshold) discard;
 
           gl_FragColor.a *= vEdgeBrightness;
-          // Random edge particles get white highlight (~5%)
-          float edgeFactor = smoothstep(0.9, 1.0, vEdgeBrightness);
-          float whiteChance = step(0.92, vRandDiscard) * edgeFactor;
-          gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(1.0), whiteChance * 0.35);
+
+          // Rim glow: bright theme blue on outer edge
+          float rimGlow = smoothstep(0.85, 1.0, vEdgeBrightness);
+          gl_FragColor.rgb = mix(gl_FragColor.rgb, vec3(0.55, 0.68, 1.0), rimGlow * 0.6);
+          gl_FragColor.a = mix(gl_FragColor.a, 1.0, rimGlow * 0.5);
         `
       );
 
@@ -2465,7 +2653,11 @@ float snoise(vec3 v){
     };
 
     const mesh = new THREE.Points(geometry, material);
+    mesh.position.y = -0.6; // 球体下移
     scene.add(mesh);
+
+    // ── Canvas 2D wireframe (XYZ Cloud exact copy) ──
+    // Initialized separately below — see heroWireframeEffect
 
     // ── Raycasting for mouse push interaction ──
     const raycaster = new THREE.Raycaster();
@@ -2495,20 +2687,41 @@ float snoise(vec3 v){
       renderer.setSize(cw, ch);
     });
 
+    // ── Entrance animation ──
+    const entranceStart = performance.now();
+    const ENTRANCE_DUR = 1800; // ms
+    mesh.scale.set(0.6, 0.6, 0.6);
+    material.opacity = 0;
+
     // ── Animate ──
     let smoothMorph = 0;
     (function animate() {
       requestAnimationFrame(animate);
-      const time = performance.now() * 0.001;
+      const now = performance.now();
+      const time = now * 0.001;
+
+      // Entrance: scale 0.6→1.0 + opacity 0→0.45 over 1.8s with easeOutCubic
+      const entranceT = Math.min(1, (now - entranceStart) / ENTRANCE_DUR);
+      const easeT = 1 - Math.pow(1 - entranceT, 3); // easeOutCubic
+      const entranceScale = 0.6 + 0.4 * easeT;
+      const entranceOpacity = 0.45 * easeT;
 
       // Smooth lerp scroll morph progress
       const morphTarget = window._heroScrollProgress || 0;
       smoothMorph += (morphTarget - smoothMorph) * 0.06;
 
+      function smoothstep2(e0, e1, x) {
+        const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
+        return t * t * (3 - 2 * t);
+      }
+
       // Subtle mouse parallax (no auto-rotation)
       mesh.rotation.y = mouseX * 0.15;
       mesh.rotation.x = mouseY * -0.1;
       hitSphere.rotation.copy(mesh.rotation);
+
+      // Apply entrance scale
+      mesh.scale.set(entranceScale, entranceScale, entranceScale);
 
       // Raycast for mouse push
       raycaster.setFromCamera(mouseNDC, camera);
@@ -2526,12 +2739,254 @@ float snoise(vec3 v){
         material.userData.shader.uniforms.mousePos.value.copy(smoothMousePos);
       }
 
-      // Opacity fade out on scroll disperse (nextUI exact)
-      const fadeOut = Math.pow(Math.max(0, (smoothMorph - 0.2) / 0.3), 2);
-      material.opacity = 0.45 * (1 - fadeOut);
+      // Opacity: entrance fade-in, then scroll disperse fade-out
+      const fadeOut = Math.min(1, Math.pow(Math.max(0, (smoothMorph - 0.05) / 0.2), 2));
+      material.opacity = entranceOpacity * (1 - fadeOut);
+
+      // Canvas 2D wireframe fades separately (handled by heroWireframeEffect)
 
       renderer.render(scene, camera);
     })();
+  })();
+
+  // ══════════════════════════════════════
+  // CANVAS 2D WIREFRAME (XYZ Cloud exact copy)
+  // ══════════════════════════════════════
+  (function() {
+    const wfContainer = document.getElementById('heroWireframe');
+    if (!wfContainer) return;
+
+    // ── WireframeGeometry class (icosahedron variant, CA rendering from XYZ Cloud) ──
+    class WireframeGeometry {
+      constructor(container) {
+        this.container = container;
+        this.canvas = undefined;
+        this.ctx = undefined;
+        this.dpr = Math.min(window.devicePixelRatio, 2);
+        this.W = 0; this.H = 0; this.cx = 0; this.cy = 0;
+
+        // ── Icosahedron geometry (12 verts, 30 edges) ──
+        const phi = (1 + Math.sqrt(5)) / 2; // golden ratio ≈ 1.618
+        const n = Math.sqrt(1 + phi * phi);  // normalize to unit sphere
+        const a = 1 / n, b = phi / n;
+        this.icoVerts = [
+          [0, a, b], [0, a, -b], [0, -a, b], [0, -a, -b],
+          [a, b, 0], [-a, b, 0], [a, -b, 0], [-a, -b, 0],
+          [b, 0, a], [b, 0, -a], [-b, 0, a], [-b, 0, -a],
+        ];
+        this.icoEdges = [
+          [0,2],[0,4],[0,5],[0,8],[0,10],
+          [1,3],[1,4],[1,5],[1,9],[1,11],
+          [2,6],[2,7],[2,8],[2,10],
+          [3,6],[3,7],[3,9],[3,11],
+          [4,5],[4,8],[4,9],
+          [5,10],[5,11],
+          [6,7],[6,8],[6,9],
+          [7,10],[7,11],
+          [8,9],
+          [10,11],
+        ];
+
+        this.activeVerts = this.icoVerts;
+        this.activeEdges = this.icoEdges;
+
+        // Nested icosahedron layers (4 visible + 1 hidden)
+        this.layers = [
+          { s: 50,  op: 1,    sBase: 50  },
+          { s: 80,  op: 0.55, sBase: 80  },
+          { s: 115, op: 0.3,  sBase: 115 },
+          { s: 155, op: 0.15, sBase: 155 },
+          { s: 0,   op: 0,    sBase: 0   },
+        ];
+        this.cubes = []; // runtime lerped state
+
+        this.stars = [];
+        this.mx = 0.5; this.my = 0.5;
+        this.rX = 0.5; this.rY = 0.8; this.rZ = 0.15;
+        this.tX = 0.5; this.tY = 0.8;
+        this.time = 0;
+        this.CA = 1.5;
+        this.rafId = null;
+        this.running = false;
+        this.scrollProgress = 0; // 0→1 drives disperse
+
+        this.animate = () => {
+          if (!this.running) return;
+          this.time += 0.016;
+          this.tY += 0.003; // constant slow spin
+          this.draw();
+          this.rafId = requestAnimationFrame(this.animate);
+        };
+        this.handleResize = () => { this.resize(); };
+      }
+
+      init() {
+        this.canvas = document.createElement('canvas');
+        this.container.appendChild(this.canvas);
+        this.ctx = this.canvas.getContext('2d');
+        this.cubes = [];
+        for (let i = 0; i < 5; i++) {
+          const l = this.layers[i];
+          this.cubes.push({ s: l.s, op: l.op, zOff: 0 });
+        }
+        this.stars = [];
+        for (let i = 0; i < 7; i++) {
+          this.stars.push({ x: Math.random(), y: Math.random(), size: 4 + Math.random() * 6, phase: Math.random() * Math.PI * 2 });
+        }
+        this.resize();
+        window.addEventListener('resize', this.handleResize);
+      }
+
+      start() { if (this.running) return; this.running = true; this.animate(); }
+      stop() { this.running = false; if (this.rafId !== null) { cancelAnimationFrame(this.rafId); this.rafId = null; } }
+      dispose() {
+        this.stop();
+        window.removeEventListener('resize', this.handleResize);
+        if (this.canvas.parentNode) this.canvas.parentNode.removeChild(this.canvas);
+      }
+
+      resize() {
+        this.W = this.container.offsetWidth || 500;
+        this.H = this.container.offsetHeight || 500;
+        this.canvas.width = this.W * this.dpr;
+        this.canvas.height = this.H * this.dpr;
+        this.canvas.style.width = this.W + 'px';
+        this.canvas.style.height = this.H + 'px';
+        this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+        this.ctx.scale(this.dpr, this.dpr);
+        this.cx = this.W * 0.5;
+        this.cy = this.H * 0.5;
+      }
+
+      rotX(v, a) { const c = Math.cos(a), s = Math.sin(a); return [v[0], v[1]*c - v[2]*s, v[1]*s + v[2]*c]; }
+      rotY(v, a) { const c = Math.cos(a), s = Math.sin(a); return [v[0]*c + v[2]*s, v[1], -v[0]*s + v[2]*c]; }
+      rotZ(v, a) { const c = Math.cos(a), s = Math.sin(a); return [v[0]*c - v[1]*s, v[0]*s + v[1]*c, v[2]]; }
+
+      project(v) {
+        const f = 800, sc = f / (f + v[2]);
+        return { x: this.cx + v[0] * sc, y: this.cy + v[1] * sc, d: sc };
+      }
+
+      lerp(a, b, t) { return a + (b - a) * t; }
+
+      drawLine(x1, y1, x2, y2, color, alpha, width) {
+        if (alpha < 0.005) return;
+        const ctx = this.ctx;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color; ctx.globalAlpha = alpha;
+        ctx.lineWidth = width || 1; ctx.stroke();
+      }
+
+      drawStar(x, y, size, phase, masterAlpha) {
+        const ctx = this.ctx;
+        const pulse = 0.7 + 0.3 * Math.sin(phase);
+        const alpha = 0.4 * pulse * masterAlpha;
+        if (alpha < 0.005) return;
+        const ca = 1.2;
+        ctx.lineWidth = 1;
+
+        ctx.globalAlpha = alpha * 0.6; ctx.strokeStyle = '#ff3333';
+        ctx.beginPath(); ctx.moveTo(x - size - ca, y - ca); ctx.lineTo(x + size - ca, y - ca); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x - ca, y - size - ca); ctx.lineTo(x - ca, y + size - ca); ctx.stroke();
+
+        ctx.globalAlpha = alpha * 0.6; ctx.strokeStyle = '#33ff66';
+        ctx.beginPath(); ctx.moveTo(x - size, y); ctx.lineTo(x + size, y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, y - size); ctx.lineTo(x, y + size); ctx.stroke();
+
+        ctx.globalAlpha = alpha * 0.6; ctx.strokeStyle = '#3366ff';
+        ctx.beginPath(); ctx.moveTo(x - size + ca, y + ca); ctx.lineTo(x + size + ca, y + ca); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x + ca, y - size + ca); ctx.lineTo(x + ca, y + size + ca); ctx.stroke();
+
+        ctx.globalAlpha = alpha; ctx.strokeStyle = '#ffffff';
+        ctx.beginPath(); ctx.moveTo(x - size * 0.5, y); ctx.lineTo(x + size * 0.5, y); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(x, y - size * 0.5); ctx.lineTo(x, y + size * 0.5); ctx.stroke();
+      }
+
+      draw() {
+        const ctx = this.ctx;
+        ctx.clearRect(0, 0, this.W, this.H);
+
+        // ── Scroll disperse: expand layers outward + fade ──
+        const sp = this.scrollProgress;
+        const disperseT = sp < 0.05 ? 0 : Math.min(1, (sp - 0.05) / 0.25);
+        const masterOpacity = 1 - disperseT * disperseT; // quadratic fade
+        if (masterOpacity < 0.005) return; // fully dispersed, skip drawing
+
+        // Lerp each layer, applying disperse scale expansion
+        for (let i = 0; i < 5; i++) {
+          const l = this.layers[i];
+          const disperseScale = l.sBase * (1 + disperseT * 3); // expand 4x at full disperse
+          const disperseOp = l.op * masterOpacity;
+          this.cubes[i].s = this.lerp(this.cubes[i].s, disperseScale, 0.08);
+          this.cubes[i].op = this.lerp(this.cubes[i].op, disperseOp, 0.08);
+        }
+
+        // Smooth rotation follow
+        this.rX += (this.tX - this.rX) * 0.04;
+        this.rY += (this.tY - this.rY) * 0.04;
+        const autoSpin = this.time * 0.12;
+
+        // ── Draw layers back to front ──
+        for (let i = 4; i >= 0; i--) {
+          const cube = this.cubes[i];
+          if (cube.op < 0.01) continue;
+          const scale = cube.s, opacity = cube.op;
+          const projected = [];
+          for (let v = 0; v < this.activeVerts.length; v++) {
+            let pt = [this.activeVerts[v][0] * scale, this.activeVerts[v][1] * scale, this.activeVerts[v][2] * scale];
+            pt = this.rotX(pt, this.rX);
+            pt = this.rotY(pt, this.rY + autoSpin);
+            pt = this.rotZ(pt, this.rZ + i * 0.12); // slight per-layer rotation offset
+            projected.push(this.project(pt));
+          }
+          for (let e = 0; e < this.activeEdges.length; e++) {
+            const a = projected[this.activeEdges[e][0]];
+            const b = projected[this.activeEdges[e][1]];
+            const lineW = 1 + (i === 0 ? 0.5 : 0);
+            this.drawLine(a.x - this.CA, a.y - this.CA, b.x - this.CA, b.y - this.CA, '#ff2244', opacity * 0.5, lineW);
+            this.drawLine(a.x, a.y, b.x, b.y, '#22ff66', opacity * 0.4, lineW);
+            this.drawLine(a.x + this.CA, a.y + this.CA, b.x + this.CA, b.y + this.CA, '#4466ff', opacity * 0.5, lineW);
+            this.drawLine(a.x, a.y, b.x, b.y, '#ffffff', opacity * 0.35, lineW);
+          }
+        }
+
+        // ── Central glow dot ──
+        const cx = this.cx, cy = this.cy;
+        const outerGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40);
+        outerGlow.addColorStop(0, 'rgba(255,255,255,0.9)');
+        outerGlow.addColorStop(0.3, 'rgba(200,220,255,0.4)');
+        outerGlow.addColorStop(0.6, 'rgba(67,98,255,0.15)');
+        outerGlow.addColorStop(1, 'rgba(67,98,255,0)');
+        ctx.globalAlpha = masterOpacity;
+        ctx.fillStyle = outerGlow;
+        ctx.beginPath(); ctx.arc(cx, cy, 40, 0, Math.PI * 2); ctx.fill();
+
+        const coreGlow = ctx.createRadialGradient(cx - 3, cy - 3, 0, cx, cy, 14);
+        coreGlow.addColorStop(0, '#ffffff');
+        coreGlow.addColorStop(0.5, '#c8e0ff');
+        coreGlow.addColorStop(1, '#4362ff');
+        ctx.globalAlpha = masterOpacity;
+        ctx.fillStyle = coreGlow;
+        ctx.beginPath(); ctx.arc(cx, cy, 14, 0, Math.PI * 2); ctx.fill();
+
+        // ── Background stars ──
+        for (let i = 0; i < this.stars.length; i++) {
+          const star = this.stars[i];
+          const sx = star.x * this.W;
+          const sy = star.y * this.H;
+          this.drawStar(sx, sy, star.size, this.time * 2 + star.phase, masterOpacity);
+        }
+        ctx.globalAlpha = 1;
+      }
+    }
+
+    // Initialize and start
+    const wfEffect = new WireframeGeometry(wfContainer);
+    wfEffect.init();
+    wfEffect.start();
+
+    // Expose for scroll integration
+    window._heroWireframeEffect = wfEffect;
   })();
 
   // ══════════════════════════════════════
@@ -2546,6 +3001,10 @@ float snoise(vec3 v){
     const heroGrid = document.getElementById('heroGrid');
     const heroNoise = document.getElementById('heroNoise');
     const heroStain = document.getElementById('heroStain');
+    const heroStats = document.getElementById('heroStats');
+    const heroCounters = heroStats ? heroStats.querySelectorAll('.counter') : [];
+    const heroLabels = heroStats ? heroStats.querySelectorAll('.hero-stat-label') : [];
+    let statsCounterStarted = false;
 
     function smoothstep(e0, e1, x) {
       const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
@@ -2569,139 +3028,51 @@ float snoise(vec3 v){
         if (heroNoise) heroNoise.style.opacity = 0.35 * gridOpacity;
         if (heroStain) heroStain.style.opacity = 0.9 * gridOpacity;
 
+        // Canvas 2D wireframe: pass scroll progress for disperse effect
+        if (window._heroWireframeEffect) {
+          window._heroWireframeEffect.scrollProgress = window._heroScrollProgress;
+        }
+
+        // Stats appear after AI logo fully disperses (~35% scroll)
+        if (heroStats) {
+          const statsShow = smoothstep(0.30, 0.45, window._heroScrollProgress);
+          if (statsShow > 0.01) {
+            heroStats.classList.add('visible');
+            // Start counter + typewriter once
+            if (!statsCounterStarted) {
+              statsCounterStarted = true;
+              // Number growth animation
+              heroCounters.forEach(c => {
+                const target = parseInt(c.dataset.target);
+                const dur = 2000;
+                const start = performance.now();
+                (function up(now) {
+                  const t = Math.min((now - start) / dur, 1);
+                  c.textContent = Math.round((1 - Math.pow(1 - t, 3)) * target);
+                  if (t < 1) requestAnimationFrame(up);
+                })(start);
+              });
+              // Labels fade in with stagger
+              heroLabels.forEach(function(label, i) {
+                setTimeout(function() { label.classList.add('typing'); }, 300 + i * 100);
+              });
+            }
+          } else {
+            heroStats.classList.remove('visible');
+          }
+        }
+
         ticking = false;
       });
     }, { passive: true });
   })();
 
-  // ══════════════════════════════════════
-  // HERO LOGO PARTICLES (nextUI exact — SVG pixel sample → scatter on scroll)
-  // ══════════════════════════════════════
-  (function() {
-    const canvas = document.getElementById('heroLogoCanvas');
-    const logoImg = document.getElementById('heroLogoImg');
-    if (!canvas || !logoImg) return;
-
-    const ctx = canvas.getContext('2d');
-    const dpr = Math.min(window.devicePixelRatio, 2);
-    const logoSize = 300;
-    let smoothProgress = 0;
-    let particles = null;
-
-    function resize() {
-      const vw = window.innerWidth, vh = window.innerHeight;
-      canvas.width = vw * dpr;
-      canvas.height = vh * dpr;
-      canvas.style.width = vw + 'px';
-      canvas.style.height = vh + 'px';
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    function smoothstep(e0, e1, x) {
-      const t = Math.max(0, Math.min(1, (x - e0) / (e1 - e0)));
-      return t * t * (3 - 2 * t);
-    }
-
-    // Load and sample logo pixels
-    const img = new Image();
-    img.src = 'logo.svg';
-    img.onload = () => {
-      const off = document.createElement('canvas');
-      off.width = off.height = logoSize;
-      const offCtx = off.getContext('2d');
-      offCtx.drawImage(img, 0, 0, logoSize, logoSize);
-      const data = offCtx.getImageData(0, 0, logoSize, logoSize).data;
-      const step = 3;
-      const cx = logoSize / 2, cy = logoSize / 2;
-
-      particles = [];
-      for (let y = 0; y < logoSize; y += step) {
-        for (let x = 0; x < logoSize; x += step) {
-          const i = (y * logoSize + x) * 4;
-          const a = data[i + 3];
-          if (a > 30) {
-            const dx = x - cx, dy = y - cy;
-            particles.push({
-              ox: dx, oy: dy,
-              r: data[i], g: data[i+1], b: data[i+2], a: a / 255,
-              angle: Math.atan2(dy, dx) + (Math.random() - 0.5) * 1.0,
-              speed: 0.8 + Math.random() * 2.5,
-              delay: Math.random() * 0.04,
-              rotSpeed: (Math.random() - 0.5) * 0.015,
-              sizeMul: 0.6 + Math.random() * 0.8,
-            });
-          }
-        }
-      }
-      animate();
-    };
-
-    function animate() {
-      requestAnimationFrame(animate);
-      const target = window._heroScrollProgress || 0;
-      smoothProgress += (target - smoothProgress) * 0.06;
-
-      // Fade logo img
-      if (logoImg) logoImg.style.opacity = 1 - smoothstep(0.0, 0.08, smoothProgress);
-
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (smoothProgress < 0.005 || !particles) return;
-
-      ctx.save();
-      ctx.scale(dpr, dpr);
-
-      const vcx = window.innerWidth / 2;
-      const vcy = window.innerHeight / 2;
-      const time = performance.now() * 0.001;
-      const pStep = 1.5;
-
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-        const localP = Math.max(0, Math.min(1, (smoothProgress - p.delay) / (0.3 - p.delay)));
-        const appear = smoothstep(0.0, 0.06, localP);
-        const scatter = smoothstep(0.02, 0.65, localP);
-        const fadeOutP = smoothstep(0.2, 0.6, localP);
-        const alpha = p.a * appear * (1 - fadeOutP);
-        if (alpha < 0.01) continue;
-
-        const scatterDist = scatter * (150 + p.speed * 120);
-        const currentAngle = p.angle + time * p.rotSpeed;
-        const x = vcx + p.ox + Math.cos(currentAngle) * scatterDist;
-        const y = vcy + p.oy + Math.sin(currentAngle) * scatterDist;
-        const pSize = pStep * (1 + scatter * p.sizeMul * 0.5);
-
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = `rgb(${p.r},${p.g},${p.b})`;
-        ctx.fillRect(x - pSize / 2, y - pSize / 2, pSize, pSize);
-      }
-
-      ctx.globalAlpha = 1;
-      ctx.restore();
-    }
-  })();
+  // (Logo particles removed — replaced by wireframe geometry in sphere scene)
 
 })();
 
-/* ═══════ INPUT PANEL SWITCHER ═══════ */
+/* ═══════ DOT MATRIX CANVAS DEMO ═══════ */
 (function(){
-  var items = document.querySelectorAll('.input-item');
-  var panels = document.querySelectorAll('.input-demo-panel');
-  if (!items.length) return;
-
-  function activate(idx) {
-    items.forEach(function(el){ el.classList.remove('active'); });
-    panels.forEach(function(el){ el.classList.remove('active'); });
-    items[idx].classList.add('active');
-    panels[idx].classList.add('active');
-  }
-
-  items.forEach(function(item, i){
-    item.addEventListener('mouseenter', function(){ activate(i); });
-    item.addEventListener('click', function(){ activate(i); });
-  });
-
-  // Dot matrix canvas demo
   var dotCanvas = document.getElementById('demoDotCanvas');
   if (dotCanvas) {
     var dctx = dotCanvas.getContext('2d');
@@ -2735,13 +3106,75 @@ float snoise(vec3 v){
         var dist = Math.sqrt(dx * dx + dy * dy);
         var o = dist < 60 ? 0.8 : d.o;
         var s = dist < 60 ? 3 : 2;
-        dctx.fillStyle = dist < 60 ? 'rgba(67,98,255,' + o + ')' : 'rgba(9,14,26,' + o + ')';
+        dctx.fillStyle = dist < 60 ? 'rgba(107,137,255,' + o + ')' : 'rgba(255,255,255,' + o + ')';
         dctx.fillRect(d.x - s/2, d.y - s/2, s, s);
       }
       requestAnimationFrame(drawDots);
     }
     drawDots();
   }
+})();
+
+/* ═══════ TEXT SCRAMBLE EFFECT ═══════ */
+(function(){
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%&*<>/\\|{}[]';
+  var labels = document.querySelectorAll('.input-card-label');
+  if (!labels.length) return;
+
+  // 保存原文，先显示乱码
+  labels.forEach(function(el) {
+    el.dataset.text = el.textContent;
+    var t = el.textContent;
+    var scrambled = '';
+    for (var i = 0; i < t.length; i++) {
+      scrambled += t[i] === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)];
+    }
+    el.textContent = scrambled;
+  });
+
+  function scramble(el, delay) {
+    var final = el.dataset.text;
+    var len = final.length;
+    var duration = 800;
+
+    setTimeout(function() {
+      var start = performance.now();
+      function tick(now) {
+        var elapsed = now - start;
+        var progress = Math.min(elapsed / duration, 1);
+        var resolved = Math.floor(progress * len);
+        var result = '';
+        for (var i = 0; i < len; i++) {
+          if (i < resolved) {
+            result += final[i];
+          } else if (final[i] === ' ') {
+            result += ' ';
+          } else {
+            result += chars[Math.floor(Math.random() * chars.length)];
+          }
+        }
+        el.textContent = result;
+        if (progress < 1) requestAnimationFrame(tick);
+        else el.textContent = final;
+      }
+      requestAnimationFrame(tick);
+    }, delay);
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        var cards = entry.target.querySelectorAll('.input-card-label');
+        cards.forEach(function(label, i) {
+          scramble(label, i * 120);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  var grid = document.querySelector('.input-grid');
+  if (grid) observer.observe(grid);
 })();
 
 </script>
