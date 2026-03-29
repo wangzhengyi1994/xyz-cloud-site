@@ -1521,28 +1521,28 @@ body {
         <div class="tl-phase">
           <div class="tl-dot"></div>
           <div class="tl-header"><span class="tl-step-num">02</span><div class="tl-title">3 分钟出第一版</div></div>
-          <p class="tl-desc">一句话描述需求，AI 生成完整页面骨架。12 个 Section + CSS 变量 + 中英切换 + 响应式断点 — 3 分钟，从空白到可部署。每次改完直接 push，30 秒后刷新看效果。</p>
+          <p class="tl-desc">一句话描述需求，AI 生成完整页面骨架。12 个模块 + 设计变量 + 中英切换 + 多端适配 — 3 分钟，从空白到可部署。每次改完直接部署，30 秒后刷新看效果。</p>
           <p class="tl-takeaway">传统流程出第一版要 2-3 天，现在是 2-3 分钟。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
           <div class="tl-header"><span class="tl-step-num">03</span><div class="tl-title">用参考链接代替文字描述</div></div>
-          <p class="tl-desc">不说"让粒子动效更炫" — 这种描述 AI 和前端都听不懂。直接发一篇掘金教程链接、一段 Aceternity UI 组件代码，AI 自动提取技术方案，适配到项目里。</p>
+          <p class="tl-desc">不说"让粒子动效更炫" — 这种描述 AI 和前端都听不懂。直接发一篇掘金教程链接、一段开源组件代码，AI 自动提取技术方案，适配到项目里。</p>
           <p class="tl-takeaway">不描述你要什么感觉，给它看你想要的东西。设计师找参考图的能力，现在可以直接喂给 AI。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
           <div class="tl-header"><span class="tl-step-num">04</span><div class="tl-title">截图驱动的快速迭代</div></div>
-          <p class="tl-desc">截图 → 一句话指出问题 → AI 改代码 → push → 30 秒刷新 → 再截图。平台 Tab 交互 5 轮定稿，每轮 2-3 分钟。传统流程这可能是一来一回的邮件或 30 分钟评审会。</p>
+          <p class="tl-desc">截图 → 一句话指出问题 → AI 改代码 → 部署 → 30 秒刷新 → 再截图。平台标签页交互 5 轮定稿，每轮 2-3 分钟。传统流程这可能是一来一回的邮件或 30 分钟评审会。</p>
           <p class="tl-takeaway">能截图就别打字。一张截图 > 100 字描述。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
           <div class="tl-header"><span class="tl-step-num">05</span><div class="tl-title">果断否决，不纠结沉没成本</div></div>
-          <p class="tl-desc">AI 会执行任何方案，但不会告诉你哪个更好看。Core Value 改深色 → 4 分钟看一眼 → 还原白色。3D 地球改多边形 → 看一眼 → 全部推翻改回点阵。最长的"推翻重来"也就几分钟。</p>
+          <p class="tl-desc">AI 会执行任何方案，但不会告诉你哪个更好看。核心价值区块改深色 → 4 分钟看一眼 → 还原白色。3D 地球改多边形 → 看一眼 → 全部推翻改回点阵。最长的"推翻重来"也就几分钟。</p>
           <p class="tl-takeaway">试错成本低的时候，直接试比讨论更高效。审美判断始终是设计师的活儿。</p>
         </div>
 
@@ -1557,14 +1557,8 @@ body {
           <div class="tl-dot"></div>
           <div class="tl-header"><span class="tl-step-num">07</span><div class="tl-title">86 次迭代到最终版</div></div>
           <p class="tl-desc">9 种视觉特效、3 个 Three.js 3D 场景、全端响应式、中英双语 — 全在一个 HTML 文件里，4000 行代码，0 行手写。从空白到上线，2 天。</p>
-          <p class="tl-takeaway">不是替代了前端开发，而是改变了设计师的工作边界。3D 特效不再是"加分项"，而是基础配置。</p>
+          <p class="tl-takeaway">设计师从"出稿等还原"变成了"直接调出成品"。想做 3D 特效？直接做一版看效果，不用先评估工期。</p>
         </div>
-          <ul class="commits">
-            <li><span class="hash">4bdc977</span><span class="tag tag-feat">feat</span>React rewrite + product pages</li>
-            <li><span class="hash">f453c1e</span><span class="tag tag-feat">feat</span>Mobile responsive all pages</li>
-          </ul>
-        </div>
-
 
       </div>
     </div>
@@ -1577,7 +1571,7 @@ body {
     <div class="section-inner">
       <div class="section-num scroll-fade-in">05 — VISUAL EFFECTS</div>
       <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">9 个特效的技术实现</h2>
-      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，IntersectionObserver 离屏暂停。</p>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，滚出屏幕自动暂停，不浪费性能。</p>
       <div class="fx-grid scroll-fade-in" style="--delay:0.3s">
         <div class="fx-card"><h4>Hero 3D 城市天际线</h4><div class="fx-tech">Three.js r86 + TweenMax — 237 行</div><p>100 栋建筑 + 300 蓝色粒子旋涡 + 60 条 yoyo 光线。鼠标驱动旋转。</p></div>
         <div class="fx-card"><h4>粒子变形</h4><div class="fx-tech">Three.js + Float32Array — 280 行</div><p>5000 粒子在 5 个 OBJ 模型间变形。级联延迟 + 多 easing + 拖拽。</p></div>
