@@ -656,9 +656,9 @@ section { padding: 100px 0; }
 <section>
   <div class="container">
     <div class="section-label scroll-fade-in">📋 01 — INPUT MATERIALS</div>
-    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">项目开始前，我拿到了什么</h2>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">我给 AI 准备了什么</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
-      XYZ Cloud 是一个 AI 云计算平台的海外营销官网。设计师和产品经理提供了以下规范和素材。
+      在让 AI 写第一行代码之前，我作为设计师准备了这些规范和素材，作为它的输入约束。
     </p>
     <div class="input-grid scroll-fade-in" style="--delay:0.3s">
       <div class="input-card">
@@ -688,8 +688,8 @@ section { padding: 100px 0; }
       </div>
       <div class="input-card">
         <div class="card-emoji">⚙️</div>
-        <h4>技术约束</h4>
-        <p>必须 <code>Three.js r86</code>（不可升级），单文件 <code>index.html</code>，无构建工具。</p>
+        <h4>积累的源码</h4>
+        <p>看到好的网站就存下源码，让 AI 照着这些参考来实现。</p>
       </div>
     </div>
   </div>
@@ -698,10 +698,10 @@ section { padding: 100px 0; }
 <!-- ═══════ 02: TECH STACK ═══════ -->
 <section class="glass-section">
   <div class="container">
-    <div class="section-label scroll-fade-in">🛠️ 02 — TECH STACK</div>
-    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">技术选型</h2>
+    <div class="section-label scroll-fade-in">🛠️ 02 — DESIGN CONSTRAINTS</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">给 AI 立的规矩</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
-      单文件架构——没有 webpack、没有 npm。所有 JS/CSS/HTML 内联在一个文件里。
+      AI 不缺能力，缺的是约束。没有规范的 AI 输出就是"AI 味儿"——以下规则让它老实干活。
     </p>
     <div class="stack-grid scroll-fade-in" style="--delay:0.3s">
       <div class="stack-cell"><h4>⚡ Three.js r86</h4><p>本地打包 517KB，旧版 API 稳定够用</p></div>
@@ -717,134 +717,53 @@ section { padding: 100px 0; }
 <!-- ═══════ 03: TIMELINE ═══════ -->
 <section>
   <div class="container">
-    <div class="section-label scroll-fade-in">⏱️ 03 — DEVELOPMENT TIMELINE</div>
-    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">逐步落地的完整过程</h2>
+    <div class="section-label scroll-fade-in">⏱️ 04 — HOW I WORK WITH AI</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">我的 AI 协作方法论</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
-      按 Git 提交记录还原的真实开发时间线。
+      不是学写代码，而是学会和 AI 对话。这 7 个步骤就是全部过程。
     </p>
     <div class="timeline scroll-fade-in" style="--delay:0.3s">
 
       <div class="tl-phase">
         <div class="tl-dot">1</div>
-        <div class="tl-header"><div class="tl-title">基础框架 + 设计令牌</div><div class="tl-date">3月3日 15:23</div></div>
-        <p class="tl-desc">创建 index.html，搭建 12 个 Section 骨架，注入 Figma 设计令牌。第一个可见页面 3 分钟完成。</p>
-        <ul class="commits">
-          <li><span class="hash">8f136c9</span><span class="tag tag-feat">feat</span>Initial commit with EN/CN toggle</li>
-          <li><span class="hash">f6520f3</span><span class="tag tag-style">style</span>Apply Figma design tokens</li>
-        </ul>
+        <div class="tl-header"><div class="tl-title">先喂规范，再做页面</div></div>
+        <p class="tl-desc">第一件事不是说"帮我做个官网"，而是把 Figma 里的设计令牌全部贴给 AI — 颜色 10 级梯度、字体、间距、断点。有了规范，AI 后续所有组件都从变量派生，不会自己发明颜色。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">2</div>
-        <div class="tl-header"><div class="tl-title">Hero 3D 城市天际线</div><div class="tl-date">3月3日 15:36</div></div>
-        <p class="tl-desc">第一个 Three.js 特效。100 栋建筑 + 300 粒子旋涡 + 60 条光线。移动端减半 + 禁用阴影。</p>
-        <ul class="commits">
-          <li><span class="hash">23a9f11</span><span class="tag tag-feat">feat</span>Three.js animated cube grid</li>
-          <li><span class="hash">3b81117</span><span class="tag tag-perf">perf</span>Optimize hero performance</li>
-          <li><span class="hash">be76413</span><span class="tag tag-fix">fix</span>Fix fonts to match tokens</li>
-        </ul>
+        <div class="tl-header"><div class="tl-title">3 分钟出第一版</div></div>
+        <p class="tl-desc">一句话描述需求，AI 生成完整页面骨架。12 个模块 + 设计变量 + 中英切换 + 多端适配 — 3 分钟，从空白到可部署。每次改完直接部署，30 秒后刷新看效果。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">3</div>
-        <div class="tl-header"><div class="tl-title">粒子变形特效</div><div class="tl-date">3月3日 15:50</div></div>
-        <p class="tl-desc">5000 粒子在 5 种几何形状间变形（球→方→锥→菱→环）。修复任意 Tab 跳转。</p>
-        <ul class="commits">
-          <li><span class="hash">4be8381</span><span class="tag tag-feat">feat</span>Particle morphing effect</li>
-          <li><span class="hash">10070ad</span><span class="tag tag-fix">fix</span>Fix all tab transitions</li>
-        </ul>
+        <div class="tl-header"><div class="tl-title">用参考链接代替文字描述</div></div>
+        <p class="tl-desc">不说"让粒子动效更炫" — 这种描述 AI 和前端都听不懂。直接发一篇掘金教程链接、一段开源组件代码，AI 自动提取技术方案，适配到项目里。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">4</div>
-        <div class="tl-header"><div class="tl-title">点阵动画——7 次迭代</div><div class="tl-date">3月3日 16:10—16:35</div></div>
-        <p class="tl-desc">SVG 方案失败改 Canvas，6 次尺寸调整，最终加涟漪 + 放大镜 + 12% 蓝色染色。</p>
-        <ul class="commits">
-          <li><span class="hash">69b1994</span><span class="tag tag-perf">perf</span>SVG → Canvas renderer</li>
-          <li><span class="hash">549662f</span><span class="tag tag-feat">feat</span>Ripple + magnifying glass</li>
-          <li><span class="hash">5126ac0</span><span class="tag tag-style">style</span>12% dots tinted blue</li>
-        </ul>
+        <div class="tl-header"><div class="tl-title">截图驱动的快速迭代</div></div>
+        <p class="tl-desc">截图 → 一句话指出问题 → AI 改代码 → 部署 → 30 秒刷新 → 再截图。平台标签页交互 5 轮定稿，每轮 2-3 分钟。传统流程这可能是一来一回的邮件或 30 分钟评审会。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">5</div>
-        <div class="tl-header"><div class="tl-title">Footer 光谱 + Cosmic Spectrum</div><div class="tl-date">3月3日 16:50—17:40</div></div>
-        <p class="tl-desc">Footer CSS 光谱动画。Cosmic Spectrum 全屏实验 8 次改造后因太抢眼被砍。</p>
-        <ul class="commits">
-          <li><span class="hash">69dff03</span><span class="tag tag-feat">feat</span>Spectrum gradient footer</li>
-          <li><span class="hash">5de3815</span><span class="tag tag-revert">hide</span>Hide Cosmic Spectrum</li>
-        </ul>
+        <div class="tl-header"><div class="tl-title">果断否决，不纠结沉没成本</div></div>
+        <p class="tl-desc">AI 会执行任何方案，但不会告诉你哪个更好看。核心价值区块改深色 → 4 分钟看一眼 → 还原白色。3D 地球改多边形 → 看一眼 → 全部推翻改回点阵。最长的"推翻重来"也就几分钟。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">6</div>
-        <div class="tl-header"><div class="tl-title">数据隧道——8 次微调</div><div class="tl-date">3月3日 17:42—18:03</div></div>
-        <p class="tl-desc">80 条线 + 94 个发光信号。连续 8 次调参直到填满容器。</p>
-        <ul class="commits">
-          <li><span class="hash">1af7f11</span><span class="tag tag-feat">feat</span>Data Tunnel effect</li>
-          <li><span class="hash">8c7a2a1</span>→<span class="hash">efc037b</span><span class="tag tag-style">style</span>6 次参数微调</li>
-        </ul>
+        <div class="tl-header"><div class="tl-title">最难的需求：3D 地球上的台湾</div></div>
+        <p class="tl-desc">5 次尝试：换高精度数据 → 没用。改 1 度网格 → 65000 点卡死。折中 1.5 度 → 台湾太窄消失。AI 建议重写多边形 → 我说"还是要点数的" → 推翻。最终方案：2 度网格 + 小岛手动补点。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">7</div>
-        <div class="tl-header"><div class="tl-title">3D 地球——最难的特效</div><div class="tl-date">3月3日—4日</div></div>
-        <p class="tl-desc">跨两天、5 次重写。台湾显示难题：最终 50m 高精度 + step=2 + 手动补岛屿。</p>
-        <ul class="commits">
-          <li><span class="hash">3d72504</span><span class="tag tag-feat">feat</span>16 cities, 24 arcs, drag rotation</li>
-          <li><span class="hash">a76fdd8</span><span class="tag tag-feat">feat</span>重写：点阵 → 多边形面</li>
-          <li><span class="hash">b199b61</span><span class="tag tag-revert">revert</span>改回点阵 + 50m + 手动补点</li>
-        </ul>
-      </div>
-
-      <div class="tl-phase">
-        <div class="tl-dot">8</div>
-        <div class="tl-header"><div class="tl-title">立方体视差 + 装饰</div><div class="tl-date">3月3日 19:11—19:40</div></div>
-        <p class="tl-desc">Canvas 2D 手写 3D 矩阵 + 透视 fov=800。色差效果 + 十字角标 + 45° 斜线纹理。</p>
-        <ul class="commits">
-          <li><span class="hash">ffe2ebb</span><span class="tag tag-feat">feat</span>3D cube parallax</li>
-          <li><span class="hash">9674547</span><span class="tag tag-style">style</span>Cross markers at borders</li>
-        </ul>
-      </div>
-
-      <div class="tl-phase">
-        <div class="tl-dot">9</div>
-        <div class="tl-header"><div class="tl-title">UI 打磨 + 响应式</div><div class="tl-date">3月3日 21:53—23:14</div></div>
-        <p class="tl-desc">Figma Logo、全站滚动淡入、Hero 标题 4 次字号调整、移动端适配。</p>
-        <ul class="commits">
-          <li><span class="hash">01a493e</span><span class="tag tag-feat">feat</span>Scroll fade-in all sections</li>
-          <li><span class="hash">42dce56</span><span class="tag tag-feat">feat</span>Mobile responsive ≤768px</li>
-        </ul>
-      </div>
-
-      <div class="tl-phase">
-        <div class="tl-dot">10</div>
-        <div class="tl-header"><div class="tl-title">深度优化 + 决策回退</div><div class="tl-date">3月4日</div></div>
-        <p class="tl-desc">Core Value 改暗色→4分钟还原。粒子升级级联动效 + OBJ 模型。Tab 改 hover 触发。</p>
-        <ul class="commits">
-          <li><span class="hash">eaa4c4d</span><span class="tag tag-revert">revert</span>4 分钟后还原白色</li>
-          <li><span class="hash">279ad07</span><span class="tag tag-feat">feat</span>级联动效 + 模型 + 拖拽</li>
-        </ul>
-      </div>
-
-      <div class="tl-phase">
-        <div class="tl-dot">11</div>
-        <div class="tl-header"><div class="tl-title">React 重写 + 多页面</div><div class="tl-date">3月16日—18日</div></div>
-        <p class="tl-desc">React 重写，新增 CCI/ECS/HPT 产品页。品牌改名 Alayance Cloud。全端适配。</p>
-        <ul class="commits">
-          <li><span class="hash">4bdc977</span><span class="tag tag-feat">feat</span>React rewrite + product pages</li>
-          <li><span class="hash">f453c1e</span><span class="tag tag-feat">feat</span>Mobile responsive all pages</li>
-        </ul>
-      </div>
-
-      <div class="tl-phase">
-        <div class="tl-dot">12</div>
-        <div class="tl-header"><div class="tl-title">收尾与部署</div><div class="tl-date">3月19日—25日</div></div>
-        <p class="tl-desc">清理旧品牌引用，部署 Vercel 上线。</p>
-        <ul class="commits">
-          <li><span class="hash">f67032a</span><span class="tag tag-feat">feat</span>Update footer, remove old refs</li>
-          <li><span class="hash">2272699</span><span class="tag tag-fix">fix</span>Fix duplicated brand name</li>
-        </ul>
+        <div class="tl-header"><div class="tl-title">86 次迭代到最终版</div></div>
+        <p class="tl-desc">9 种视觉特效、3 个 Three.js 3D 场景、全端响应式 — 全在一个 HTML 文件里，4000 行代码，0 行手写。从空白到上线，2 天。</p>
       </div>
 
     </div>
@@ -854,18 +773,19 @@ section { padding: 100px 0; }
 <!-- ═══════ 04: EFFECTS ═══════ -->
 <section class="glass-section">
   <div class="container">
-    <div class="section-label scroll-fade-in">✨ 04 — VISUAL EFFECTS</div>
-    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">9 个特效的技术实现</h2>
-    <p class="section-desc scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，IntersectionObserver 离屏暂停。</p>
+    <div class="section-label scroll-fade-in">✨ 05 — VISUAL EFFECTS</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">视觉特效与交互实现</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，滚出屏幕自动暂停，不浪费性能。</p>
     <div class="fx-grid scroll-fade-in" style="--delay:0.3s">
-      <div class="fx-card"><div class="fx-emoji">🏙️</div><h4>Hero 3D 城市天际线</h4><div class="fx-tech">Three.js r86 + TweenMax — 237 行</div><p>100 栋建筑 + 300 蓝色粒子旋涡 + 60 条 yoyo 光线。鼠标驱动旋转。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🔮</div><h4>粒子变形</h4><div class="fx-tech">Three.js + Float32Array — 280 行</div><p>5000 粒子在 5 个 OBJ 模型间变形。级联延迟 + 多 easing + 拖拽。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🧊</div><h4>线框立方体视差</h4><div class="fx-tech">Canvas 2D + 手写矩阵 — 344 行</div><p>rotXYZ + fov=800。色差 4 层叠加 + RGB 十字星。3 种模式。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🔵</div><h4>点阵动画</h4><div class="fx-tech">Canvas 2D + DOMParser — 242 行</div><p>12% 蓝色染色，涟漪 12px/帧 + 90px 放大镜 smoothstep。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🌍</div><h4>3D 地球</h4><div class="fx-tech">Three.js + TopoJSON — 325 行</div><p>~16k 点 + 16 城市 + 24 贝塞尔弧 + 手动补台湾/海南。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🚇</div><h4>数据隧道</h4><div class="fx-tech">Three.js + AdditiveBlending — 136 行</div><p>80 余弦曲线，94 发光信号，循环随机分配车道。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🌈</div><h4>Footer CSS 光谱</h4><div class="fx-tech">纯 CSS — 9 条渐变列</div><p>blur(40px)，5.5s–7.2s 异步波浪。</p></div>
-      <div class="fx-card"><div class="fx-emoji">📊</div><h4>统计数字 + 滚动淡入</h4><div class="fx-tech">IntersectionObserver + cubic ease-out</div><p>2000ms 计数 + translateY/opacity 淡入。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🏙️</div><h4>3D 算力中心</h4><div class="fx-tech">3D 渲染 — 237 行</div><p>100 栋建筑 + 300 蓝色粒子旋涡 + 60 条 yoyo 光线。鼠标驱动旋转。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🔮</div><h4>粒子变形</h4><div class="fx-tech">3D 粒子系统 — 280 行</div><p>5000 粒子在 5 个 OBJ 模型间变形。级联延迟 + 多 easing + 拖拽。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🧊</div><h4>线框立方体视差</h4><div class="fx-tech">画布绘制 — 344 行</div><p>rotXYZ + fov=800。色差 4 层叠加 + RGB 十字星。3 种模式。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🔵</div><h4>点阵动画</h4><div class="fx-tech">画布绘制 — 242 行</div><p>12% 蓝色染色，涟漪 12px/帧 + 90px 放大镜 smoothstep。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🌍</div><h4>3D 地球</h4><div class="fx-tech">3D 渲染 + 地理数据 — 325 行</div><p>~16k 点 + 16 城市 + 24 贝塞尔弧 + 手动补台湾/海南。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🚇</div><h4>数据隧道</h4><div class="fx-tech">3D 渲染 — 136 行</div><p>80 余弦曲线，94 发光信号，循环随机分配车道。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🌈</div><h4>Footer CSS 光谱</h4><div class="fx-tech">滚动触发 — 自动播放</div><p>blur(40px)，5.5s–7.2s 异步波浪。</p></div>
+      <div class="fx-card"><div class="fx-emoji">📊</div><h4>全局交互设计</h4><div class="fx-tech">hover + 拖拽 + 滚动联动</div><p>平台标签页 hover 展开联动粒子变形，3D 场景支持鼠标拖拽旋转，球体随鼠标推开粒子，所有动效滚动到位才启动、离屏自动暂停。</p></div>
+      <div class="fx-card"><div class="fx-emoji">✨</div><h4>滚动驱动的分层入场</h4><div class="fx-tech">滚动触发 — 逐层渐入</div><p>每个模块的标题、描述、内容按顺序依次淡入上移，滚动到哪播到哪，营造阅读节奏感。</p></div>
     </div>
   </div>
 </section>
@@ -873,25 +793,25 @@ section { padding: 100px 0; }
 <!-- ═══════ 05: CHALLENGES ═══════ -->
 <section>
   <div class="container">
-    <div class="section-label scroll-fade-in">🧩 05 — CHALLENGES & DECISIONS</div>
+    <div class="section-label scroll-fade-in">🧩 06 — CHALLENGES & DECISIONS</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">踩坑与决策</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">每一个"回退"都是快速实验和理性判断。</p>
     <div class="challenge-grid scroll-fade-in" style="--delay:0.3s">
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>地球上台湾消失</h4><p>低精度 TopoJSON + 大 step，台湾没有陆地点。step=1 有 65k 点太卡。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>高精度 + 手动补点</h4><p>countries-50m.json + step=2（~16k）+ 手动补台湾/海南/斯里兰卡。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>地球上台湾消失</h4><p>低精度 TopoJSON + 大 step，台湾没有陆地点。step=1 有 65k 点太卡。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>高精度 + 手动补点</h4><p>countries-50m.json + step=2（~16k）+ 手动补台湾/海南/斯里兰卡。</p></div>
       </div>
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>点阵 SVG 性能崩溃</h4><p>数千 rect 用 CSS Transform 缩放，浏览器重排卡顿。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>Canvas + 涟漪算法</h4><p>DOMParser 提取坐标 → Canvas 逐帧。涟漪 12px/帧 + smoothstep 放大镜。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>点阵动画性能崩溃</h4><p>数千 rect 用 CSS Transform 缩放，浏览器重排卡顿。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>改用画布逐帧绘制</h4><p>DOMParser 提取坐标 → Canvas 逐帧。涟漪 12px/帧 + smoothstep 放大镜。</p></div>
       </div>
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>Core Value 暗色失败</h4><p>立方体和文本在暗色背景上对比度不好。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>4 分钟果断回退</h4><p>提交后立即还原，CLAUDE.md 记录"确认保持白色"。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>暗色背景对比度差</h4><p>立方体和文本在暗色背景上对比度不好。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>4 分钟果断回退</h4><p>提交后立即还原，CLAUDE.md 记录"确认保持白色"。</p></div>
       </div>
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">⚠️ Problem</div><h4>Cosmic Spectrum 喧宾夺主</h4><p>GSAP 全屏滚动光谱完全抢走注意力。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">✅ Solution</div><h4>大胆砍掉</h4><p>display:none 观察 → 确认不需要 → 彻底删除 + 移除 GSAP CDN。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>某个模块风格不统一</h4><p>GSAP 全屏滚动光谱完全抢走注意力。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>大胆砍掉</h4><p>display:none 观察 → 确认不需要 → 彻底删除 + 移除 GSAP CDN。</p></div>
       </div>
     </div>
   </div>
@@ -900,7 +820,7 @@ section { padding: 100px 0; }
 <!-- ═══════ 06: ARCHITECTURE ═══════ -->
 <section class="glass-section">
   <div class="container">
-    <div class="section-label scroll-fade-in">🏗️ 06 — ARCHITECTURE</div>
+    <div class="section-label scroll-fade-in">🏗️ 07 — ARCHITECTURE</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">最终文件结构</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">极简主义，单文件架构。</p>
     <div class="arch-box scroll-fade-in" style="--delay:0.3s"><span class="dir">xyz-cloud-site/</span>
@@ -922,7 +842,7 @@ section { padding: 100px 0; }
 <!-- ═══════ 07: DESIGN TOKENS ═══════ -->
 <section>
   <div class="container">
-    <div class="section-label scroll-fade-in">🎨 07 — DESIGN TOKENS</div>
+    <div class="section-label scroll-fade-in">🎨 08 — DESIGN TOKENS</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">Figma 设计令牌系统</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
       从 Figma 导出的完整设计系统——颜色、字体、间距，全部转为 CSS 变量，零偏差。
@@ -1009,7 +929,7 @@ section { padding: 100px 0; }
 <!-- ═══════ 08: EFFECT SHOWCASE ═══════ -->
 <section class="glass-section">
   <div class="container">
-    <div class="section-label scroll-fade-in">📸 08 — EFFECT SHOWCASE</div>
+    <div class="section-label scroll-fade-in">📸 09 — EFFECT SHOWCASE</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">最终效果实拍</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">1440×900 视口下截取的实际运行画面。</p>
     <div class="shot-grid scroll-fade-in" style="--delay:0.3s">
@@ -1062,7 +982,7 @@ section { padding: 100px 0; }
 <!-- ═══════ 09: OBJ PIPELINE ═══════ -->
 <section>
   <div class="container">
-    <div class="section-label scroll-fade-in">🔄 09 — OBJ PREPROCESSING PIPELINE</div>
+    <div class="section-label scroll-fade-in">🔄 10 — OBJ PREPROCESSING PIPELINE</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">3D 模型预处理流水线</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
       设计师交付 5 个 OBJ 模型（7-15 万顶点），需要预处理到 5000 点才能实时变形渲染。
@@ -1126,7 +1046,7 @@ section { padding: 100px 0; }
 <!-- ═══════ 10: AI COLLABORATION ═══════ -->
 <section class="glass-section">
   <div class="container">
-    <div class="section-label scroll-fade-in">🤖 10 — AI COLLABORATION</div>
+    <div class="section-label scroll-fade-in">🤖 11 — AI COLLABORATION</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">人机协作开发模式</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
       这个项目从第一行代码到最终部署，全程由人类开发者与 Claude AI 协作完成。CLAUDE.md 是"AI 的规范手册"。
@@ -1165,7 +1085,7 @@ section { padding: 100px 0; }
 <!-- ═══════ 11: LESSONS LEARNED ═══════ -->
 <section>
   <div class="container">
-    <div class="section-label scroll-fade-in">💡 11 — LESSONS LEARNED</div>
+    <div class="section-label scroll-fade-in">💡 12 — LESSONS LEARNED</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">复盘与收获</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
       86 次提交，2 天核心开发，平均 2 分钟一轮迭代。这条路上想明白的事。
