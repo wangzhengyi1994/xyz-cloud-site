@@ -822,6 +822,17 @@ body {
 }
 .tl-phase.active .tl-desc { color: rgba(255,255,255,0.7); }
 
+/* Takeaway — 方法论金句 */
+.tl-takeaway {
+  font-size: 13px; font-weight: 500; line-height: 20px;
+  color: rgba(107,137,255,0.15);
+  padding-left: 23px; margin-top: 8px;
+  border-left: 2px solid rgba(107,137,255,0.1);
+  padding-top: 4px; padding-bottom: 4px;
+  transition: color 0.6s cubic-bezier(0.4,0,0.2,1), border-color 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.tl-phase.active .tl-takeaway { color: var(--primary); border-left-color: var(--primary); }
+
 /* Commits: dimmed by default */
 .commits { list-style: none; display: flex; flex-direction: column; gap: 4px; opacity: 0.25; padding-left: 23px; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1); }
 .tl-phase.active .commits { opacity: 1; }
@@ -1492,136 +1503,68 @@ body {
 <section class="section-dark" id="timelineSection">
   <div class="container">
     <div class="section-inner">
-      <div class="section-num scroll-fade-in">04 — DEVELOPMENT TIMELINE</div>
-      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">逐步落地的完整过程</h2>
+      <div class="section-num scroll-fade-in">04 — HOW I WORK WITH AI</div>
+      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">我的 AI 协作方法论</h2>
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">
-        按 Git 提交记录还原的真实开发时间线。
+        不是学写代码，而是学会和 AI 对话。这 7 个步骤就是全部过程。
       </p>
       <div class="timeline scroll-fade-in" style="--delay:0.3s">
         <div class="tl-scrollbar"></div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">01</span><div class="tl-title">基础框架 + 设计令牌</div><div class="tl-date">3月3日 15:23</div></div>
-          <p class="tl-desc">创建 index.html，搭建 12 个 Section 骨架，注入 Figma 设计令牌。第一个可见页面 3 分钟完成。</p>
-          <ul class="commits">
-            <li><span class="hash">8f136c9</span><span class="tag tag-feat">feat</span>Initial commit with EN/CN toggle</li>
-            <li><span class="hash">f6520f3</span><span class="tag tag-style">style</span>Apply Figma design tokens</li>
-          </ul>
+          <div class="tl-header"><span class="tl-step-num">01</span><div class="tl-title">先喂规范，再做页面</div></div>
+          <p class="tl-desc">第一件事不是说"帮我做个官网"，而是把 Figma 里的设计令牌全部贴给 AI — 颜色 10 级梯度、字体、间距、断点。有了规范，AI 后续所有组件都从变量派生，不会自己发明颜色。</p>
+          <p class="tl-takeaway">跟给前端开发交付规范一个道理，只是对象换成了 AI。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">02</span><div class="tl-title">Hero 3D 城市天际线</div><div class="tl-date">3月3日 15:36</div></div>
-          <p class="tl-desc">第一个 Three.js 特效。100 栋建筑 + 300 粒子旋涡 + 60 条光线。移动端减半 + 禁用阴影。</p>
-          <ul class="commits">
-            <li><span class="hash">23a9f11</span><span class="tag tag-feat">feat</span>Three.js animated cube grid</li>
-            <li><span class="hash">3b81117</span><span class="tag tag-perf">perf</span>Optimize hero performance</li>
-            <li><span class="hash">be76413</span><span class="tag tag-fix">fix</span>Fix fonts to match tokens</li>
-          </ul>
+          <div class="tl-header"><span class="tl-step-num">02</span><div class="tl-title">3 分钟出第一版</div></div>
+          <p class="tl-desc">一句话描述需求，AI 生成完整页面骨架。12 个 Section + CSS 变量 + 中英切换 + 响应式断点 — 3 分钟，从空白到可部署。每次改完直接 push，30 秒后刷新看效果。</p>
+          <p class="tl-takeaway">传统流程出第一版要 2-3 天，现在是 2-3 分钟。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">03</span><div class="tl-title">粒子变形特效</div><div class="tl-date">3月3日 15:50</div></div>
-          <p class="tl-desc">5000 粒子在 5 种几何形状间变形（球→方→锥→菱→环）。修复任意 Tab 跳转。</p>
-          <ul class="commits">
-            <li><span class="hash">4be8381</span><span class="tag tag-feat">feat</span>Particle morphing effect</li>
-            <li><span class="hash">10070ad</span><span class="tag tag-fix">fix</span>Fix all tab transitions</li>
-          </ul>
+          <div class="tl-header"><span class="tl-step-num">03</span><div class="tl-title">用参考链接代替文字描述</div></div>
+          <p class="tl-desc">不说"让粒子动效更炫" — 这种描述 AI 和前端都听不懂。直接发一篇掘金教程链接、一段 Aceternity UI 组件代码，AI 自动提取技术方案，适配到项目里。</p>
+          <p class="tl-takeaway">不描述你要什么感觉，给它看你想要的东西。设计师找参考图的能力，现在可以直接喂给 AI。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">04</span><div class="tl-title">点阵动画——7 次迭代</div><div class="tl-date">3月3日 16:10—16:35</div></div>
-          <p class="tl-desc">SVG 方案失败改 Canvas，6 次尺寸调整，最终加涟漪 + 放大镜 + 12% 蓝色染色。</p>
-          <ul class="commits">
-            <li><span class="hash">69b1994</span><span class="tag tag-perf">perf</span>SVG → Canvas renderer</li>
-            <li><span class="hash">549662f</span><span class="tag tag-feat">feat</span>Ripple + magnifying glass</li>
-            <li><span class="hash">5126ac0</span><span class="tag tag-style">style</span>12% dots tinted blue</li>
-          </ul>
+          <div class="tl-header"><span class="tl-step-num">04</span><div class="tl-title">截图驱动的快速迭代</div></div>
+          <p class="tl-desc">截图 → 一句话指出问题 → AI 改代码 → push → 30 秒刷新 → 再截图。平台 Tab 交互 5 轮定稿，每轮 2-3 分钟。传统流程这可能是一来一回的邮件或 30 分钟评审会。</p>
+          <p class="tl-takeaway">能截图就别打字。一张截图 > 100 字描述。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">05</span><div class="tl-title">Footer 光谱 + Cosmic Spectrum</div><div class="tl-date">3月3日 16:50—17:40</div></div>
-          <p class="tl-desc">Footer CSS 光谱动画。Cosmic Spectrum 全屏实验 8 次改造后因太抢眼被砍。</p>
-          <ul class="commits">
-            <li><span class="hash">69dff03</span><span class="tag tag-feat">feat</span>Spectrum gradient footer</li>
-            <li><span class="hash">5de3815</span><span class="tag tag-revert">hide</span>Hide Cosmic Spectrum</li>
-          </ul>
+          <div class="tl-header"><span class="tl-step-num">05</span><div class="tl-title">果断否决，不纠结沉没成本</div></div>
+          <p class="tl-desc">AI 会执行任何方案，但不会告诉你哪个更好看。Core Value 改深色 → 4 分钟看一眼 → 还原白色。3D 地球改多边形 → 看一眼 → 全部推翻改回点阵。最长的"推翻重来"也就几分钟。</p>
+          <p class="tl-takeaway">试错成本低的时候，直接试比讨论更高效。审美判断始终是设计师的活儿。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">06</span><div class="tl-title">数据隧道——8 次微调</div><div class="tl-date">3月3日 17:42—18:03</div></div>
-          <p class="tl-desc">80 条线 + 94 个发光信号。连续 8 次调参直到填满容器。</p>
-          <ul class="commits">
-            <li><span class="hash">1af7f11</span><span class="tag tag-feat">feat</span>Data Tunnel effect</li>
-            <li><span class="hash">8c7a2a1</span>→<span class="hash">efc037b</span><span class="tag tag-style">style</span>6 次参数微调</li>
-          </ul>
+          <div class="tl-header"><span class="tl-step-num">06</span><div class="tl-title">最难的需求：3D 地球上的台湾</div></div>
+          <p class="tl-desc">5 次尝试：换高精度数据 → 没用。改 1 度网格 → 65000 点卡死。折中 1.5 度 → 台湾太窄消失。AI 建议重写多边形 → 我说"还是要点数的" → 推翻。最终方案：2 度网格 + 小岛手动补点。</p>
+          <p class="tl-takeaway">AI 能想到 4 种解法，但最终选哪个是设计判断。"完美方案"可能不存在，混合策略往往更好。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">07</span><div class="tl-title">3D 地球——最难的特效</div><div class="tl-date">3月3日—4日</div></div>
-          <p class="tl-desc">跨两天、5 次重写。台湾显示难题：最终 50m 高精度 + step=2 + 手动补岛屿。</p>
-          <ul class="commits">
-            <li><span class="hash">3d72504</span><span class="tag tag-feat">feat</span>16 cities, 24 arcs, drag rotation</li>
-            <li><span class="hash">a76fdd8</span><span class="tag tag-feat">feat</span>重写：点阵 → 多边形面</li>
-            <li><span class="hash">b199b61</span><span class="tag tag-revert">revert</span>改回点阵 + 50m + 手动补点</li>
-          </ul>
+          <div class="tl-header"><span class="tl-step-num">07</span><div class="tl-title">86 次迭代到最终版</div></div>
+          <p class="tl-desc">9 种视觉特效、3 个 Three.js 3D 场景、全端响应式、中英双语 — 全在一个 HTML 文件里，4000 行代码，0 行手写。从空白到上线，2 天。</p>
+          <p class="tl-takeaway">不是替代了前端开发，而是改变了设计师的工作边界。3D 特效不再是"加分项"，而是基础配置。</p>
         </div>
-
-        <div class="tl-phase">
-          <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">08</span><div class="tl-title">立方体视差 + 装饰</div><div class="tl-date">3月3日 19:11—19:40</div></div>
-          <p class="tl-desc">Canvas 2D 手写 3D 矩阵 + 透视 fov=800。色差效果 + 十字角标 + 45° 斜线纹理。</p>
-          <ul class="commits">
-            <li><span class="hash">ffe2ebb</span><span class="tag tag-feat">feat</span>3D cube parallax</li>
-            <li><span class="hash">9674547</span><span class="tag tag-style">style</span>Cross markers at borders</li>
-          </ul>
-        </div>
-
-        <div class="tl-phase">
-          <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">09</span><div class="tl-title">UI 打磨 + 响应式</div><div class="tl-date">3月3日 21:53—23:14</div></div>
-          <p class="tl-desc">Figma Logo、全站滚动淡入、Hero 标题 4 次字号调整、移动端适配。</p>
-          <ul class="commits">
-            <li><span class="hash">01a493e</span><span class="tag tag-feat">feat</span>Scroll fade-in all sections</li>
-            <li><span class="hash">42dce56</span><span class="tag tag-feat">feat</span>Mobile responsive ≤768px</li>
-          </ul>
-        </div>
-
-        <div class="tl-phase">
-          <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">10</span><div class="tl-title">深度优化 + 决策回退</div><div class="tl-date">3月4日</div></div>
-          <p class="tl-desc">Core Value 改暗色→4分钟还原。粒子升级级联动效 + OBJ 模型。Tab 改 hover 触发。</p>
-          <ul class="commits">
-            <li><span class="hash">eaa4c4d</span><span class="tag tag-revert">revert</span>4 分钟后还原白色</li>
-            <li><span class="hash">279ad07</span><span class="tag tag-feat">feat</span>级联动效 + 模型 + 拖拽</li>
-          </ul>
-        </div>
-
-        <div class="tl-phase">
-          <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">11</span><div class="tl-title">React 重写 + 多页面</div><div class="tl-date">3月16日—18日</div></div>
-          <p class="tl-desc">React 重写，新增 CCI/ECS/HPT 产品页。品牌改名 Alayance Cloud。全端适配。</p>
           <ul class="commits">
             <li><span class="hash">4bdc977</span><span class="tag tag-feat">feat</span>React rewrite + product pages</li>
             <li><span class="hash">f453c1e</span><span class="tag tag-feat">feat</span>Mobile responsive all pages</li>
           </ul>
         </div>
 
-        <div class="tl-phase">
-          <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">12</span><div class="tl-title">收尾与部署</div><div class="tl-date">3月19日—25日</div></div>
-          <p class="tl-desc">清理旧品牌引用，部署 Vercel 上线。</p>
-          <ul class="commits">
-            <li><span class="hash">f67032a</span><span class="tag tag-feat">feat</span>Update footer, remove old refs</li>
-            <li><span class="hash">2272699</span><span class="tag tag-fix">fix</span>Fix duplicated brand name</li>
-          </ul>
-        </div>
 
       </div>
     </div>
