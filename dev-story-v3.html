@@ -755,7 +755,7 @@ body {
 .tl-phase {
   position: relative;
   padding: 20px 0;
-  opacity: 0.06;
+  opacity: 0.18;
   transform: translateY(6px);
   transition: opacity 0.5s ease, transform 0.5s ease;
 }
@@ -776,7 +776,7 @@ body {
   width: 11px; height: 11px; flex-shrink: 0;
   background: transparent;
   border: none; border-radius: 0;
-  position: static; /* NOT absolute */
+  position: static;
   font-size: 0;
   transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -786,44 +786,44 @@ body {
 
 /* Step number */
 .tl-step-num {
-  font-size: 13px; font-weight: 400;
-  color: rgba(255,255,255,0.15);
+  font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.25);
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-phase.active .tl-step-num { color: rgba(255,255,255,0.4); }
+.tl-phase.active .tl-step-num { color: rgba(255,255,255,0.5); }
 
 /* Title */
 .tl-title {
-  font-size: 20px; font-weight: 600;
-  color: rgba(255,255,255,0.15);
+  font-size: 22px; font-weight: 700;
+  color: rgba(255,255,255,0.25);
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .tl-phase.active .tl-title { color: #fff; }
 
 /* Date — after title */
 .tl-date {
-  font-size: 11px; font-weight: 300;
-  color: rgba(255,255,255,0.08);
+  font-size: 12px; font-weight: 400;
+  color: rgba(255,255,255,0.15);
   letter-spacing: 1px;
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-phase.active .tl-date { color: rgba(255,255,255,0.25); }
+.tl-phase.active .tl-date { color: rgba(255,255,255,0.35); }
 
 /* Description */
 .tl-desc {
-  font-size: 13px; font-weight: 300; line-height: 20px;
-  color: rgba(255,255,255,0.12);
+  font-size: 14px; font-weight: 400; line-height: 22px;
+  color: rgba(255,255,255,0.2);
   margin-bottom: 8px; max-width: 720px;
   padding-left: 23px;
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-phase.active .tl-desc { color: var(--white-5); }
+.tl-phase.active .tl-desc { color: rgba(255,255,255,0.7); }
 
 /* Commits: dimmed by default */
-.commits { list-style: none; display: flex; flex-direction: column; gap: 4px; opacity: 0.2; padding-left: 23px; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1); }
+.commits { list-style: none; display: flex; flex-direction: column; gap: 4px; opacity: 0.25; padding-left: 23px; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1); }
 .tl-phase.active .commits { opacity: 1; }
 .commits li {
-  font-size: 11px; font-weight: 300; color: var(--white-5);
+  font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6);
   padding: 6px 12px;
   border-left: 2px solid var(--white-1);
   transition: all 0.3s; cursor: default;
