@@ -19,7 +19,7 @@ body {
 /* ═══════ TAB BAR ═══════ */
 .tab-bar {
   position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: center;
+  display: none; align-items: center; justify-content: center;
   gap: 4px;
   height: 56px;
   background: rgba(10, 10, 10, 0.85);
@@ -76,7 +76,7 @@ body {
 /* ═══════ IFRAME CONTAINER ═══════ */
 .frame-container {
   position: fixed;
-  top: 56px; left: 0; right: 0; bottom: 0;
+  top: 0; left: 0; right: 0; bottom: 0;
 }
 
 .frame-container iframe {
@@ -107,7 +107,7 @@ body {
 
 /* 三屏标签 */
 .split-labels {
-  position: fixed; top: 56px; left: 0; right: 0; z-index: 101;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 101;
   display: none; height: 28px;
 }
 .split-labels.show { display: flex; }
@@ -119,7 +119,7 @@ body {
   background: rgba(10,10,10,0.9);
 }
 .split-label:last-child { border-right: none; }
-.frame-container.split-mode { top: 84px; display: flex; }
+.frame-container.split-mode { top: 28px; display: flex; }
 
 /* ═══════ KEYBOARD HINT ═══════ */
 .hint {
