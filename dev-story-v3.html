@@ -2107,45 +2107,50 @@ body {
   var tlPhases = document.querySelectorAll('.tl-phase');
 
   if (tlContainer && tlPhases.length) {
-    // 发光点 + 反射跟随滚动（直接设置 CSS 变量，参考源码逻辑）
     var tlScrollbar = document.querySelector('.tl-scrollbar');
-    ScrollTrigger.create({
-      trigger: tlContainer,
-      scrub: true,
-      start: 'top 80%',
-      end: 'bottom 20%',
-      onUpdate: function(self) {
-        var p = self.progress; // 0→1
-        var scrollY = -10 + p * 115;        // -10% → 105%
-        var reflectY = -22 + p * 137;       // -22% → 115%
-        var barColor = p > 0.01 ? 'rgba(255,255,255,0.1)' : 'transparent';
+    var activeIndex = -1;
+
+    // 默认先高亮第一个
+    tlPhases[0].classList.add('active');
+    activeIndex = 0;
+
+    // 单个 scroll listener 同时驱动光效 + 高亮
+    window.addEventListener('scroll', function() {
+      var rect = tlContainer.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var top = rect.top;
+      var h = rect.height;
+
+      // 计算滚动进度 0→1（timeline 从视口80%到20%）
+      var start = vh * 0.8;
+      var end = vh * 0.2;
+      var p = Math.max(0, Math.min(1, (start - top) / (h - (vh - start) - end)));
+
+      // 光效位置
+      if (tlScrollbar) {
+        var scrollY = -10 + p * 115;
+        var reflectY = -22 + p * 137;
         tlScrollbar.style.setProperty('--scroll-y-position', scrollY + '%');
-        tlScrollbar.style.setProperty('background-color', barColor);
+        if (p > 0.01) {
+          tlScrollbar.style.backgroundColor = 'rgba(255,255,255,0.1)';
+        }
         tlContainer.style.setProperty('--reflection-y-position', reflectY + '%');
       }
-    });
 
-    // 只高亮离视口中心最近的那一个 phase
-    var activeIndex = -1;
-    ScrollTrigger.create({
-      trigger: tlContainer,
-      start: 'top 90%',
-      end: 'bottom 10%',
-      onUpdate: function() {
-        var target = window.innerHeight * 0.45; // 参考线：视口 45% 处
-        var bestIdx = -1;
-        var bestDist = Infinity;
-        tlPhases.forEach(function(phase, i) {
-          var rect = phase.getBoundingClientRect();
-          var center = rect.top + rect.height * 0.5;
-          var dist = Math.abs(center - target);
-          if (dist < bestDist) { bestDist = dist; bestIdx = i; }
-        });
-        if (bestIdx !== activeIndex) {
-          if (activeIndex >= 0) tlPhases[activeIndex].classList.remove('active');
-          if (bestIdx >= 0) tlPhases[bestIdx].classList.add('active');
-          activeIndex = bestIdx;
-        }
+      // 只高亮最近视口中心的 phase
+      var target = vh * 0.45;
+      var bestIdx = -1;
+      var bestDist = Infinity;
+      for (var i = 0; i < tlPhases.length; i++) {
+        var pr = tlPhases[i].getBoundingClientRect();
+        var center = pr.top + pr.height * 0.5;
+        var dist = Math.abs(center - target);
+        if (dist < bestDist) { bestDist = dist; bestIdx = i; }
+      }
+      if (bestIdx !== activeIndex) {
+        if (activeIndex >= 0) tlPhases[activeIndex].classList.remove('active');
+        if (bestIdx >= 0) tlPhases[bestIdx].classList.add('active');
+        activeIndex = bestIdx;
       }
     });
   }
