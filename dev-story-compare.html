@@ -91,6 +91,36 @@ body {
   pointer-events: none;
 }
 
+/* ═══════ SPLIT MODE (三屏同步) ═══════ */
+.frame-container.split-mode iframe {
+  position: relative;
+  width: 33.333%;
+  height: 100%;
+  float: left;
+  border-right: 1px solid rgba(255,255,255,0.1);
+}
+.frame-container.split-mode iframe:last-child { border-right: none; }
+.frame-container.split-mode iframe.hidden {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* 三屏标签 */
+.split-labels {
+  position: fixed; top: 56px; left: 0; right: 0; z-index: 101;
+  display: none; height: 28px;
+}
+.split-labels.show { display: flex; }
+.split-label {
+  flex: 1; text-align: center;
+  font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.6);
+  line-height: 28px;
+  border-right: 1px solid rgba(255,255,255,0.1);
+  background: rgba(10,10,10,0.9);
+}
+.split-label:last-child { border-right: none; }
+.frame-container.split-mode { top: 84px; display: flex; }
+
 /* ═══════ KEYBOARD HINT ═══════ */
 .hint {
   position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
@@ -127,6 +157,11 @@ body {
       V3 · 极致设计
       <span class="badge">Max</span>
     </button>
+    <span style="width:1px;height:24px;background:rgba(255,255,255,0.12);margin:0 8px;"></span>
+    <button class="tab-btn all" data-tab="all">
+      <span class="dot" style="background:linear-gradient(135deg,#7c3aed,#4362ff,#00BFA7);"></span>
+      三屏同步
+    </button>
   </div>
 </div>
 
@@ -136,10 +171,17 @@ body {
   <iframe src="dev-story-v3.html" id="frameV3" class="hidden"></iframe>
 </div>
 
+<div class="split-labels" id="splitLabels">
+  <div class="split-label">V1 · AI 生成风格</div>
+  <div class="split-label">V2 · 设计风格约束</div>
+  <div class="split-label">V3 · 极致设计</div>
+</div>
+
 <div class="hint">
   <span>按 <kbd>1</kbd> V1</span>
   <span>按 <kbd>2</kbd> V2</span>
   <span>按 <kbd>3</kbd> V3</span>
+  <span>按 <kbd>A</kbd> 三屏同步</span>
 </div>
 
 <script>
@@ -151,12 +193,55 @@ body {
     v3: document.getElementById('frameV3'),
   };
 
+  const container = document.getElementById('frameContainer');
+  const splitLabels = document.getElementById('splitLabels');
+  let splitMode = false;
+  let syncing = false;
+
   function switchTab(tab) {
+    if (tab === 'all') {
+      splitMode = true;
+      container.classList.add('split-mode');
+      splitLabels.classList.add('show');
+      tabs.forEach(t => t.classList.remove('active'));
+      document.querySelector('.tab-btn.all').classList.add('active');
+      Object.values(frames).forEach(f => f.classList.remove('hidden'));
+      setupSyncScroll();
+      return;
+    }
+    splitMode = false;
+    container.classList.remove('split-mode');
+    splitLabels.classList.remove('show');
     tabs.forEach(t => t.classList.remove('active'));
     document.querySelector(`.tab-btn.${tab}`).classList.add('active');
     Object.entries(frames).forEach(([key, frame]) => {
       if (key === tab) frame.classList.remove('hidden');
       else frame.classList.add('hidden');
+    });
+  }
+
+  // 同步滚动：任一 iframe 滚动时，其余按百分比同步
+  function setupSyncScroll() {
+    Object.values(frames).forEach(frame => {
+      try {
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        doc.addEventListener('scroll', function() {
+          if (syncing) return;
+          syncing = true;
+          const scrollTop = doc.documentElement.scrollTop || doc.body.scrollTop;
+          const maxScroll = doc.documentElement.scrollHeight - doc.documentElement.clientHeight;
+          const pct = maxScroll > 0 ? scrollTop / maxScroll : 0;
+          Object.values(frames).forEach(other => {
+            if (other === frame) return;
+            try {
+              const oDoc = other.contentDocument || other.contentWindow.document;
+              const oMax = oDoc.documentElement.scrollHeight - oDoc.documentElement.clientHeight;
+              oDoc.documentElement.scrollTop = pct * oMax;
+            } catch(e) {}
+          });
+          syncing = false;
+        });
+      } catch(e) {}
     });
   }
 
@@ -169,6 +254,7 @@ body {
     if (e.key === '1') switchTab('v1');
     if (e.key === '2') switchTab('v2');
     if (e.key === '3') switchTab('v3');
+    if (e.key === 'a' || e.key === 'A') switchTab('all');
   });
 })();
 </script>
