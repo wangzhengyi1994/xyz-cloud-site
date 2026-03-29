@@ -633,12 +633,20 @@ section { padding: 100px 0; }
     <p class="hero-sub">一个设计师 + AI 的官网开发全记录<br>用规范化设计流程，让 AI 输出达到专业标准</p>
     <div class="hero-stats">
       <div class="hero-stat">
-        <div class="hero-stat-num"><span class="counter" data-target="96">0</span></div>
-        <div class="hero-stat-label">次提交</div>
+        <div class="hero-stat-num"><span class="counter" data-target="96">0</span><span class="unit"> 次</span></div>
+        <div class="hero-stat-label">Git 提交</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num"><span class="counter" data-target="9">0</span><span class="unit"> 个</span></div>
         <div class="hero-stat-label">视觉特效</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="7">0</span><span class="unit"> 个</span></div>
+        <div class="hero-stat-label">功能模块</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-num"><span class="counter" data-target="12">0</span><span class="unit"> 条</span></div>
+        <div class="hero-stat-label">设计约束</div>
       </div>
       <div class="hero-stat">
         <div class="hero-stat-num"><span class="counter" data-target="2">0</span><span class="unit"> 天</span></div>
@@ -664,27 +672,27 @@ section { padding: 100px 0; }
       <div class="input-card">
         <div class="card-emoji">🎨</div>
         <h4>Figma 设计令牌</h4>
-        <p>完整品牌色系——蓝色 10 级梯度（主色 <code>#4362ff</code>）、灰色 11 级、白色透明度 10 级。间距 <code>4px</code>→<code>120px</code>，全部导出 CSS 变量。</p>
+        <p>在 Figma 里定好每一个颜色，不让 AI 自由发挥配色。</p>
       </div>
       <div class="input-card">
         <div class="card-emoji">🔤</div>
         <h4>字体规范</h4>
-        <p>UI 字体 <code>JetBrains Mono</code> 全站等宽，代码字体 <code>Courier Prime</code>。12 档字号，字重仅 300 和 500。</p>
+        <p>字体、字号、字重全部指定，AI 只能用我选好的搭配。</p>
       </div>
       <div class="input-card">
         <div class="card-emoji">📦</div>
         <h4>OBJ 3D 模型</h4>
-        <p>5 个 OBJ 格式 3D 模型，原始 10-20MB / 7-15 万顶点，需预处理降采样到 5000 点导出 JSON。</p>
+        <p>找好 3D 模型素材，直接丢给 AI，我不管怎么处理，出效果就行。</p>
       </div>
       <div class="input-card">
         <div class="card-emoji">🔵</div>
         <h4>点阵 SVG</h4>
-        <p>1915×924px 的 <code>dot-matrix.svg</code>（543KB），数千个 <code>&lt;rect&gt;</code> 元素。</p>
+        <p>平时收藏的视觉素材，直接用。点阵、纹理、粒子效果都是积累。</p>
       </div>
       <div class="input-card">
         <div class="card-emoji">📝</div>
         <h4>页面结构与文案</h4>
-        <p>12 个区块——Hero、核心价值、AI 平台 5Tab、品牌故事、隧道、地球、CTA、Footer。双语 EN/CN。</p>
+        <p>用设计思维规划好每个区块，哪里放什么特效，我说了算。</p>
       </div>
       <div class="input-card">
         <div class="card-emoji">⚙️</div>
@@ -704,17 +712,70 @@ section { padding: 100px 0; }
       AI 不缺能力，缺的是约束。没有规范的 AI 输出就是"AI 味儿"——以下规则让它老实干活。
     </p>
     <div class="stack-grid scroll-fade-in" style="--delay:0.3s">
-      <div class="stack-cell"><h4>⚡ Three.js r86</h4><p>本地打包 517KB，旧版 API 稳定够用</p></div>
-      <div class="stack-cell"><h4>🎬 TweenMax</h4><p>GreenSock 经典版 112KB</p></div>
-      <div class="stack-cell"><h4>🖼️ Canvas 2D</h4><p>手写 3D 矩阵运算 + 透视投影</p></div>
-      <div class="stack-cell"><h4>🌍 TopoJSON CDN</h4><p>Natural Earth 数据渲染地球</p></div>
-      <div class="stack-cell"><h4>🎨 CSS 变量</h4><p>完整设计令牌系统</p></div>
-      <div class="stack-cell"><h4>👁️ IntersectionObserver</h4><p>离屏暂停渲染</p></div>
+      <div class="stack-cell"><h4>🎨 色彩规范</h4>
+        <p>只用 Figma 导出的色板，禁止自由配色</p>
+        <p>主色 / 灰阶 / 透明度三套体系</p>
+        <p>深色背景文字必须分层级，不能全白</p>
+        <p>渐变、阴影全部指定，不许 AI 自己编</p>
+      </div>
+      <div class="stack-cell"><h4>✨ 品牌调性</h4>
+        <p>科技感但不冰冷，要有高级质感</p>
+        <p>字体只用两款，绝不多加</p>
+        <p>间距严格对齐 4px 网格</p>
+      </div>
+      <div class="stack-cell"><h4>🎬 动效体验</h4>
+        <p>动画要丝滑、有呼吸感，不要匀速</p>
+        <p>入场缓进缓出，hover 干脆利落</p>
+        <p>禁止弹跳、果冻、闪烁等廉价效果</p>
+      </div>
+      <div class="stack-cell"><h4>👁️ 视觉还原</h4>
+        <p>必须像素级还原 Figma 设计稿</p>
+        <p>参考网站的效果要一比一复刻</p>
+        <p>做不到就给我截图，我来判断差在哪</p>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════ 03: TIMELINE ═══════ -->
+<!-- ═══════ 03: AI BOUNDARY ═══════ -->
+<section>
+  <div class="container">
+    <div class="section-label scroll-fade-in">🚫 03 — AI BOUNDARY</div>
+    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">AI 目前还做不到的事</h2>
+    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
+      AI 能写代码能排版，但设计判断力和专业工具仍不可替代。<br>不知道边界在哪，恰恰说明还没到能判断的水平。
+    </p>
+    <div class="input-grid scroll-fade-in" style="--delay:0.3s">
+      <div class="input-card">
+        <div class="card-emoji">🖼️</div>
+        <h4>抽象概念图与可编辑素材</h4>
+        <p>AI 出图永远"差点意思"，且输出全是死图——没图层、没矢量、没法二次编辑。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">🧊</div>
+        <h4>精确三维模型</h4>
+        <p>品牌级 3D 要精确拓扑和干净布线，AI 生成的面数爆炸、导入引擎没法用。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">✨</div>
+        <h4>精美交互动效</h4>
+        <p>弹性按钮、鼠标跟随、物理回弹——精美复杂的动效要 Rive 手调，AI 做不出。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">🤝</div>
+        <h4>拍板、背锅、推落地</h4>
+        <p>选方案、扛责任、拉团队对齐——AI 能给建议，但不能替你决策，更不能背锅。</p>
+      </div>
+      <div class="input-card">
+        <div class="card-emoji">👀</div>
+        <h4>灵感采集与审美筛选</h4>
+        <p>AI 不会自己逛 Awwwards 挑参考。设计师的审美积累，才是让产出不 generic 的关键输入。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ 04: TIMELINE ═══════ -->
 <section>
   <div class="container">
     <div class="section-label scroll-fade-in">⏱️ 04 — HOW I WORK WITH AI</div>
@@ -728,42 +789,49 @@ section { padding: 100px 0; }
         <div class="tl-dot">1</div>
         <div class="tl-header"><div class="tl-title">先喂规范，再做页面</div></div>
         <p class="tl-desc">第一件事不是说"帮我做个官网"，而是把 Figma 里的设计令牌全部贴给 AI — 颜色 10 级梯度、字体、间距、断点。有了规范，AI 后续所有组件都从变量派生，不会自己发明颜色。</p>
+        <p class="tl-desc" style="color:var(--purple);font-style:italic">跟给前端开发交付规范一个道理，只是对象换成了 AI。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">2</div>
         <div class="tl-header"><div class="tl-title">3 分钟出第一版</div></div>
         <p class="tl-desc">一句话描述需求，AI 生成完整页面骨架。12 个模块 + 设计变量 + 中英切换 + 多端适配 — 3 分钟，从空白到可部署。每次改完直接部署，30 秒后刷新看效果。</p>
+        <p class="tl-desc" style="color:var(--purple);font-style:italic">传统流程出第一版要 2-3 天，现在是 2-3 分钟。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">3</div>
         <div class="tl-header"><div class="tl-title">用参考链接代替文字描述</div></div>
         <p class="tl-desc">不说"让粒子动效更炫" — 这种描述 AI 和前端都听不懂。直接发一篇掘金教程链接、一段开源组件代码，AI 自动提取技术方案，适配到项目里。</p>
+        <p class="tl-desc" style="color:var(--purple);font-style:italic">不描述你要什么感觉，给它看你想要的东西。设计师找参考图的能力，现在可以直接喂给 AI。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">4</div>
         <div class="tl-header"><div class="tl-title">截图驱动的快速迭代</div></div>
         <p class="tl-desc">截图 → 一句话指出问题 → AI 改代码 → 部署 → 30 秒刷新 → 再截图。平台标签页交互 5 轮定稿，每轮 2-3 分钟。传统流程这可能是一来一回的邮件或 30 分钟评审会。</p>
+        <p class="tl-desc" style="color:var(--purple);font-style:italic">能截图就别打字。一张截图 > 100 字描述。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">5</div>
         <div class="tl-header"><div class="tl-title">果断否决，不纠结沉没成本</div></div>
         <p class="tl-desc">AI 会执行任何方案，但不会告诉你哪个更好看。核心价值区块改深色 → 4 分钟看一眼 → 还原白色。3D 地球改多边形 → 看一眼 → 全部推翻改回点阵。最长的"推翻重来"也就几分钟。</p>
+        <p class="tl-desc" style="color:var(--purple);font-style:italic">试错成本低的时候，直接试比讨论更高效。审美判断始终是设计师的活儿。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">6</div>
         <div class="tl-header"><div class="tl-title">最难的需求：3D 地球上的台湾</div></div>
         <p class="tl-desc">5 次尝试：换高精度数据 → 没用。改 1 度网格 → 65000 点卡死。折中 1.5 度 → 台湾太窄消失。AI 建议重写多边形 → 我说"还是要点数的" → 推翻。最终方案：2 度网格 + 小岛手动补点。</p>
+        <p class="tl-desc" style="color:var(--purple);font-style:italic">AI 能想到 4 种解法，但最终选哪个是设计判断。"完美方案"可能不存在，混合策略往往更好。</p>
       </div>
 
       <div class="tl-phase">
         <div class="tl-dot">7</div>
         <div class="tl-header"><div class="tl-title">86 次迭代到最终版</div></div>
         <p class="tl-desc">9 种视觉特效、3 个 Three.js 3D 场景、全端响应式 — 全在一个 HTML 文件里，4000 行代码，0 行手写。从空白到上线，2 天。</p>
+        <p class="tl-desc" style="color:var(--purple);font-style:italic">设计师从"出稿等还原"变成了"直接调出成品"。想做 3D 特效？直接做一版看效果，不用先评估工期。</p>
       </div>
 
     </div>
@@ -777,14 +845,14 @@ section { padding: 100px 0; }
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">视觉特效与交互实现</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，滚出屏幕自动暂停，不浪费性能。</p>
     <div class="fx-grid scroll-fade-in" style="--delay:0.3s">
-      <div class="fx-card"><div class="fx-emoji">🏙️</div><h4>3D 算力中心</h4><div class="fx-tech">3D 渲染 — 237 行</div><p>100 栋建筑 + 300 蓝色粒子旋涡 + 60 条 yoyo 光线。鼠标驱动旋转。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🔮</div><h4>粒子变形</h4><div class="fx-tech">3D 粒子系统 — 280 行</div><p>5000 粒子在 5 个 OBJ 模型间变形。级联延迟 + 多 easing + 拖拽。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🧊</div><h4>线框立方体视差</h4><div class="fx-tech">画布绘制 — 344 行</div><p>rotXYZ + fov=800。色差 4 层叠加 + RGB 十字星。3 种模式。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🔵</div><h4>点阵动画</h4><div class="fx-tech">画布绘制 — 242 行</div><p>12% 蓝色染色，涟漪 12px/帧 + 90px 放大镜 smoothstep。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🌍</div><h4>3D 地球</h4><div class="fx-tech">3D 渲染 + 地理数据 — 325 行</div><p>~16k 点 + 16 城市 + 24 贝塞尔弧 + 手动补台湾/海南。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🚇</div><h4>数据隧道</h4><div class="fx-tech">3D 渲染 — 136 行</div><p>80 余弦曲线，94 发光信号，循环随机分配车道。</p></div>
-      <div class="fx-card"><div class="fx-emoji">🌈</div><h4>Footer CSS 光谱</h4><div class="fx-tech">滚动触发 — 自动播放</div><p>blur(40px)，5.5s–7.2s 异步波浪。</p></div>
-      <div class="fx-card"><div class="fx-emoji">📊</div><h4>全局交互设计</h4><div class="fx-tech">hover + 拖拽 + 滚动联动</div><p>平台标签页 hover 展开联动粒子变形，3D 场景支持鼠标拖拽旋转，球体随鼠标推开粒子，所有动效滚动到位才启动、离屏自动暂停。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🏙️</div><h4>3D 算力中心</h4><div class="fx-tech">3D 渲染 — 237 行</div><p>模拟数据中心机房场景，柱状结构随机生长 + 数据粒子穿梭 + 光线往复流动。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🔮</div><h4>粒子变形</h4><div class="fx-tech">3D 粒子系统 — 280 行</div><p>5000 个粒子在 5 种 3D 模型间流畅变形，每个粒子有独立的延迟和运动轨迹，支持拖拽。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🧊</div><h4>线框立方体视差</h4><div class="fx-tech">画布绘制 — 344 行</div><p>手写 3D 透视引擎，4 层色差叠加 + 十字星标记，跟随手风琴联动切换 3 种模式。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🔵</div><h4>点阵动画</h4><div class="fx-tech">画布绘制 — 242 行</div><p>蓝色染色点阵，涟漪扩散 + 放大镜效果，鼠标悬停有平滑跟随。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🌍</div><h4>3D 地球</h4><div class="fx-tech">3D 渲染 + 地理数据 — 325 行</div><p>约 16000 个点组成地球，16 座城市 + 24 条飞行弧线，手动补充台湾、海南等小岛。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🚇</div><h4>数据隧道</h4><div class="fx-tech">3D 渲染 — 136 行</div><p>80 条曲线构成隧道，94 个发光信号沿线穿梭，随机分配轨道。</p></div>
+      <div class="fx-card"><div class="fx-emoji">📊</div><h4>统计数字动画</h4><div class="fx-tech">滚动触发 — 自动播放</div><p>数字从 0 跑到目标值，配合淡入上移，滚动到位自动开始。</p></div>
+      <div class="fx-card"><div class="fx-emoji">🖱️</div><h4>全局交互设计</h4><div class="fx-tech">hover + 拖拽 + 滚动联动</div><p>平台标签页 hover 展开联动粒子变形，3D 场景支持鼠标拖拽旋转，球体随鼠标推开粒子，所有动效滚动到位才启动、离屏自动暂停。</p></div>
       <div class="fx-card"><div class="fx-emoji">✨</div><h4>滚动驱动的分层入场</h4><div class="fx-tech">滚动触发 — 逐层渐入</div><p>每个模块的标题、描述、内容按顺序依次淡入上移，滚动到哪播到哪，营造阅读节奏感。</p></div>
     </div>
   </div>
@@ -798,44 +866,22 @@ section { padding: 100px 0; }
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">每一个"回退"都是快速实验和理性判断。</p>
     <div class="challenge-grid scroll-fade-in" style="--delay:0.3s">
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>地球上台湾消失</h4><p>低精度 TopoJSON + 大 step，台湾没有陆地点。step=1 有 65k 点太卡。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>高精度 + 手动补点</h4><p>countries-50m.json + step=2（~16k）+ 手动补台湾/海南/斯里兰卡。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>地球上台湾消失</h4><p>低精度地理数据 + 大采样间距，台湾太窄被跳过。加密采样又导致 65k 个点，直接卡死。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>高精度 + 手动补点</h4><p>保持大间距（性能好）+ 高精度地图数据 + 手动为台湾、海南等小岛补充坐标点。</p></div>
       </div>
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>点阵动画性能崩溃</h4><p>数千 rect 用 CSS Transform 缩放，浏览器重排卡顿。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>改用画布逐帧绘制</h4><p>DOMParser 提取坐标 → Canvas 逐帧。涟漪 12px/帧 + smoothstep 放大镜。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>点阵动画性能崩溃</h4><p>数千个元素用样式缩放，浏览器重排卡顿严重。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>改用画布逐帧绘制</h4><p>提取坐标后用画布逐帧渲染，涟漪扩散 + 放大镜效果流畅运行。</p></div>
       </div>
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>暗色背景对比度差</h4><p>立方体和文本在暗色背景上对比度不好。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>4 分钟果断回退</h4><p>提交后立即还原，CLAUDE.md 记录"确认保持白色"。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>暗色背景对比度差</h4><p>线框和文本在暗色背景上都糊成一团，看不清。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>4 分钟果断回退</h4><p>看一眼就知道不行，立刻还原白色背景。试错成本低就直接试。</p></div>
       </div>
       <div class="challenge-row">
-        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>某个模块风格不统一</h4><p>GSAP 全屏滚动光谱完全抢走注意力。</p></div>
-        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>大胆砍掉</h4><p>display:none 观察 → 确认不需要 → 彻底删除 + 移除 GSAP CDN。</p></div>
+        <div class="challenge-cell problem"><div class="challenge-label">问题</div><h4>某个模块风格不统一</h4><p>做出来的效果太抢眼，和整体页面风格不和谐。</p></div>
+        <div class="challenge-cell solution"><div class="challenge-label">解法</div><h4>大胆砍掉</h4><p>先隐藏观察 → 确认不需要 → 彻底删除。不纠结沉没成本。</p></div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ═══════ 06: ARCHITECTURE ═══════ -->
-<section class="glass-section">
-  <div class="container">
-    <div class="section-label scroll-fade-in">🏗️ 07 — ARCHITECTURE</div>
-    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">最终文件结构</h2>
-    <p class="section-desc scroll-fade-in" style="--delay:0.2s">极简主义，单文件架构。</p>
-    <div class="arch-box scroll-fade-in" style="--delay:0.3s"><span class="dir">xyz-cloud-site/</span>
-├── index.html          <span class="size">139 KB</span>  <span class="comment">// 单文件 ~4000 行</span>
-├── dot-matrix.svg      <span class="size">543 KB</span>  <span class="comment">// 点阵数据源</span>
-├── three.min.js        <span class="size">517 KB</span>  <span class="comment">// Three.js r86</span>
-├── TweenMax.min.js     <span class="size">112 KB</span>  <span class="comment">// GreenSock</span>
-├── <span class="dir">models/</span>
-│   ├── cloud-computing.json    <span class="size">109 KB</span>
-│   ├── cloud-hosting.json      <span class="size">108 KB</span>
-│   ├── server.json             <span class="size">108 KB</span>
-│   ├── virtual-machine.json    <span class="size">109 KB</span>
-│   └── access-control.json     <span class="size">108 KB</span>
-├── CLAUDE.md           <span class="comment">// AI 协作规范</span>
-└── PROJECT_SUMMARY.md  <span class="comment">// 技术文档</span></div>
   </div>
 </section>
 
@@ -926,59 +972,6 @@ section { padding: 100px 0; }
   </div>
 </section>
 
-<!-- ═══════ 08: EFFECT SHOWCASE ═══════ -->
-<section class="glass-section">
-  <div class="container">
-    <div class="section-label scroll-fade-in">📸 09 — EFFECT SHOWCASE</div>
-    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">最终效果实拍</h2>
-    <p class="section-desc scroll-fade-in" style="--delay:0.2s">1440×900 视口下截取的实际运行画面。</p>
-    <div class="shot-grid scroll-fade-in" style="--delay:0.3s">
-      <div class="shot-card">
-        <img src="./screenshots/01-hero-3d-city-skyline.png" alt="Hero 3D城市天际线" loading="lazy">
-        <div class="shot-info">
-          <div class="shot-name">Hero — 3D 城市天际线</div>
-          <div class="shot-tech">Three.js r86 · 100 建筑 + 300 粒子 + 60 光线</div>
-        </div>
-      </div>
-      <div class="shot-card">
-        <img src="./screenshots/02-particle-morph-ai-platform.png" alt="粒子变形 AI 平台" loading="lazy">
-        <div class="shot-info">
-          <div class="shot-name">粒子变形 — AI 开发平台</div>
-          <div class="shot-tech">Three.js · 5000 粒子 · 5 种 OBJ 模型变形</div>
-        </div>
-      </div>
-      <div class="shot-card">
-        <img src="./screenshots/04-data-tunnel.png" alt="数据隧道" loading="lazy">
-        <div class="shot-info">
-          <div class="shot-name">数据隧道 — 信号流动画</div>
-          <div class="shot-tech">Three.js · 80 余弦曲线 + 94 发光信号</div>
-        </div>
-      </div>
-      <div class="shot-card">
-        <img src="./screenshots/06-3d-globe-detail.png" alt="3D 地球" loading="lazy">
-        <div class="shot-info">
-          <div class="shot-name">3D 地球 — 全球基础设施</div>
-          <div class="shot-tech">Three.js + TopoJSON · 16k 点 + 16 城市 + 24 飞行弧线</div>
-        </div>
-      </div>
-      <div class="shot-card">
-        <img src="./screenshots/03-particle-morph-canvas-detail.png" alt="粒子变形细节" loading="lazy">
-        <div class="shot-info">
-          <div class="shot-name">粒子变形 — 近距离细节</div>
-          <div class="shot-tech">Float32Array 手动插值 · 级联延迟 + 多 easing</div>
-        </div>
-      </div>
-      <div class="shot-card">
-        <img src="./screenshots/05-3d-globe-section-top.png" alt="全球基础设施" loading="lazy">
-        <div class="shot-info">
-          <div class="shot-name">统计数字 + 地球入场</div>
-          <div class="shot-tech">IntersectionObserver · 2000ms cubic ease-out 计数</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══════ 09: OBJ PIPELINE ═══════ -->
 <section>
   <div class="container">
@@ -1043,49 +1036,10 @@ section { padding: 100px 0; }
   </div>
 </section>
 
-<!-- ═══════ 10: AI COLLABORATION ═══════ -->
-<section class="glass-section">
-  <div class="container">
-    <div class="section-label scroll-fade-in">🤖 11 — AI COLLABORATION</div>
-    <h2 class="section-title scroll-fade-in" style="--delay:0.1s">人机协作开发模式</h2>
-    <p class="section-desc scroll-fade-in" style="--delay:0.2s">
-      这个项目从第一行代码到最终部署，全程由人类开发者与 Claude AI 协作完成。CLAUDE.md 是"AI 的规范手册"。
-    </p>
-    <div class="collab-grid scroll-fade-in" style="--delay:0.3s">
-      <div class="collab-card">
-        <div class="collab-role">🤖 AI 负责</div>
-        <h4>代码生成与算法实现</h4>
-        <p>所有 Three.js 特效代码、Canvas 2D 矩阵运算、TopoJSON 地球渲染、粒子变形插值算法——由 Claude 生成初始实现。</p>
-      </div>
-      <div class="collab-card">
-        <div class="collab-role">👨‍🎨 人类负责</div>
-        <h4>视觉判断与品质把控</h4>
-        <p>效果好不好看、动画速度是否舒服、颜色搭配对不对、模型变形是否自然——这些审美决策全部由人类拍板。</p>
-      </div>
-      <div class="collab-card">
-        <div class="collab-role">🔄 协作模式</div>
-        <h4>快速迭代 · 即时反馈</h4>
-        <p>数据隧道 8 次参数微调、点阵动画 7 次迭代、地球特效 5 次重写。人类说"不好"，AI 立刻改——平均 2 分钟一轮。</p>
-      </div>
-      <div class="collab-card">
-        <div class="collab-role">📚 知识沉淀</div>
-        <h4>CLAUDE.md — AI 的规范手册</h4>
-        <p>132 行的项目规范文件，记录每个技术约束、设计决策和踩坑经验。确保 AI 不会重复犯错，也是项目知识的永久存档。</p>
-      </div>
-    </div>
-    <div class="collab-stats scroll-fade-in" style="--delay:0.4s">
-      <div class="collab-stat-item"><div class="cs-num">86</div><div class="cs-label">Git Commits</div></div>
-      <div class="collab-stat-item"><div class="cs-num">~30</div><div class="cs-label">迭代轮次</div></div>
-      <div class="collab-stat-item"><div class="cs-num">132</div><div class="cs-label">CLAUDE.md 行数</div></div>
-      <div class="collab-stat-item"><div class="cs-num">2</div><div class="cs-label">核心开发天数</div></div>
-    </div>
-  </div>
-</section>
-
 <!-- ═══════ 11: LESSONS LEARNED ═══════ -->
 <section>
   <div class="container">
-    <div class="section-label scroll-fade-in">💡 12 — LESSONS LEARNED</div>
+    <div class="section-label scroll-fade-in">💡 11 — LESSONS LEARNED</div>
     <h2 class="section-title scroll-fade-in" style="--delay:0.1s">复盘与收获</h2>
     <p class="section-desc scroll-fade-in" style="--delay:0.2s">
       86 次提交，2 天核心开发，平均 2 分钟一轮迭代。这条路上想明白的事。
