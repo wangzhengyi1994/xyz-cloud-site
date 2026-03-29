@@ -32,7 +32,7 @@ body {
   background: var(--dark);
   color: rgba(255,255,255,0.8);
   font-family: var(--font);
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.7;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -59,8 +59,8 @@ body {
 .section-title-dark { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 12px; }
 .section-title-light { font-size: 42px; font-weight: 500; line-height: 1.2; color: #fff; margin-bottom: 12px; }
 .section-num { font-size: 14px; color: var(--primary); letter-spacing: 3px; margin-bottom: 8px; }
-.section-desc-dark { font-size: 18px; font-weight: 300; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
-.section-desc-light { font-size: 18px; font-weight: 300; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
+.section-desc-dark { font-size: 18px; font-weight: 400; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
+.section-desc-light { font-size: 18px; font-weight: 400; line-height: 1.6; color: var(--white-8); max-width: 800px; margin-bottom: 32px; }
 .section-row { display: flex; gap: 80px; align-items: flex-start; }
 
 /* Content blocks fill remaining PPT slide space */
@@ -185,7 +185,7 @@ body {
 .hero-bottom { text-align: center; width: 100%; max-width: 960px; }
 
 .hero-label {
-  font-size: 14px; font-weight: 300; letter-spacing: 4px;
+  font-size: 14px; font-weight: 400; letter-spacing: 4px;
   text-transform: uppercase; color: rgba(255,255,255,0.45);
   margin-bottom: 24px;
   opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
@@ -204,7 +204,7 @@ body {
 }
 
 .hero-sub {
-  font-size: 18px; font-weight: 300; line-height: 30px;
+  font-size: 18px; font-weight: 400; line-height: 30px;
   color: rgba(255,255,255,0.80);
   letter-spacing: 0.02em;
   opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s;
@@ -237,7 +237,7 @@ body {
 }
 
 .hero-stat-num { font-size: 56px; font-weight: 500; color: #fff; line-height: 1; margin-bottom: 12px; white-space: nowrap; }
-.hero-stat-num .unit { font-size: 18px; font-weight: 300; color: #fff; }
+.hero-stat-num .unit { font-size: 18px; font-weight: 400; color: #fff; }
 .hero-stat-label {
   font-size: 16px; font-weight: 500; color: #fff;
   letter-spacing: 2px;
@@ -380,7 +380,7 @@ body {
 }
 .demo-block {
   padding: 10px 8px; text-align: center;
-  font-size: 10px; font-weight: 300;
+  font-size: 10px; font-weight: 400;
   border: 1px solid var(--white-1);
   color: var(--white-5);
   transition: all 0.2s;
@@ -582,7 +582,7 @@ body {
 .bd-item.active .bd-title { color: #fff; }
 .bd-desc {
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 400;
   line-height: 1.7;
   color: var(--white-4);
   margin: 7px 0 0 28px;
@@ -710,74 +710,48 @@ body {
   padding-left: 28px;
 }
 
-/* 发光滚动条 — 4px竖线 + 蓝色发光点 */
+/* ═══ 发光滚动条（严格照搬参考源码） ═══ */
 .tl-scrollbar {
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 4px;
-  background-color: rgba(255,255,255,0.06);
-  overflow: visible;
-}
-/* 发光点 — 用伪元素做大尺寸 glow，不被 4px 宽度裁切 */
-.tl-scrollbar::before {
-  content: '';
-  position: absolute;
-  left: -18px; width: 40px; height: 40px;
-  top: var(--tl-glow-y, -10%);
-  border-radius: 50%;
-  background: radial-gradient(circle,
-    rgba(100, 140, 255, 0.9) 0%,
-    rgba(56, 106, 249, 0.5) 30%,
-    rgba(10, 76, 242, 0.2) 60%,
-    transparent 100%
+  background-color: rgba(255,255,255,0.1);
+  background-image: radial-gradient(
+    circle at 0% var(--scroll-y-position, -10%),
+    rgb(112, 153, 255) 0%,
+    rgba(56, 106, 249, 0.79) 10px,
+    rgba(10, 76, 242, 0.53) 20px,
+    rgba(255, 255, 255, 0) 40px,
+    rgba(49, 49, 49, 0) 100%
   );
-  filter: blur(6px);
-  pointer-events: none;
-}
-/* 竖线上的亮点 */
-.tl-scrollbar::after {
-  content: '';
-  position: absolute;
-  left: 0; width: 4px; height: 20px;
-  top: var(--tl-glow-y, -10%);
-  background: rgb(120, 160, 255);
-  border-radius: 2px;
-  box-shadow: 0 0 12px 4px rgba(80, 120, 255, 0.7);
-  pointer-events: none;
 }
 
-/* 左边框发光反射 */
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 2px;
-  background: linear-gradient(180deg,
-    rgba(10,76,242,0) 0%, rgba(10,76,242,0.75) 38%,
-    rgb(77,127,255) 51%, rgba(10,76,242,0.75) 63%,
-    rgba(10,76,242,0) 100%
-  );
-  background-repeat: no-repeat;
-  background-size: 2px 150px;
-  background-position-y: var(--tl-reflect-y, -10%);
-  filter: blur(2px);
-  pointer-events: none;
-}
+/* 左边框发光反射（参考源码 container::before/after） */
+.timeline::before,
 .timeline::after {
   content: '';
   position: absolute;
-  left: -5px; top: 0; bottom: 0;
-  width: 20px;
+  left: 0; top: 0; bottom: 0;
   background: linear-gradient(180deg,
-    rgba(10,76,242,0) 0%, rgba(10,76,242,0.6) 38%,
-    rgb(77,127,255) 51%, rgba(10,76,242,0.6) 63%,
+    rgba(10,76,242,0) 0%,
+    rgba(10,76,242,0.75) 38.3%,
+    rgb(77,127,255) 50.9%,
+    rgba(10,76,242,0.75) 63.1%,
     rgba(10,76,242,0) 100%
   );
   background-repeat: no-repeat;
-  background-size: 20px 200px;
-  background-position-y: var(--tl-reflect-y, -10%);
-  filter: blur(12px);
+  background-position-y: var(--reflection-y-position, -50%);
   pointer-events: none;
+}
+.timeline::before {
+  width: 1px;
+  background-size: 1px 150px;
+  filter: blur(1px);
+}
+.timeline::after {
+  width: 10px;
+  background-size: 10px 150px;
+  filter: blur(10px);
 }
 
 /* Phase: 正常流式布局，默认暗淡 */
@@ -889,7 +863,7 @@ body {
 
 .fx-card h4 { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 6px; }
 .fx-tech { font-size: 11px; color: var(--primary); margin-bottom: 10px; letter-spacing: 0.5px; }
-.fx-card p { font-size: 13px; font-weight: 300; line-height: 20px; color: var(--white-5); max-width: 480px; }
+.fx-card p { font-size: 13px; font-weight: 400; line-height: 20px; color: var(--white-5); max-width: 480px; }
 
 /* ═══════ CHALLENGES (light bg) ═══════ */
 .challenge-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid var(--white-1); }
@@ -910,7 +884,7 @@ body {
 .problem .challenge-label { color: var(--orange); }
 .solution .challenge-label { color: #059669; }
 .challenge-cell h4 { font-size: 15px; font-weight: 500; color: var(--white-8); margin-bottom: 10px; }
-.challenge-cell p { font-size: 13px; font-weight: 300; line-height: 20px; color: var(--white-5); }
+.challenge-cell p { font-size: 13px; font-weight: 400; line-height: 20px; color: var(--white-5); }
 
 /* ═══════ ARCH BOX (dark bg) ═══════ */
 .arch-box {
@@ -933,7 +907,7 @@ body {
 .result-url {
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(255,255,255,0.1); color: var(--primary);
-  font-size: 16px; font-family: var(--font); font-weight: 300;
+  font-size: 16px; font-family: var(--font); font-weight: 400;
   padding: 0 24px 0 16px; height: 40px;
   border: none; text-decoration: none; transition: all 0.2s; cursor: pointer;
 }
@@ -970,7 +944,7 @@ body {
 
 .footer > .container { position: relative; z-index: 1; }
 .footer-inner { border-left: 1px solid var(--white-1); border-right: 1px solid var(--white-1); padding: 48px 16px; text-align: center; }
-.footer-text { font-size: 11px; font-weight: 300; color: var(--white-5); letter-spacing: 2px; text-transform: uppercase; }
+.footer-text { font-size: 11px; font-weight: 400; color: var(--white-5); letter-spacing: 2px; text-transform: uppercase; }
 
 /* ═══════ PARTICLE BG (nextUI exact — Three.js 800 particles + 50 accent stars) ═══════ */
 .particle-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 2; }
@@ -1056,7 +1030,7 @@ body {
 .pipe-step:hover { background: rgba(255,255,255,0.06); }
 .pipe-step .pipe-icon { font-size: 28px; margin-bottom: 8px; color: var(--primary); }
 .pipe-step h4 { font-size: 13px; font-weight: 500; color: var(--white-8); margin-bottom: 4px; }
-.pipe-step p { font-size: 10px; font-weight: 300; color: var(--white-5); line-height: 15px; }
+.pipe-step p { font-size: 10px; font-weight: 400; color: var(--white-5); line-height: 15px; }
 .pipe-arrow { display: none; }
 
 .pipe-compare {
@@ -1064,9 +1038,9 @@ body {
   margin-top: 48px; border: 1px solid var(--white-1); padding: 32px;
 }
 .pipe-big { font-size: 40px; font-weight: 500; color: var(--white-8); line-height: 1; }
-.pipe-big .unit { font-size: 14px; font-weight: 300; color: var(--white-5); }
+.pipe-big .unit { font-size: 14px; font-weight: 400; color: var(--white-5); }
 .pipe-label { font-size: 10px; color: var(--white-5); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
-.pipe-vs { font-size: 24px; color: var(--primary); font-weight: 300; }
+.pipe-vs { font-size: 24px; color: var(--primary); font-weight: 400; }
 
 /* ═══════ AI COLLAB (dark bg) ═══════ */
 .collab-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; flex: 1; min-height: 0; overflow: hidden; }
@@ -1076,7 +1050,7 @@ body {
 .collab-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
 .collab-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--primary); margin-bottom: 12px; }
 .collab-card h4 { font-size: 15px; font-weight: 500; color: #fff; margin-bottom: 8px; }
-.collab-card p { font-size: 13px; font-weight: 300; color: var(--white-5); line-height: 20px; }
+.collab-card p { font-size: 13px; font-weight: 400; color: var(--white-5); line-height: 20px; }
 
 .collab-stats { display: flex; gap: 0; margin-top: 32px; border: 1px solid var(--white-1); }
 .collab-stat-item {
@@ -1096,7 +1070,7 @@ body {
 .lesson-item:hover { background: rgba(255,255,255,0.05); }
 .lesson-num { font-size: 28px; font-weight: 500; color: var(--primary); line-height: 1; min-width: 40px; }
 .lesson-body h4 { font-size: 15px; font-weight: 500; color: var(--white-8); margin-bottom: 6px; }
-.lesson-body p { font-size: 13px; font-weight: 300; color: var(--white-5); line-height: 20px; }
+.lesson-body p { font-size: 13px; font-weight: 400; color: var(--white-5); line-height: 20px; }
 
 /* ═══════ RESPONSIVE ═══════ */
 @media (max-width: 1200px) {
@@ -1704,29 +1678,6 @@ body {
   </div>
 </section>
 
-<!-- ═══════ 06: ARCHITECTURE (dark) ═══════ -->
-<section class="section-dark">
-  <div class="container">
-    <div class="section-inner">
-      <div class="section-num scroll-fade-in">07 — ARCHITECTURE</div>
-      <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">最终文件结构</h2>
-      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">极简主义，总体积 1.3MB。</p>
-      <div class="arch-box scroll-fade-in" style="--delay:0.3s"><span class="dir">xyz-cloud-site/</span>
-├── index.html          <span class="size">139 KB</span>  <span class="comment">// 单文件 ~4000 行</span>
-├── dot-matrix.svg      <span class="size">543 KB</span>  <span class="comment">// 点阵数据源</span>
-├── three.min.js        <span class="size">517 KB</span>  <span class="comment">// Three.js r86</span>
-├── TweenMax.min.js     <span class="size">112 KB</span>  <span class="comment">// GreenSock</span>
-├── <span class="dir">models/</span>
-│   ├── cloud-computing.json    <span class="size">109 KB</span>
-│   ├── cloud-hosting.json      <span class="size">108 KB</span>
-│   ├── server.json             <span class="size">108 KB</span>
-│   ├── virtual-machine.json    <span class="size">109 KB</span>
-│   └── access-control.json     <span class="size">108 KB</span>
-├── CLAUDE.md           <span class="comment">// AI 协作规范</span>
-└── PROJECT_SUMMARY.md  <span class="comment">// 技术文档</span></div>
-    </div>
-  </div>
-</section>
 
 <!-- ═══════ 07: DESIGN TOKENS (light) ═══════ -->
 <section class="section-dark">
@@ -2156,34 +2107,23 @@ body {
   var tlPhases = document.querySelectorAll('.tl-phase');
 
   if (tlContainer && tlPhases.length) {
-    // 发光点 + 反射跟随滚动从上到下
+    // 发光点 + 反射跟随滚动（直接设置 CSS 变量，参考源码逻辑）
     var tlScrollbar = document.querySelector('.tl-scrollbar');
-    gsap.fromTo(tlScrollbar,
-      { '--tl-glow-y': '-5%' },
-      {
-        '--tl-glow-y': '100%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: tlContainer,
-          scrub: 0.3,
-          start: 'top 80%',
-          end: 'bottom 20%',
-        }
+    ScrollTrigger.create({
+      trigger: tlContainer,
+      scrub: true,
+      start: 'top 80%',
+      end: 'bottom 20%',
+      onUpdate: function(self) {
+        var p = self.progress; // 0→1
+        var scrollY = -10 + p * 115;        // -10% → 105%
+        var reflectY = -22 + p * 137;       // -22% → 115%
+        var barColor = p > 0.01 ? 'rgba(255,255,255,0.1)' : 'transparent';
+        tlScrollbar.style.setProperty('--scroll-y-position', scrollY + '%');
+        tlScrollbar.style.setProperty('background-color', barColor);
+        tlContainer.style.setProperty('--reflection-y-position', reflectY + '%');
       }
-    );
-    gsap.fromTo(tlContainer,
-      { '--tl-reflect-y': '-10%' },
-      {
-        '--tl-reflect-y': '110%',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: tlContainer,
-          scrub: 0.3,
-          start: 'top 80%',
-          end: 'bottom 20%',
-        }
-      }
-    );
+    });
 
     // 只高亮离视口中心最近的那一个 phase
     var activeIndex = -1;
