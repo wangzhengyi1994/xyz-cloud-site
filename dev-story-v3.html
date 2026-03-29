@@ -2114,30 +2114,24 @@ body {
     tlPhases[0].classList.add('active');
     activeIndex = 0;
 
-    // 单个 scroll listener 同时驱动光效 + 高亮
+    // 光效跟踪当前 active phase 的位置
+    function updateGlow(idx) {
+      if (!tlScrollbar || idx < 0) return;
+      var containerRect = tlContainer.getBoundingClientRect();
+      var containerH = tlContainer.offsetHeight;
+      var phaseRect = tlPhases[idx].getBoundingClientRect();
+      // phase 标题中心相对于 timeline 容器的位置（百分比）
+      var phaseCenter = (phaseRect.top - containerRect.top) + phaseRect.height * 0.35;
+      var pct = (phaseCenter / containerH) * 100;
+      tlScrollbar.style.setProperty('--scroll-y-position', pct + '%');
+      tlScrollbar.style.backgroundColor = 'rgba(255,255,255,0.1)';
+      tlContainer.style.setProperty('--reflection-y-position', pct + '%');
+    }
+
+    updateGlow(0);
+
     window.addEventListener('scroll', function() {
-      var rect = tlContainer.getBoundingClientRect();
       var vh = window.innerHeight;
-      var top = rect.top;
-      var h = rect.height;
-
-      // 计算滚动进度 0→1（timeline 从视口80%到20%）
-      var start = vh * 0.8;
-      var end = vh * 0.2;
-      var p = Math.max(0, Math.min(1, (start - top) / (h - (vh - start) - end)));
-
-      // 光效位置
-      if (tlScrollbar) {
-        var scrollY = -10 + p * 115;
-        var reflectY = -22 + p * 137;
-        tlScrollbar.style.setProperty('--scroll-y-position', scrollY + '%');
-        if (p > 0.01) {
-          tlScrollbar.style.backgroundColor = 'rgba(255,255,255,0.1)';
-        }
-        tlContainer.style.setProperty('--reflection-y-position', reflectY + '%');
-      }
-
-      // 只高亮最近视口中心的 phase
       var target = vh * 0.45;
       var bestIdx = -1;
       var bestDist = Infinity;
@@ -2152,6 +2146,8 @@ body {
         if (bestIdx >= 0) tlPhases[bestIdx].classList.add('active');
         activeIndex = bestIdx;
       }
+      // 光效始终跟着当前 active phase
+      updateGlow(activeIndex);
     });
   }
 
