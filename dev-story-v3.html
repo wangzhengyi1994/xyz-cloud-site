@@ -1573,14 +1573,14 @@ body {
       <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">9 个特效的技术实现</h2>
       <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">每个特效独立渲染，滚出屏幕自动暂停，不浪费性能。</p>
       <div class="fx-grid scroll-fade-in" style="--delay:0.3s">
-        <div class="fx-card"><h4>Hero 3D 城市天际线</h4><div class="fx-tech">Three.js r86 + TweenMax — 237 行</div><p>100 栋建筑 + 300 蓝色粒子旋涡 + 60 条 yoyo 光线。鼠标驱动旋转。</p></div>
-        <div class="fx-card"><h4>粒子变形</h4><div class="fx-tech">Three.js + Float32Array — 280 行</div><p>5000 粒子在 5 个 OBJ 模型间变形。级联延迟 + 多 easing + 拖拽。</p></div>
-        <div class="fx-card"><h4>线框立方体视差</h4><div class="fx-tech">Canvas 2D + 手写矩阵 — 344 行</div><p>rotXYZ + fov=800。色差 4 层叠加 + RGB 十字星。3 种模式。</p></div>
-        <div class="fx-card"><h4>点阵动画</h4><div class="fx-tech">Canvas 2D + DOMParser — 242 行</div><p>12% 蓝色染色，涟漪 12px/帧 + 90px 放大镜 smoothstep。</p></div>
-        <div class="fx-card"><h4>3D 地球</h4><div class="fx-tech">Three.js + TopoJSON — 325 行</div><p>~16k 点 + 16 城市 + 24 贝塞尔弧 + 手动补台湾/海南。</p></div>
-        <div class="fx-card"><h4>数据隧道</h4><div class="fx-tech">Three.js + AdditiveBlending — 136 行</div><p>80 余弦曲线，94 发光信号，循环随机分配车道。</p></div>
-        <div class="fx-card"><h4>Footer CSS 光谱</h4><div class="fx-tech">纯 CSS — 9 条渐变列</div><p>blur(40px)，5.5s–7.2s 异步波浪。</p></div>
-        <div class="fx-card"><h4>统计数字 + 滚动淡入</h4><div class="fx-tech">IntersectionObserver + cubic ease-out</div><p>2000ms 计数 + translateY/opacity 淡入。</p></div>
+        <div class="fx-card"><h4>3D 城市天际线</h4><div class="fx-tech">3D 渲染 — 237 行</div><p>100 栋建筑随机生长 + 300 个粒子旋涡 + 60 条往复光线。鼠标可拖拽旋转。</p></div>
+        <div class="fx-card"><h4>粒子变形</h4><div class="fx-tech">3D 粒子系统 — 280 行</div><p>5000 个粒子在 5 种 3D 模型间流畅变形，每个粒子有独立的延迟和运动轨迹，支持拖拽。</p></div>
+        <div class="fx-card"><h4>线框立方体视差</h4><div class="fx-tech">画布绘制 — 344 行</div><p>手写 3D 透视引擎，4 层色差叠加 + 十字星标记，跟随手风琴联动切换 3 种模式。</p></div>
+        <div class="fx-card"><h4>点阵动画</h4><div class="fx-tech">画布绘制 — 242 行</div><p>蓝色染色点阵，涟漪扩散 + 放大镜效果，鼠标悬停有平滑跟随。</p></div>
+        <div class="fx-card"><h4>3D 地球</h4><div class="fx-tech">3D 渲染 + 地理数据 — 325 行</div><p>约 16000 个点组成地球，16 座城市 + 24 条飞行弧线，手动补充台湾、海南等小岛。</p></div>
+        <div class="fx-card"><h4>数据隧道</h4><div class="fx-tech">3D 渲染 — 136 行</div><p>80 条曲线构成隧道，94 个发光信号沿线穿梭，随机分配轨道。</p></div>
+        <div class="fx-card"><h4>底部光谱动画</h4><div class="fx-tech">纯样式实现 — 9 条渐变列</div><p>9 条色彩柱体异步波浪起伏，柔和模糊，营造科技感收尾。</p></div>
+        <div class="fx-card"><h4>统计数字动画</h4><div class="fx-tech">滚动触发 — 自动播放</div><p>数字从 0 跑到目标值，配合淡入上移，滚动到位自动开始。</p></div>
       </div>
     </div>
   </div>
