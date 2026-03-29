@@ -710,45 +710,74 @@ body {
   padding-left: 28px;
 }
 
-/* 发光滚动条 — 4px竖线 + radial-gradient蓝色发光 */
+/* 发光滚动条 — 4px竖线 + 蓝色发光点 */
 .tl-scrollbar {
   position: absolute;
   left: 0; top: 0; bottom: 0;
   width: 4px;
-  background-color: rgba(255,255,255,0.1);
-  background-image: radial-gradient(
-    circle at 50% var(--tl-glow-y, -10%),
-    rgb(112, 153, 255) 0%,
-    rgba(56, 106, 249, 0.79) 10px,
-    rgba(10, 76, 242, 0.53) 20px,
-    rgba(255, 255, 255, 0) 40px
+  background-color: rgba(255,255,255,0.06);
+  overflow: visible;
+}
+/* 发光点 — 用伪元素做大尺寸 glow，不被 4px 宽度裁切 */
+.tl-scrollbar::before {
+  content: '';
+  position: absolute;
+  left: -18px; width: 40px; height: 40px;
+  top: var(--tl-glow-y, -10%);
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(100, 140, 255, 0.9) 0%,
+    rgba(56, 106, 249, 0.5) 30%,
+    rgba(10, 76, 242, 0.2) 60%,
+    transparent 100%
   );
+  filter: blur(6px);
+  pointer-events: none;
+}
+/* 竖线上的亮点 */
+.tl-scrollbar::after {
+  content: '';
+  position: absolute;
+  left: 0; width: 4px; height: 20px;
+  top: var(--tl-glow-y, -10%);
+  background: rgb(120, 160, 255);
+  border-radius: 2px;
+  box-shadow: 0 0 12px 4px rgba(80, 120, 255, 0.7);
+  pointer-events: none;
 }
 
 /* 左边框发光反射 */
-.timeline::before,
-.timeline::after {
+.timeline::before {
   content: '';
   position: absolute;
   left: 0; top: 0; bottom: 0;
+  width: 2px;
   background: linear-gradient(180deg,
     rgba(10,76,242,0) 0%, rgba(10,76,242,0.75) 38%,
     rgb(77,127,255) 51%, rgba(10,76,242,0.75) 63%,
     rgba(10,76,242,0) 100%
   );
   background-repeat: no-repeat;
+  background-size: 2px 150px;
   background-position-y: var(--tl-reflect-y, -10%);
+  filter: blur(2px);
   pointer-events: none;
 }
-.timeline::before {
-  width: 1px;
-  background-size: 1px 150px;
-  filter: blur(1px);
-}
 .timeline::after {
-  width: 10px;
-  background-size: 10px 150px;
-  filter: blur(10px);
+  content: '';
+  position: absolute;
+  left: -5px; top: 0; bottom: 0;
+  width: 20px;
+  background: linear-gradient(180deg,
+    rgba(10,76,242,0) 0%, rgba(10,76,242,0.6) 38%,
+    rgb(77,127,255) 51%, rgba(10,76,242,0.6) 63%,
+    rgba(10,76,242,0) 100%
+  );
+  background-repeat: no-repeat;
+  background-size: 20px 200px;
+  background-position-y: var(--tl-reflect-y, -10%);
+  filter: blur(12px);
+  pointer-events: none;
 }
 
 /* Phase: 正常流式布局，默认暗淡 */
@@ -2128,10 +2157,24 @@ body {
 
   if (tlContainer && tlPhases.length) {
     // 发光点 + 反射跟随滚动从上到下
-    gsap.fromTo(tlContainer,
-      { '--tl-glow-y': '-10%', '--tl-reflect-y': '-22%' },
+    var tlScrollbar = document.querySelector('.tl-scrollbar');
+    gsap.fromTo(tlScrollbar,
+      { '--tl-glow-y': '-5%' },
       {
-        '--tl-glow-y': '105%', '--tl-reflect-y': '115%',
+        '--tl-glow-y': '100%',
+        ease: 'none',
+        scrollTrigger: {
+          trigger: tlContainer,
+          scrub: 0.3,
+          start: 'top 80%',
+          end: 'bottom 20%',
+        }
+      }
+    );
+    gsap.fromTo(tlContainer,
+      { '--tl-reflect-y': '-10%' },
+      {
+        '--tl-reflect-y': '110%',
         ease: 'none',
         scrollTrigger: {
           trigger: tlContainer,
