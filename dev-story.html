@@ -872,7 +872,7 @@ body {
     <div class="section-inner">
       <div class="section-num scroll-fade-in">06 — ARCHITECTURE</div>
       <h2 class="section-title-dark scroll-fade-in" style="--delay:0.1s">最终文件结构</h2>
-      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">极简主义，总体积 1.3MB。</p>
+      <p class="section-desc-dark scroll-fade-in" style="--delay:0.2s">极简主义，单文件架构。</p>
       <div class="arch-box scroll-fade-in" style="--delay:0.3s"><span class="dir">xyz-cloud-site/</span>
 ├── index.html          <span class="size">139 KB</span>  <span class="comment">// 单文件 ~4000 行</span>
 ├── dot-matrix.svg      <span class="size">543 KB</span>  <span class="comment">// 点阵数据源</span>
@@ -1148,42 +1148,35 @@ body {
       <div class="section-num scroll-fade-in">11 — LESSONS LEARNED</div>
       <h2 class="section-title-light scroll-fade-in" style="--delay:0.1s">复盘与收获</h2>
       <p class="section-desc-light scroll-fade-in" style="--delay:0.2s">
-        一个设计师，用 AI 把脑子里的特效落地成代码。这条路上踩过的坑和想明白的事。
+        86 次提交，2 天核心开发，平均 2 分钟一轮迭代。这条路上想明白的事。
       </p>
       <div class="lesson-list scroll-fade-in" style="--delay:0.3s">
         <div class="lesson-item">
           <div class="lesson-num">01</div>
           <div class="lesson-body">
-            <h4>设计师最大的痛：看得到，做不出</h4>
-            <p>脑子里清楚想要 5000 粒子变形、地球飞线、数据隧道的效果，Figma 里也画得出概念稿——但打开编辑器就卡住了。Three.js 文档看不懂，矩阵运算写不来。AI 之前，这些特效只能等开发排期，等到的还不一定是你想要的。</p>
+            <h4>看得到，做不出</h4>
+            <p>脑子里清楚想要粒子变形、地球飞线的效果，Figma 画得出概念稿——但打开编辑器就卡住了。AI 之前，这些特效只能等开发排期。</p>
           </div>
         </div>
         <div class="lesson-item">
           <div class="lesson-num">02</div>
           <div class="lesson-body">
-            <h4>AI 让"不好看，再改"成为可能</h4>
-            <p>以前改一个特效参数要提需求、排期、联调。现在是：看一眼→"粒子太稀了"→2 分钟后新版本出来→"颜色偏了"→再 2 分钟。数据隧道 8 轮微调、点阵动画 7 次迭代——这种密度的打磨，以前根本不可能。</p>
+            <h4>截图说"不对"，2分钟出新版</h4>
+            <p>看一眼→"粒子太稀了"→2 分钟新版→"颜色偏了"→再 2 分钟。截图驱动、高密度打磨、果断回退。</p>
           </div>
         </div>
         <div class="lesson-item">
           <div class="lesson-num">03</div>
           <div class="lesson-body">
-            <h4>审美判断是人不可替代的价值</h4>
-            <p>AI 能写出 Three.js 代码，但它不知道"这个动画看着不舒服"。Core Value 暗色背景 4 分钟回退、Cosmic Spectrum 果断砍掉——这些决策只有设计师能做。代码可以生成，品味不行。</p>
+            <h4>代码可以生成，品味不行</h4>
+            <p>AI 能写出 Three.js 代码，但它不知道"这个动画看着不舒服"。审美判断、规范约束、踩坑沉淀——这些只有设计师能做。</p>
           </div>
         </div>
         <div class="lesson-item">
           <div class="lesson-num">04</div>
           <div class="lesson-body">
-            <h4>不需要懂代码，但必须懂体验</h4>
-            <p>不懂代码怎么实现，但知道怎么做出来效果好、性能好。高级审美和交互直觉才是驱动 AI 输出高质量结果的真正引擎——你要能精准描述"哪里不对"，AI 才知道往哪改。</p>
-          </div>
-        </div>
-        <div class="lesson-item">
-          <div class="lesson-num">05</div>
-          <div class="lesson-body">
-            <h4>2 天做完不是重点，一个人做完才是</h4>
-            <p>以前这种项目：设计 → 开发 → 联调 → 改需求 → 返工，最少两周。现在设计师自己闭环——从 Figma 令牌到 Three.js 粒子，从构思到上线，中间没有任何沟通损耗。</p>
+            <h4>做完不等于上线</h4>
+            <p>工程化改造、技术栈选型、前端协作——从原型到生产还有最后一公里。</p>
           </div>
         </div>
       </div>
@@ -1197,25 +1190,12 @@ body {
     <div class="section-inner result-inner">
       <div class="section-num">FINAL RESULT</div>
       <h2 class="section-title-dark" style="margin-bottom: 16px;">从一张空白页到<br>9 个视觉特效的云平台官网</h2>
-      <p class="section-desc-dark" style="text-align:center; margin:0 auto 40px;">96 次提交，2 天核心开发，4000 行代码，1.3MB 总体积。</p>
-      <a href="https://xyz-cloud-site.vercel.app" target="_blank" class="result-url">xyz-cloud-site.vercel.app <span class="arrow">↗</span></a>
+      <p class="section-desc-dark" style="text-align:center; margin:0 auto 40px;">86 次提交，2 天核心开发，4000 行代码。交付前端团队做工程化改造后上线。</p>
+      <a href="https://xyz-cloud-site.pages.dev" target="_blank" class="result-url">xyz-cloud-site.pages.dev <span class="arrow">↗</span></a>
     </div>
   </div>
 </section>
 
-<!-- ═══════ FOOTER ═══════ -->
-<footer class="footer">
-  <div class="footer-spectrum">
-    <div class="col"></div><div class="col"></div><div class="col"></div>
-    <div class="col"></div><div class="col"></div><div class="col"></div>
-    <div class="col"></div><div class="col"></div><div class="col"></div>
-  </div>
-  <div class="container">
-    <div class="footer-inner">
-      <p class="footer-text">XYZ Cloud Development Case Study · 2026</p>
-    </div>
-  </div>
-</footer>
 
 </div>
 
