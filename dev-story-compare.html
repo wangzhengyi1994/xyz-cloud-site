@@ -270,12 +270,22 @@ body {
     });
   }
 
+  // 键盘快捷键处理
+  function handleKey(e) {
+    if (e.key === '1') switchTab('v1');
+    if (e.key === '2') switchTab('v2');
+    if (e.key === '3') switchTab('v3');
+    if (e.key === 'a' || e.key === 'A') switchTab('all');
+  }
+
   // iframe 加载完成后绑定
   let loaded = 0;
   Object.values(frames).forEach(frame => {
     frame.addEventListener('load', () => {
       loaded++;
       if (loaded >= 3) setupSyncScroll();
+      // 在 iframe 内也监听键盘，防止焦点在 iframe 时快捷键失效
+      try { frame.contentWindow.addEventListener('keydown', handleKey); } catch(e) {}
     });
   });
 
@@ -283,13 +293,7 @@ body {
     btn.addEventListener('click', () => switchTab(btn.dataset.tab));
   });
 
-  // Keyboard shortcuts
-  document.addEventListener('keydown', (e) => {
-    if (e.key === '1') switchTab('v1');
-    if (e.key === '2') switchTab('v2');
-    if (e.key === '3') switchTab('v3');
-    if (e.key === 'a' || e.key === 'A') switchTab('all');
-  });
+  document.addEventListener('keydown', handleKey);
 })();
 </script>
 </body>
