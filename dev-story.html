@@ -753,23 +753,23 @@ body {
 
         <div class="tl-phase">
           <div class="tl-dot lit">1</div>
-          <div class="tl-header"><div class="tl-title">先喂规范，再做页面</div></div>
-          <p class="tl-desc">第一件事不是说"帮我做个官网"，而是把 Figma 里的设计令牌全部贴给 AI — 颜色 10 级梯度、字体、间距、断点。有了规范，AI 后续所有组件都从变量派生，不会自己发明颜色。</p>
-          <p class="tl-desc" style="color:var(--primary);font-style:italic">跟给前端开发交付规范一个道理，只是对象换成了 AI。</p>
+          <div class="tl-header"><div class="tl-title">给 AI 真实上下文</div></div>
+          <p class="tl-desc">不说"帮我做个好看的官网"——直接贴 HTML 源码 + 截图作为风格锚点，让 AI 在正确的坐标系里工作，不靠脑补。参考链接、开源组件代码也直接喂，不用文字描述感觉。</p>
+          <p class="tl-desc" style="color:var(--primary);font-style:italic">一张截图 + 一段代码 > 一整段需求文档。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot lit">2</div>
-          <div class="tl-header"><div class="tl-title">3 分钟出第一版</div></div>
-          <p class="tl-desc">一句话描述需求，AI 生成完整页面骨架。12 个模块 + 设计变量 + 中英切换 + 多端适配 — 3 分钟，从空白到可部署。每次改完直接部署，30 秒后刷新看效果。</p>
-          <p class="tl-desc" style="color:var(--primary);font-style:italic">传统流程出第一版要 2-3 天，现在是 2-3 分钟。</p>
+          <div class="tl-header"><div class="tl-title">精确提取，消灭"差不多"</div></div>
+          <p class="tl-desc">用工具精确抽取色值、间距、字体——把设计师的"感觉"转化为 AI 能读的参数。颜色 10 级梯度、字阶、断点，全部数值化，消除模糊地带。</p>
+          <p class="tl-desc" style="color:var(--primary);font-style:italic">设计师的眼力 + 工具的精度 = AI 能读的输入。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot lit">3</div>
-          <div class="tl-header"><div class="tl-title">用参考链接代替文字描述</div></div>
-          <p class="tl-desc">不说"让粒子动效更炫" — 这种描述 AI 和前端都听不懂。直接发一篇掘金教程链接、一段开源组件代码，AI 自动提取技术方案，适配到项目里。</p>
-          <p class="tl-desc" style="color:var(--primary);font-style:italic">不描述你要什么感觉，给它看你想要的东西。设计师找参考图的能力，现在可以直接喂给 AI。</p>
+          <div class="tl-header"><div class="tl-title">从一页推导出整套系统</div></div>
+          <p class="tl-desc">从单页抽象出设计令牌、组件规范、风格指南——之后所有交付件（官网、PPT、文档）共享同一套设计语言，不用每次从头定义。</p>
+          <p class="tl-desc" style="color:var(--primary);font-style:italic">一套规范建好，后续所有页面有规可依。</p>
         </div>
 
         <div class="tl-phase">
@@ -788,9 +788,9 @@ body {
 
         <div class="tl-phase">
           <div class="tl-dot lit">6</div>
-          <div class="tl-header"><div class="tl-title">最难的需求：3D 地球上的台湾</div></div>
-          <p class="tl-desc">5 次尝试：换高精度数据 → 没用。改 1 度网格 → 65000 点卡死。折中 1.5 度 → 台湾太窄消失。AI 建议重写多边形 → 我说"还是要点数的" → 推翻。最终方案：2 度网格 + 小岛手动补点。</p>
-          <p class="tl-desc" style="color:var(--primary);font-style:italic">AI 能想到 4 种解法，但最终选哪个是设计判断。"完美方案"可能不存在，混合策略往往更好。</p>
+          <div class="tl-header"><div class="tl-title">AI 解不了的，拆给它</div></div>
+          <p class="tl-desc">复杂问题 AI 一次搞不定——把"地球显示台湾"拆成数据精度、采样密度、性能约束三个子问题，逐个让 AI 尝试，人来做取舍组合。</p>
+          <p class="tl-desc" style="color:var(--primary);font-style:italic">AI 擅长执行单一任务，设计师负责拆解和整合。</p>
         </div>
 
         <div class="tl-phase">
@@ -1024,15 +1024,15 @@ body {
         <div class="lesson-item">
           <div class="lesson-num">01</div>
           <div class="lesson-body">
-            <h4>看得到，做不出</h4>
+            <h4>从感觉到参数</h4>
             <p>脑子里清楚想要粒子变形、地球飞线的效果，Figma 画得出概念稿——但打开编辑器就卡住了。AI 之前，这些特效只能等开发排期。</p>
           </div>
         </div>
         <div class="lesson-item">
           <div class="lesson-num">02</div>
           <div class="lesson-body">
-            <h4>截图说"不对"，2分钟出新版</h4>
-            <p>看一眼→"粒子太稀了"→2 分钟新版→"颜色偏了"→再 2 分钟。截图驱动、高密度打磨、果断回退。</p>
+            <h4>人定方向，AI 跑腿</h4>
+            <p>"粒子太稀"、"颜色偏了"、"这版回退"——每个判断都是人在做。审美直觉和决策力，才是用好 AI 的核心壁垒。</p>
           </div>
         </div>
         <div class="lesson-item">
@@ -1046,7 +1046,7 @@ body {
           <div class="lesson-num">04</div>
           <div class="lesson-body">
             <h4>做完不等于上线</h4>
-            <p>工程化改造、技术栈选型、前端协作——从原型到生产还有最后一公里。</p>
+            <p>代码重构与工程化、交互逻辑补全、性能优化、兼容性与体验——从原型到生产还有最后一公里。</p>
           </div>
         </div>
       </div>

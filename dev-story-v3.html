@@ -1782,23 +1782,23 @@ body {
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">01</span><div class="tl-title">先喂规范，再做页面</div></div>
-          <p class="tl-desc">第一件事不是说"帮我做个官网"，而是把 Figma 里的设计令牌全部贴给 AI — 颜色 10 级梯度、字体、间距、断点。有了规范，AI 后续所有组件都从变量派生，不会自己发明颜色。</p>
-          <p class="tl-takeaway">跟给前端开发交付规范一个道理，只是对象换成了 AI。</p>
+          <div class="tl-header"><span class="tl-step-num">01</span><div class="tl-title">给 AI 真实上下文</div></div>
+          <p class="tl-desc">不说"帮我做个好看的官网"——直接贴 HTML 源码 + 截图作为风格锚点，让 AI 在正确的坐标系里工作，不靠脑补。参考链接、开源组件代码也直接喂，不用文字描述感觉。</p>
+          <p class="tl-takeaway">一张截图 + 一段代码 > 一整段需求文档。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">02</span><div class="tl-title">3 分钟出第一版</div></div>
-          <p class="tl-desc">一句话描述需求，AI 生成完整页面骨架。12 个模块 + 设计变量 + 中英切换 + 多端适配 — 3 分钟，从空白到可部署。每次改完直接部署，30 秒后刷新看效果。</p>
-          <p class="tl-takeaway">传统流程出第一版要 2-3 天，现在是 2-3 分钟。</p>
+          <div class="tl-header"><span class="tl-step-num">02</span><div class="tl-title">精确提取，消灭"差不多"</div></div>
+          <p class="tl-desc">用工具精确抽取色值、间距、字体——把设计师的"感觉"转化为 AI 能读的参数。颜色 10 级梯度、字阶、断点，全部数值化，消除模糊地带。</p>
+          <p class="tl-takeaway">设计师的眼力 + 工具的精度 = AI 能读的输入。</p>
         </div>
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">03</span><div class="tl-title">用参考链接代替文字描述</div></div>
-          <p class="tl-desc">不说"让粒子动效更炫" — 这种描述 AI 和前端都听不懂。直接发一篇掘金教程链接、一段开源组件代码，AI 自动提取技术方案，适配到项目里。</p>
-          <p class="tl-takeaway">不描述你要什么感觉，给它看你想要的东西。设计师找参考图的能力，现在可以直接喂给 AI。</p>
+          <div class="tl-header"><span class="tl-step-num">03</span><div class="tl-title">从一页推导出整套系统</div></div>
+          <p class="tl-desc">从单页抽象出设计令牌、组件规范、风格指南——之后所有交付件（官网、PPT、文档）共享同一套设计语言，不用每次从头定义。</p>
+          <p class="tl-takeaway">一套规范建好，后续所有页面有规可依。</p>
         </div>
 
         <div class="tl-phase">
@@ -1817,9 +1817,9 @@ body {
 
         <div class="tl-phase">
           <div class="tl-dot"></div>
-          <div class="tl-header"><span class="tl-step-num">06</span><div class="tl-title">最难的需求：3D 地球上的台湾</div></div>
-          <p class="tl-desc">5 次尝试：换高精度数据 → 没用。改 1 度网格 → 65000 点卡死。折中 1.5 度 → 台湾太窄消失。AI 建议重写多边形 → 我说"还是要点数的" → 推翻。最终方案：2 度网格 + 小岛手动补点。</p>
-          <p class="tl-takeaway">AI 能想到 4 种解法，但最终选哪个是设计判断。"完美方案"可能不存在，混合策略往往更好。</p>
+          <div class="tl-header"><span class="tl-step-num">06</span><div class="tl-title">AI 解不了的，拆给它</div></div>
+          <p class="tl-desc">复杂问题 AI 一次搞不定——把"地球显示台湾"拆成数据精度、采样密度、性能约束三个子问题，逐个让 AI 尝试，人来做取舍组合。</p>
+          <p class="tl-takeaway">AI 擅长执行单一任务，设计师负责拆解和整合。</p>
         </div>
 
         <div class="tl-phase">
@@ -2163,18 +2163,18 @@ body {
         <!-- 卡片列表 -->
         <div class="lesson-list" id="lessonList">
           <div class="lesson-item" data-lesson="0">
-            <div class="lesson-card"><div>看得到，做不出</div><div class="lesson-card-num">01</div></div>
+            <div class="lesson-card"><div>从感觉到参数</div><div class="lesson-card-num">01</div></div>
             <div class="lesson-tags">
               <div class="lesson-tag">审美先行</div>
               <div class="lesson-tag">执行断层</div>
             </div>
           </div>
           <div class="lesson-item" data-lesson="1">
-            <div class="lesson-card"><div>截图说"不对"，2分钟出新版</div><div class="lesson-card-num">02</div></div>
+            <div class="lesson-card"><div>人定方向，AI 跑腿</div><div class="lesson-card-num">02</div></div>
             <div class="lesson-tags">
-              <div class="lesson-tag">截图驱动</div>
-              <div class="lesson-tag">高密度打磨</div>
-              <div class="lesson-tag">果断回退</div>
+              <div class="lesson-tag">审美判断</div>
+              <div class="lesson-tag">果断决策</div>
+              <div class="lesson-tag">方向把控</div>
             </div>
           </div>
           <div class="lesson-item" data-lesson="2">
@@ -2188,9 +2188,10 @@ body {
           <div class="lesson-item" data-lesson="3">
             <div class="lesson-card"><div>做完不等于上线</div><div class="lesson-card-num">04</div></div>
             <div class="lesson-tags">
-              <div class="lesson-tag">工程化改造</div>
-              <div class="lesson-tag">技术栈选型</div>
-              <div class="lesson-tag">前端协作</div>
+              <div class="lesson-tag">代码重构与工程化</div>
+              <div class="lesson-tag">交互逻辑补全</div>
+              <div class="lesson-tag">性能优化</div>
+              <div class="lesson-tag">兼容性与体验</div>
             </div>
           </div>
         </div>
