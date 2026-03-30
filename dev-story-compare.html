@@ -135,9 +135,39 @@ body {
   border-radius: 4px; font-family: inherit; font-size: 10px; color: rgba(255,255,255,0.5);
   margin: 0 3px;
 }
+
+/* ═══════ MINI TABS (右上角备用) ═══════ */
+.mini-tabs {
+  position: fixed; top: 12px; right: 12px; z-index: 200;
+  display: flex; gap: 2px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px;
+  padding: 2px;
+  opacity: 0.35;
+  transition: opacity 0.3s;
+}
+.mini-tabs:hover { opacity: 0.85; }
+.mini-tab {
+  padding: 4px 8px;
+  font-size: 10px; font-weight: 500; font-family: inherit;
+  color: rgba(255,255,255,0.5);
+  background: none; border: none; cursor: pointer;
+  border-radius: 4px;
+  transition: all 0.2s;
+  letter-spacing: 0.5px;
+}
+.mini-tab:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.08); }
+.mini-tab.active { color: #fff; background: rgba(255,255,255,0.12); }
 </style>
 </head>
 <body>
+
+<div class="mini-tabs" id="miniTabs">
+  <button class="mini-tab active" data-tab="v1">1</button>
+  <button class="mini-tab" data-tab="v2">2</button>
+  <button class="mini-tab" data-tab="v3">3</button>
+  <button class="mini-tab" data-tab="all">A</button>
+</div>
 
 <div class="tab-bar">
   <div class="title">设计产品如何去掉 AI 味儿</div>
@@ -195,10 +225,14 @@ body {
 
   const container = document.getElementById('frameContainer');
   const splitLabels = document.getElementById('splitLabels');
+  const miniTabs = document.querySelectorAll('.mini-tab');
   let splitMode = false;
   let syncing = false;
 
   function switchTab(tab) {
+    // 同步 mini tabs 状态
+    miniTabs.forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+
     if (tab === 'all') {
       splitMode = true;
       container.classList.add('split-mode');
@@ -223,6 +257,11 @@ body {
       else frame.classList.add('hidden');
     });
   }
+
+  // Mini tabs 点击
+  miniTabs.forEach(btn => {
+    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+  });
 
   // 同步滚动：统一 wheel 驱动，用 scrollTop 百分比同步
   let scrollPct = 0;
