@@ -14,10 +14,12 @@
   --dark: #0B0E15;
   --orange: #ff8400;
   --accent: #e8ee5a;
-  --white-1: rgba(255,255,255,0.08);
-  --white-3: rgba(255,255,255,0.20);
-  --white-5: rgba(255,255,255,0.60);
-  --white-8: rgba(255,255,255,0.80);
+  --white-1: rgba(255,255,255,0.10);
+  --white-3: rgba(255,255,255,0.25);
+  --white-4: rgba(255,255,255,0.45);
+  --white-5: rgba(255,255,255,0.75);
+  --white-6: rgba(255,255,255,0.80);
+  --white-8: rgba(255,255,255,0.92);
   --border-light: #e1e7ef;
   --text-dark: #090e1a;
   --text-secondary: #1e293b;
@@ -186,7 +188,7 @@ body {
 
 .hero-label {
   font-size: 14px; font-weight: 400; letter-spacing: 4px;
-  text-transform: uppercase; color: rgba(255,255,255,0.45);
+  text-transform: uppercase; color: rgba(255,255,255,0.65);
   margin-bottom: 24px;
   opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 0.8s;
 }
@@ -205,7 +207,7 @@ body {
 
 .hero-sub {
   font-size: 18px; font-weight: 400; line-height: 30px;
-  color: rgba(255,255,255,0.80);
+  color: rgba(255,255,255,0.92);
   letter-spacing: 0.02em;
   opacity: 0; animation: heroUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards 1.2s;
 }
@@ -700,7 +702,7 @@ body {
   50% { transform: scaleY(0.4); }
 }
 .rive-label {
-  font-size: 11px; color: rgba(255,255,255,0.5);
+  font-size: 11px; color: rgba(255,255,255,0.7);
   letter-spacing: 2px; text-transform: uppercase;
 }
 
@@ -794,7 +796,7 @@ body {
   color: rgba(255,255,255,0.25);
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-phase.active .tl-step-num { color: rgba(255,255,255,0.5); }
+.tl-phase.active .tl-step-num { color: rgba(255,255,255,0.7); }
 
 /* Title */
 .tl-title {
@@ -811,7 +813,7 @@ body {
   letter-spacing: 1px;
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-phase.active .tl-date { color: rgba(255,255,255,0.35); }
+.tl-phase.active .tl-date { color: rgba(255,255,255,0.55); }
 
 /* Description */
 .tl-desc {
@@ -821,7 +823,7 @@ body {
   padding-left: 23px;
   transition: color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
-.tl-phase.active .tl-desc { color: rgba(255,255,255,0.7); }
+.tl-phase.active .tl-desc { color: rgba(255,255,255,0.88); }
 
 /* Takeaway — 方法论金句 */
 .tl-takeaway {
@@ -838,7 +840,7 @@ body {
 .commits { list-style: none; display: flex; flex-direction: column; gap: 4px; opacity: 0.25; padding-left: 23px; transition: opacity 0.6s cubic-bezier(0.4,0,0.2,1); }
 .tl-phase.active .commits { opacity: 1; }
 .commits li {
-  font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.6);
+  font-size: 12px; font-weight: 400; color: rgba(255,255,255,0.78);
   padding: 6px 12px;
   border-left: 2px solid var(--white-1);
   transition: all 0.3s; cursor: default;
@@ -1036,11 +1038,11 @@ body {
 
 /* 左侧问题 */
 .challenge-cell.problem h4 {
-  font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.85);
+  font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.95);
   margin-bottom: 10px;
 }
 .challenge-cell.problem p {
-  font-size: 13px; font-weight: 400; line-height: 20px; color: rgba(255,255,255,0.45);
+  font-size: 13px; font-weight: 400; line-height: 20px; color: rgba(255,255,255,0.65);
 }
 
 /* 中间竖线 */
@@ -1051,17 +1053,17 @@ body {
 
 /* 右侧方案 */
 .challenge-cell.solution h4 {
-  font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.85);
+  font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.95);
   margin-bottom: 10px;
 }
 .challenge-cell.solution p {
-  font-size: 13px; font-weight: 400; line-height: 20px; color: rgba(255,255,255,0.45);
+  font-size: 13px; font-weight: 400; line-height: 20px; color: rgba(255,255,255,0.65);
 }
 
 /* 标签 */
 .challenge-label {
   font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-  margin-bottom: 10px; color: rgba(255,255,255,0.3);
+  margin-bottom: 10px; color: rgba(255,255,255,0.5);
 }
 
 /* ═══════ ARCH BOX (dark bg) ═══════ */
@@ -1299,8 +1301,8 @@ body {
 .lesson-phase-item {
   flex: 1;
   padding: 14px 16px 14px 12px;
-  border-left: 3px solid rgba(255,255,255,0.6);
-  color: rgba(255,255,255,0.45);
+  border-left: 3px solid rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.65);
   font-size: 16px; font-weight: 500;
   line-height: 1.5;
   text-align: left;
@@ -1325,7 +1327,7 @@ body {
   padding: 24px 28px;
   background: #1a1a1a;
   border-top: 4px solid rgba(232,238,90,0.3);
-  font-size: 24px; font-weight: 500; color: rgba(255,255,255,0.6);
+  font-size: 24px; font-weight: 500; color: rgba(255,255,255,0.78);
   transition: background 0.4s, color 0.4s, border-color 0.4s;
 }
 .lesson-card.lit {
@@ -1344,7 +1346,7 @@ body {
 }
 .lesson-tag {
   padding: 8px 16px;
-  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.5);
+  background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.7);
   font-size: 13px; font-weight: 600;
   letter-spacing: 0.3px;
   transition: background 0.4s, color 0.4s;
